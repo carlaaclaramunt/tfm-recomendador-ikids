@@ -36,10 +36,12 @@ def _cumple_restricciones(perfil: PerfilCliente, programa: Programa) -> bool:
     if not _edad_compatible(perfil, programa):
         return False
 
+    # Si la opción más barata del programa ya supera el presupuesto del
+    # cliente, el programa queda descartado.
     if (
         perfil.presupuesto_max_eur is not None
-        and programa.precio_eur is not None
-        and programa.precio_eur > perfil.presupuesto_max_eur
+        and programa.precio_min_eur is not None
+        and programa.precio_min_eur > perfil.presupuesto_max_eur
     ):
         return False
 
@@ -65,16 +67,26 @@ def _edad_compatible(perfil: PerfilCliente, programa: Programa) -> bool:
 
 
 def _duracion_compatible(perfil: PerfilCliente, programa: Programa) -> bool:
-    if programa.duracion_dias is None:
+    """Comprueba si el rango de duración del programa se solapa con el rango
+    deseado por el cliente. Se considera compatible si ambos rangos
+    intersectan al menos en un día.
+    """
+    prog_min = programa.duracion_min_dias
+    prog_max = programa.duracion_max_dias
+
+    # Sin información del programa: no filtramos por falta de datos
+    if prog_min is None and prog_max is None:
         return True
-    if (
-        perfil.duracion_min_dias is not None
-        and programa.duracion_dias < perfil.duracion_min_dias
-    ):
-        return False
-    if (
-        perfil.duracion_max_dias is not None
-        and programa.duracion_dias > perfil.duracion_max_dias
-    ):
-        return False
-    return True
+
+    # Sin restricción del cliente: no filtramos
+    if perfil.duracion_min_dias is None and perfil.duracion_max_dias is None:
+        return True
+
+    # Rellenar valores ausentes con extremos razonables
+    prog_min = prog_min or prog_max or 1
+    prog_max = prog_max or prog_min
+    cli_min = perfil.duracion_min_dias or 1
+    cli_max = perfil.duracion_max_dias or 365
+
+    # Hay solapamiento si los rangos intersectan
+    return prog_min <= cli_max and prog_max >= cli_min

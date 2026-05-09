@@ -10,6 +10,8 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from datetime import date
+
 
 # ---------------------------------------------------------------------------
 # Programa de inmersión lingüística
@@ -39,14 +41,16 @@ class Programa(BaseModel):
     edad_min: Optional[int] = Field(None, ge=0, le=99, description="Edad mínima admitida")
     edad_max: Optional[int] = Field(None, ge=0, le=99, description="Edad máxima admitida")
 
-    duracion_dias: Optional[int] = Field(None, ge=1, description="Duración en días")
-    precio_eur: Optional[float] = Field(None, ge=0, description="Precio en euros")
+    duracion_min_dias: Optional[int] = Field(None, ge=1, description="Duración mínima del programa en días")
+    duracion_max_dias: Optional[int] = Field(None, ge=1, description="Duración máxima del programa en días")
+    precio_min_eur: Optional[float] = Field(None, ge=0, description="Precio mínimo en euros")
+    precio_max_eur: Optional[float] = Field(None, ge=0, description="Precio máximo en euros")
 
     tipo_alojamiento: Optional[TipoAlojamiento] = Field(
         None, description="Tipo de alojamiento ofrecido"
     )
 
-    fecha_inicio: Optional[str] = Field(None, description="Fecha de inicio (ISO 8601)")
+    fecha_inicio: Optional[date] = Field(None, description="Fecha de inicio (ISO 8601)")
     fecha_fin: Optional[str] = Field(None, description="Fecha de fin (ISO 8601)")
 
     acreditaciones: list[str] = Field(

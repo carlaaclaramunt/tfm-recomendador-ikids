@@ -39,6 +39,41 @@ una respuesta con campos faltantes a una respuesta con datos inventados.
 Si el documento describe varios programas, extrae únicamente el programa \
 principal o el primero que aparezca. Para procesar varios programas se \
 realizarán llamadas separadas.
+
+REGLAS DE FORMATO PARA FECHAS:
+- Las fechas deben estar SIEMPRE en formato ISO 8601 completo: YYYY-MM-DD.
+- Si el documento solo indica el mes (por ejemplo "January 2026"), usa el \
+día 1 de ese mes (2026-01-01).
+- Si solo indica el año, deja el campo en null en lugar de inventar la fecha.
+
+REGLAS DE FORMATO PARA DURACIÓN:
+- Si el programa tiene una duración fija (por ejemplo "7-day camp" o "2-week \
+intensive"), usa el mismo valor para duracion_min_dias y duracion_max_dias.
+- Si el programa permite elegir la duración (por ejemplo "from 1 to 12 weeks" \
+o "available durations: 2, 3, 4 weeks"), marca el rango completo en días: \
+para "1 a 12 semanas" sería duracion_min_dias=7 y duracion_max_dias=84.
+- IMPORTANTE: cuando el documento muestre precios "por semana" o "per week", \
+esa es la UNIDAD DE PRECIO, NO la duración del programa. La duración real \
+del programa puede ser muy distinta. Busca por separado cuántas semanas \
+dura el programa.
+- Si la duración no se especifica de ninguna forma, deja ambos campos null.
+
+REGLAS DE FORMATO PARA PRECIO:
+- Si hay un único precio claro, usa el mismo valor para precio_min_eur y \
+precio_max_eur.
+- Si hay varios precios (por temporada, por edad, por tipo de habitación, \
+por número de semanas), marca el menor en precio_min_eur y el mayor en \
+precio_max_eur.
+- Si el precio aparece en otra moneda (USD, GBP), conviértelo a euros con \
+una tasa aproximada (1 USD = 0.92 EUR, 1 GBP = 1.17 EUR).
+- Si el precio no aparece, deja ambos campos null.
+
+REGLAS DE FORMATO PARA EDAD:
+- Si el documento describe varios programas con rangos de edad distintos \
+(por ejemplo niños 8-12 y adolescentes 13-17), enfócate en el programa \
+juvenil (8-18 años), que es el segmento principal del sistema.
+- Si el documento solo describe programas para adultos, marca edad_min=18 \
+y edad_max=null para que el sistema pueda filtrarlos correctamente.
 """
 
 # Esquema JSON que se pasa a la API de Anthropic como tool definition.
@@ -66,8 +101,26 @@ _EXTRACTION_TOOL = {
             },
             "edad_min": {"type": ["integer", "null"], "minimum": 0, "maximum": 99},
             "edad_max": {"type": ["integer", "null"], "minimum": 0, "maximum": 99},
-            "duracion_dias": {"type": ["integer", "null"], "minimum": 1},
-            "precio_eur": {"type": ["number", "null"], "minimum": 0},
+            "duracion_min_dias": {
+                "type": ["integer", "null"],
+                "minimum": 1,
+                "description": "Duración mínima del programa en días",
+            },
+            "duracion_max_dias": {
+                "type": ["integer", "null"],
+                "minimum": 1,
+                "description": "Duración máxima del programa en días",
+            },
+            "precio_min_eur": {
+                "type": ["number", "null"],
+                "minimum": 0,
+                "description": "Precio mínimo en euros (opción más barata)",
+            },
+            "precio_max_eur": {
+                "type": ["number", "null"],
+                "minimum": 0,
+                "description": "Precio máximo en euros (opción más cara)",
+            },
             "tipo_alojamiento": {
                 "type": ["string", "null"],
                 "enum": [
@@ -129,6 +182,7 @@ def extract_program(
     response = client.messages.create(
         model=_MODEL,
         max_tokens=2048,
+        temperature=0,
         system=_SYSTEM_PROMPT,
         tools=[_EXTRACTION_TOOL],
         tool_choice={"type": "tool", "name": "extract_programa"},

@@ -95,7 +95,7 @@ def recomendar(
 
 def _guardar_catalogo(programas: list[Programa]) -> None:
     DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
-    payload = [p.model_dump() for p in programas]
+    payload = [p.model_dump(mode="json") for p in programas]
     CATALOGO_PATH.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
     )

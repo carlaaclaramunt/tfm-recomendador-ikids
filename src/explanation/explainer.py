@@ -69,13 +69,23 @@ def _motivos_filtros(programa: Programa, perfil: PerfilCliente) -> list[str]:
         )
 
     if (
-        perfil.presupuesto_max_eur is not None
-        and programa.precio_eur is not None
+            perfil.presupuesto_max_eur is not None
+            and programa.precio_min_eur is not None
     ):
-        motivos.append(
-            f"el precio ({programa.precio_eur:.0f}€) "
-            f"está dentro del presupuesto ({perfil.presupuesto_max_eur:.0f}€)"
-        )
+        if (
+                programa.precio_max_eur is not None
+                and programa.precio_max_eur != programa.precio_min_eur
+        ):
+            motivos.append(
+                f"el precio (entre {programa.precio_min_eur:.0f}€ y "
+                f"{programa.precio_max_eur:.0f}€) se ajusta al presupuesto "
+                f"({perfil.presupuesto_max_eur:.0f}€)"
+            )
+        else:
+            motivos.append(
+                f"el precio ({programa.precio_min_eur:.0f}€) "
+                f"está dentro del presupuesto ({perfil.presupuesto_max_eur:.0f}€)"
+            )
 
     return motivos
 
@@ -104,11 +114,16 @@ def _motivos_criterios_fuertes(
             )
         elif criterio == "precio":
             motivos.append("el precio es competitivo respecto a las alternativas")
-        elif criterio == "duracion" and programa.duracion_dias:
-            motivos.append(
-                f"la duración ({programa.duracion_dias} días) "
-                f"se ajusta al rango deseado"
-            )
+        elif criterio == "duracion" and (
+                    programa.duracion_min_dias or programa.duracion_max_dias):
+            dmin = programa.duracion_min_dias
+            dmax = programa.duracion_max_dias
+            if dmin == dmax or dmax is None:
+                motivos.append(f"la duración ({dmin} días) se ajusta al rango deseado")
+            elif dmin is None:
+                motivos.append(f"la duración (hasta {dmax} días) se ajusta al rango deseado")
+            else:
+                motivos.append(f"la duración ({dmin}-{dmax} días) se ajusta al rango deseado")
         elif criterio == "edad_ajuste":
             motivos.append("el rango de edad del programa encaja muy bien con el estudiante")
 

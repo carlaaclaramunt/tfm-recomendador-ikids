@@ -73,31 +73,74 @@ def _descomponer(
 
 
 def _score_precio(
-    perfil: PerfilCliente,
-    programa: Programa,
-    todos: list[Programa],
+        perfil: PerfilCliente,
+        programa: Programa,
+        todos: list[Programa],
 ) -> float:
-    """Programas más baratos puntúan más alto. Normalizado sobre el rango."""
-    precios = [p.precio_eur for p in todos if p.precio_eur is not None]
-    if not precios or programa.precio_eur is None:
-        return 0.5  # neutro cuando no hay datos suficientes
-    pmin, pmax = min(precios), max(precios)
+    """Programas más baratos puntúan más alto, normalizado sobre el catálogo.
+
+    Usa precio_min_eur como referencia (la opción más barata del programa).
+    Si el programa no tiene precio extraído, score neutro (0.5).
+    """
+    # Sin datos del programa: neutro
+    if programa.precio_min_eur is None:
+        return 0.5
+
+    # Normalizamos sobre el rango de precios mínimos del catálogo entero
+    precios_min = [p.precio_min_eur for p in todos if p.precio_min_eur is not None]
+    if not precios_min:
+        return 0.5
+
+    pmin, pmax = min(precios_min), max(precios_min)
     if pmax == pmin:
         return 1.0
-    return 1.0 - (programa.precio_eur - pmin) / (pmax - pmin)
+
+    # Más barato = mejor
+    return 1.0 - (programa.precio_min_eur - pmin) / (pmax - pmin)
 
 
 def _score_duracion(perfil: PerfilCliente, programa: Programa) -> float:
-    """Penaliza la distancia al punto medio del rango deseado."""
-    if programa.duracion_dias is None:
+    """Score por solapamiento entre el rango de duración del programa y el del cliente.
+
+    La pregunta que se responde es: ¿este programa permite al cliente
+    elegir una duración dentro de su rango deseado? Cuanto mayor es el
+    solapamiento con el rango del cliente, mejor.
+
+    - 1.0 → el programa cubre todo el rango deseado por el cliente
+    - 0.7 → el programa permite alguna duración deseada (match mínimo)
+    - 0.0 → el programa no ofrece ninguna duración aceptable
+    """
+    prog_min = programa.duracion_min_dias
+    prog_max = programa.duracion_max_dias
+    cli_min = perfil.duracion_min_dias
+    cli_max = perfil.duracion_max_dias
+
+    # Sin información en alguno de los lados: score neutro
+    if prog_min is None and prog_max is None:
         return 0.5
-    if perfil.duracion_min_dias is None and perfil.duracion_max_dias is None:
+    if cli_min is None and cli_max is None:
         return 0.5
-    objetivo = _punto_medio(perfil.duracion_min_dias, perfil.duracion_max_dias)
-    if objetivo is None:
-        return 0.5
-    distancia = abs(programa.duracion_dias - objetivo)
-    return max(0.0, 1.0 - distancia / max(objetivo, 1))
+
+    # Rellenar valores ausentes con extremos razonables
+    prog_min = prog_min or prog_max or 1
+    prog_max = prog_max or prog_min
+    cli_min = cli_min or 1
+    cli_max = cli_max or 365
+
+    # Solapamiento entre rangos
+    overlap_min = max(prog_min, cli_min)
+    overlap_max = min(prog_max, cli_max)
+
+    if overlap_min > overlap_max:
+        return 0.0  # rangos disjuntos: el programa no puede satisfacer al cliente
+
+    # Hay solapamiento → score base alto + bonus proporcional a cuánto del
+    # rango del cliente queda cubierto por el programa
+    overlap_size = overlap_max - overlap_min + 1
+    cli_size = max(cli_max - cli_min + 1, 1)
+    cobertura_cliente = min(1.0, overlap_size / cli_size)
+
+    return 0.7 + 0.3 * cobertura_cliente
 
 
 def _score_ubicacion(perfil: PerfilCliente, programa: Programa) -> float:
