@@ -50,13 +50,13 @@ relaciona ambas partes. Solución posible: pasar al LLM dos pasadas,
 una para identificar programas y otra para enriquecerlos con datos 
 transversales del documento.
 
-### LD3 — Tipos de alojamiento múltiples
+### LD3 — Tipos de alojamiento múltiples (IMPLEMENTADA)
 El esquema actual asume un único tipo de alojamiento por programa. 
 La realidad es que muchos programas ofrecen varias opciones 
 simultáneas (familia + apartamento + residencia). Cambio previsto: 
 `tipo_alojamiento` pasa de `Optional[Literal[...]]` a `list[Literal[...]]`.
 
-### LD4 — Edades expresadas cualitativamente
+### LD4 — Edades expresadas cualitativamente (IMPLEMENTADA)
 Documentos que indican "all ages", "kids, teens, adults" o "ideal 
 for everyone" pierden información al codificarse como null/null. 
 Cambio previsto: cuando el documento indique aptitud universal, 
@@ -68,7 +68,7 @@ fechas de inicio recurrentes ("Every Monday"). El esquema actual
 fuerza una única fecha de inicio. Cambio previsto: añadir un campo 
 `fechas_inicio_recurrentes` o similar para capturar esta semántica.
 
-### LD6 — Documentos B2B versus documentos para cliente final
+### LD6 — Documentos B2B versus documentos para cliente final (IMPLEMENTADA)
 El corpus contiene al menos dos tipos fundamentalmente distintos de 
 documentos: catálogos para cliente final (ej. Berlitz ELA 2026) y 
 hojas de tarifas netas para venta a grupos cerrados (ej. NET Prices). 
@@ -97,7 +97,7 @@ concreto dentro del documento (ej. 15+ para low season, 16+ para
 summer). Una vez se capture LD7 (multi-campaña), cada Programa 
 generado tendrá sus propios edad_min/edad_max correctos.
 
-### LD10 — Distinción entre fechas de campaña y fechas de programa
+### LD10 — Distinción entre fechas de campaña y fechas de programa (IMPLEMENTADA)
 "January to May 2026" indica el período de validez de unas tarifas, 
 no la duración de un programa concreto. Un programa concreto dentro 
 de esa ventana puede ser de 1 semana cualquiera. El esquema actual no 
@@ -107,7 +107,7 @@ y fecha_fin. Solución prevista: añadir campos separados
 `fecha_inicio` / `fecha_fin` para el programa concreto, cuando 
 aplique.
 
-### LD11 — Documentos producidos por la propia agencia
+### LD11 — Documentos producidos por la propia agencia (IMPLEMENTADO?)
 Una parte del corpus puede no provenir de proveedores externos sino 
 ser material propio de I-KIDS para programas que ella misma orquesta 
 con varios partners. Este caso (DBS Dublin) es el primero detectado. 
@@ -149,7 +149,7 @@ Algunos programas operan en varias ubicaciones físicas distintas
 permitir varias `sedes` con tipo (entrenamiento, clases, 
 alojamiento, social).
 
-### LD16 — Información cruzada entre documentos del mismo proveedor
+### LD16 — Información cruzada entre documentos del mismo proveedor (IMPLEMENTADA)
 Un mismo proveedor (NSX) puede repartir información sobre el mismo 
 programa entre varios documentos: una hoja de precios general (NSX 
 Gross Prices) y guías por escuela específica (Millfield School Guide). 
@@ -162,7 +162,7 @@ deduplicación / fusión post-extracción que detecte programas
 equivalentes (mismo proveedor + misma sede + mismo año) y combine 
 sus campos.
 
-### LD17 — Conversión automática de moneda por el LLM
+### LD17 — Conversión automática de moneda por el LLM (IMPLEMENTADA)
 Los precios originales pueden estar en moneda distinta al euro (GBP, 
 USD, etc.). El prompt del proyecto instruye al LLM a convertir a 
 euros con una tasa aproximada. Esto introduce dos limitaciones 

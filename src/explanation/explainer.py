@@ -49,8 +49,37 @@ def explicar(recomendacion: Recomendacion, perfil: PerfilCliente) -> str:
 
     fuente = f"Información extraída del documento: {programa.fuente_documento}."
 
-    return "\n".join([encabezado, cuerpo, fuente])
+    # Aviso según el estado de obsolescencia del documento
+    aviso_obsolescencia = ""
+    if recomendacion.programa.estado_documento == "parcialmente_obsoleto":
+        aviso_obsolescencia = (
+            f"\n⚠️ Aviso: la información estructural de este programa "
+            f"se mantiene válida, pero los siguientes campos pueden "
+            f"estar desfasados y deben verificarse antes de la "
+            f"recomendación final: "
+            f"{', '.join(recomendacion.programa.campos_obsoletos)}. "
+            f"{recomendacion.programa.razon_obsolescencia}"
+        )
 
+    # Aviso según el tipo funcional del documento
+    aviso_tipo = ""
+    if recomendacion.programa.tipo_documento == "tarifa_b2b":
+        aviso_tipo = (
+            "\nℹ️ Aviso: este programa proviene de una hoja de tarifas "
+            "B2B. El precio extraído corresponde al neto de proveedor "
+            "y no incluye el margen comercial de I-KIDS. El precio "
+            "final al cliente será superior."
+        )
+    elif recomendacion.programa.tipo_documento == "lista_precios":
+        aviso_tipo = (
+            "\nℹ️ Aviso: la información se ha extraído de una lista de "
+            "precios sin descripción detallada del programa. Conviene "
+            "consultar la ficha del programa para detalles adicionales."
+        )
+
+    return "\n".join(
+        [encabezado, cuerpo, fuente, aviso_obsolescencia, aviso_tipo]
+    ).strip()
 
 # ---------------------------------------------------------------------------
 # Construcción de los motivos
@@ -76,11 +105,27 @@ def _motivos_filtros(programa: Programa, perfil: PerfilCliente) -> list[str]:
                 programa.precio_max_eur is not None
                 and programa.precio_max_eur != programa.precio_min_eur
         ):
-            motivos.append(
-                f"el precio (entre {programa.precio_min_eur:.0f}€ y "
-                f"{programa.precio_max_eur:.0f}€) se ajusta al presupuesto "
-                f"({perfil.presupuesto_max_eur:.0f}€)"
+            mostrar_moneda_origen = (
+                    programa.moneda_origen is not None
+                    and programa.moneda_origen != "EUR"
+                    and programa.precio_min_origen is not None
             )
+
+            if mostrar_moneda_origen:
+                motivos.append(
+                    f"el precio (entre {programa.precio_min_eur:.0f}€ y "
+                    f"{programa.precio_max_eur:.0f}€, equivalente a "
+                    f"{programa.precio_min_origen:.0f}-"
+                    f"{programa.precio_max_origen:.0f} {programa.moneda_origen} "
+                    f"en el documento original) se ajusta al presupuesto "
+                    f"({perfil.presupuesto_max_eur:.0f}€)"
+                )
+            else:
+                motivos.append(
+                    f"el precio (entre {programa.precio_min_eur:.0f}€ y "
+                    f"{programa.precio_max_eur:.0f}€) se ajusta al presupuesto "
+                    f"({perfil.presupuesto_max_eur:.0f}€)"
+                )
         else:
             motivos.append(
                 f"el precio ({programa.precio_min_eur:.0f}€) "

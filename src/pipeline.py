@@ -25,10 +25,11 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from src.explanation import explicar
-from src.extraction import extract_program
+from src.extraction import extract_programs
 from src.models import PerfilCliente, Programa, Recomendacion
 from src.recommendation import filtrar_candidatos, puntuar_candidatos
-
+from src.curation.merge import fusionar_programas, resumen_fusion
+from src.curation import (evaluar_obsolescencia, evaluar_origen_documental, evaluar_partnerships, generar_evidencias, evaluar_costes_adicionales)
 load_dotenv()
 
 DATA_RAW = Path(os.getenv("DATA_RAW_DIR", "data/raw"))
@@ -57,14 +58,32 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
     print(f"Procesando {len(pdfs)} PDFs...")
 
     for i, pdf_path in enumerate(pdfs, start=1):
-        # Asumimos estructura data/raw/<empresa>/archivo.pdf
         empresa_hint = pdf_path.parent.name if pdf_path.parent != DATA_RAW else None
         try:
-            programa = extract_program(pdf_path, empresa_proveedora_hint=empresa_hint)
-            programas.append(programa)
-            print(f"  [{i}/{len(pdfs)}] OK: {pdf_path.name} → {programa.nombre}")
-        except Exception as exc:  # noqa: BLE001 — queremos seguir procesando
+            nuevos = extract_programs(pdf_path, empresa_proveedora_hint=empresa_hint)
+            programas.extend(nuevos)
+            nombres = ", ".join(p.nombre for p in nuevos[:3])
+            extra = "" if len(nuevos) <= 3 else f" (+{len(nuevos) - 3} más)"
+            etiqueta = f"{len(nuevos)} programa(s): {nombres}{extra}" if nuevos else "sin programas"
+            print(f"  [{i}/{len(pdfs)}] OK: {pdf_path.name} → {etiqueta}")
+        except Exception as exc:
             print(f"  [{i}/{len(pdfs)}] ERROR en {pdf_path.name}: {exc}")
+
+    # Después de extraer todos los programas, evaluar su obsolescencia
+    programas = [evaluar_obsolescencia(p) for p in programas]
+    programas = [evaluar_origen_documental(p) for p in programas]
+    programas = [evaluar_partnerships(p) for p in programas]
+    programas = [evaluar_costes_adicionales(p) for p in programas]
+    programas = [generar_evidencias(p) for p in programas]
+
+    # Curación documental: fusión/deduplicación de programas equivalentes
+    programas_originales = programas
+    programas_fusionados = fusionar_programas(programas_originales)
+
+    print("Resumen de fusión:", resumen_fusion(programas_originales, programas_fusionados))
+
+    programas = programas_fusionados
+
 
     _guardar_catalogo(programas)
     return programas
