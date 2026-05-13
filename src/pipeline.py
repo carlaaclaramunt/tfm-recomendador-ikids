@@ -25,7 +25,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from src.explanation import explicar
-from src.extraction import extract_program
+from src.extraction import extract_programs
 from src.models import PerfilCliente, Programa, Recomendacion
 from src.recommendation import filtrar_candidatos, puntuar_candidatos
 
@@ -60,12 +60,22 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
         # Asumimos estructura data/raw/<empresa>/archivo.pdf
         empresa_hint = pdf_path.parent.name if pdf_path.parent != DATA_RAW else None
         try:
-            programa = extract_program(pdf_path, empresa_proveedora_hint=empresa_hint)
-            programas.append(programa)
-            print(f"  [{i}/{len(pdfs)}] OK: {pdf_path.name} → {programa.nombre}")
+            extraidos = extract_programs(
+                pdf_path, empresa_proveedora_hint=empresa_hint
+            )
         except Exception as exc:  # noqa: BLE001 — queremos seguir procesando
             print(f"  [{i}/{len(pdfs)}] ERROR en {pdf_path.name}: {exc}")
+            continue
 
+        print(
+            f"  [{i}/{len(pdfs)}] {pdf_path.name}: "
+            f"{len(extraidos)} programa(s) identificado(s)"
+        )
+        for p in extraidos:
+            print(f"      · {p.nombre}")
+        programas.extend(extraidos)
+
+    print(f"\nCatálogo total: {len(programas)} programas a partir de {len(pdfs)} PDFs")
     _guardar_catalogo(programas)
     return programas
 

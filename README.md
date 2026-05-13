@@ -7,6 +7,11 @@ por las empresas asociadas a I-KIDS.
 El sistema combina tres pilares técnicos:
 
 1. **Extracción de información** sobre PDF e imagen mediante LLM + OCR.
+   La extracción opera en dos pasadas: primero se identifican los
+   programas presentes en cada documento (un PDF puede describir varios)
+   y después se rellena el esquema de cada uno combinando la ficha
+   específica con secciones transversales del documento (precios
+   globales, alojamiento, calendario).
 2. **Recomendación multi-criterio** con preferencias incompletas
    (recomendador basado en conocimiento + MCDM en cascada).
 3. **Explicabilidad** basada en trazabilidad sistemática.
