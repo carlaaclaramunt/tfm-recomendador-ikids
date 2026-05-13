@@ -122,10 +122,10 @@ def unir_listas_sin_duplicados(*listas: list) -> list:
 
 
 def elegir_estado_documento(estados: list[str]) -> str:
-    if "parcialmente_obsoleto" in estados:
-        return "parcialmente_obsoleto"
-
     if "obsoleto" in estados:
+        return "obsoleto"
+
+    if "parcialmente_obsoleto" in estados:
         return "parcialmente_obsoleto"
 
     return "vigente"

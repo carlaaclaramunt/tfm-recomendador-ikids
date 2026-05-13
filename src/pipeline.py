@@ -29,6 +29,7 @@ from src.extraction import extract_programs
 from src.models import PerfilCliente, Programa, Recomendacion
 from src.recommendation import filtrar_candidatos, puntuar_candidatos
 from src.curation.merge import fusionar_programas, resumen_fusion
+from src.curation.obsolescence import filtrar_no_obsoletos
 from src.curation import (evaluar_obsolescencia, evaluar_origen_documental, evaluar_partnerships, generar_evidencias, evaluar_costes_adicionales)
 load_dotenv()
 
@@ -82,8 +83,14 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
 
     print("Resumen de fusión:", resumen_fusion(programas_originales, programas_fusionados))
 
-    programas = programas_fusionados
+    # Descartar programas cuyo documento de origen está totalmente obsoleto
+    # (los parcialmente_obsoleto se conservan; el explainer ya avisa al asesor)
+    programas_vigentes = filtrar_no_obsoletos(programas_fusionados)
+    descartados = len(programas_fusionados) - len(programas_vigentes)
+    if descartados:
+        print(f"Filtrados por obsolescencia: {descartados} programa(s)")
 
+    programas = programas_vigentes
 
     _guardar_catalogo(programas)
     return programas

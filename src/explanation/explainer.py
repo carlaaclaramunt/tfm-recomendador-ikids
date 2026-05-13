@@ -154,8 +154,9 @@ def _motivos_criterios_fuertes(
             )
         elif criterio == "alojamiento" and perfil.tipo_alojamiento_preferido:
             motivos.append(
-                f"el tipo de alojamiento ({programa.tipo_alojamiento}) "
-                f"coincide con la preferencia del cliente"
+                f"el alojamiento preferido ({perfil.tipo_alojamiento_preferido}) "
+                f"está entre los ofrecidos por el programa "
+                f"({', '.join(programa.tipo_alojamiento)})"
             )
         elif criterio == "precio":
             motivos.append("el precio es competitivo respecto a las alternativas")

@@ -150,9 +150,9 @@ def _score_ubicacion(perfil: PerfilCliente, programa: Programa) -> float:
 
 
 def _score_alojamiento(perfil: PerfilCliente, programa: Programa) -> float:
-    if perfil.tipo_alojamiento_preferido is None or programa.tipo_alojamiento is None:
+    if perfil.tipo_alojamiento_preferido is None or not programa.tipo_alojamiento:
         return 0.5
-    return 1.0 if programa.tipo_alojamiento == perfil.tipo_alojamiento_preferido else 0.0
+    return 1.0 if perfil.tipo_alojamiento_preferido in programa.tipo_alojamiento else 0.0
 
 
 def _score_edad_ajuste(perfil: PerfilCliente, programa: Programa) -> float:
