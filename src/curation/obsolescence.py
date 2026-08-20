@@ -15,8 +15,8 @@ from src.models import Programa, EstadoDocumento
 # Campos que pierden vigencia al envejecer el documento.
 # Estos valores numéricos / temporales caducan rápido.
 CAMPOS_SENSIBLES_OBSOLESCENCIA = {
-    "precio_min_eur",
-    "precio_max_eur",
+    "precio_semanal_min_eur",
+    "precio_semanal_max_eur",
     "fecha_inicio",
     "fecha_fin",
 }

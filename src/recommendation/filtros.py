@@ -36,14 +36,19 @@ def _cumple_restricciones(perfil: PerfilCliente, programa: Programa) -> bool:
     if not _edad_compatible(perfil, programa):
         return False
 
-    # Si la opción más barata del programa ya supera el presupuesto del
-    # cliente, el programa queda descartado.
+    # Los precios están normalizados a €/semana. Para comparar contra el
+    # presupuesto TOTAL del cliente hay que multiplicar por las semanas
+    # que va a pasar. Usamos la duración MÍNIMA que aceptaría el cliente
+    # (equivalente al total más barato que podría acabar pagando en este
+    # programa). Si eso ya supera el presupuesto, descartamos.
     if (
         perfil.presupuesto_max_eur is not None
-        and programa.precio_min_eur is not None
-        and programa.precio_min_eur > perfil.presupuesto_max_eur
+        and programa.precio_semanal_min_eur is not None
     ):
-        return False
+        semanas_cliente_min = _semanas_minimas_cliente(perfil, programa)
+        total_min = programa.precio_semanal_min_eur * semanas_cliente_min
+        if total_min > perfil.presupuesto_max_eur:
+            return False
 
     if not _duracion_compatible(perfil, programa):
         return False
@@ -55,6 +60,19 @@ def _cumple_restricciones(perfil: PerfilCliente, programa: Programa) -> bool:
         return False
 
     return True
+
+
+def _semanas_minimas_cliente(perfil: PerfilCliente, programa: Programa) -> float:
+    """Semanas mínimas que el cliente pasaría en este programa.
+
+    Es el mayor entre lo mínimo que quiere el cliente y lo mínimo que
+    permite el programa (ambos en días, convertidos a semanas). Si no hay
+    información se asume 1 semana (la unidad más barata razonable).
+    """
+    cli_dias = perfil.duracion_min_dias or 7
+    prog_dias = programa.duracion_min_dias or cli_dias
+    dias = max(cli_dias, prog_dias)
+    return max(1.0, dias / 7)
 
 
 def _edad_compatible(perfil: PerfilCliente, programa: Programa) -> bool:
@@ -82,11 +100,14 @@ def _duracion_compatible(perfil: PerfilCliente, programa: Programa) -> bool:
     if perfil.duracion_min_dias is None and perfil.duracion_max_dias is None:
         return True
 
-    # Rellenar valores ausentes con extremos razonables
-    prog_min = prog_min or prog_max or 1
-    prog_max = prog_max or prog_min
-    cli_min = perfil.duracion_min_dias or 1
-    cli_max = perfil.duracion_max_dias or 365
+    # Rellenar nulls como cotas abiertas, no como "= al otro extremo":
+    # prog_min=None → 1 (desde el principio); prog_max=None → 365 (sin límite).
+    # Trata "Minimum 1 week" (7, None) como un curso abierto [7, 365], no como
+    # un curso fijo de 7 días.
+    prog_min = prog_min if prog_min is not None else 1
+    prog_max = prog_max if prog_max is not None else 365
+    cli_min = perfil.duracion_min_dias if perfil.duracion_min_dias is not None else 1
+    cli_max = perfil.duracion_max_dias if perfil.duracion_max_dias is not None else 365
 
     # Hay solapamiento si los rangos intersectan
     return prog_min <= cli_max and prog_max >= cli_min

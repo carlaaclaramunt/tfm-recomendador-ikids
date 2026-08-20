@@ -79,15 +79,15 @@ def _score_precio(
 ) -> float:
     """Programas más baratos puntúan más alto, normalizado sobre el catálogo.
 
-    Usa precio_min_eur como referencia (la opción más barata del programa).
+    Usa precio_semanal_min_eur como referencia (la opción más barata del programa).
     Si el programa no tiene precio extraído, score neutro (0.5).
     """
     # Sin datos del programa: neutro
-    if programa.precio_min_eur is None:
+    if programa.precio_semanal_min_eur is None:
         return 0.5
 
     # Normalizamos sobre el rango de precios mínimos del catálogo entero
-    precios_min = [p.precio_min_eur for p in todos if p.precio_min_eur is not None]
+    precios_min = [p.precio_semanal_min_eur for p in todos if p.precio_semanal_min_eur is not None]
     if not precios_min:
         return 0.5
 
@@ -96,7 +96,7 @@ def _score_precio(
         return 1.0
 
     # Más barato = mejor
-    return 1.0 - (programa.precio_min_eur - pmin) / (pmax - pmin)
+    return 1.0 - (programa.precio_semanal_min_eur - pmin) / (pmax - pmin)
 
 
 def _score_duracion(perfil: PerfilCliente, programa: Programa) -> float:
@@ -121,11 +121,12 @@ def _score_duracion(perfil: PerfilCliente, programa: Programa) -> float:
     if cli_min is None and cli_max is None:
         return 0.5
 
-    # Rellenar valores ausentes con extremos razonables
-    prog_min = prog_min or prog_max or 1
-    prog_max = prog_max or prog_min
-    cli_min = cli_min or 1
-    cli_max = cli_max or 365
+    # Rellenar nulls como cotas abiertas, coherente con _duracion_compatible:
+    # prog_min=None → 1; prog_max=None → 365 (curso abierto, no fijo).
+    prog_min = prog_min if prog_min is not None else 1
+    prog_max = prog_max if prog_max is not None else 365
+    cli_min = cli_min if cli_min is not None else 1
+    cli_max = cli_max if cli_max is not None else 365
 
     # Solapamiento entre rangos
     overlap_min = max(prog_min, cli_min)

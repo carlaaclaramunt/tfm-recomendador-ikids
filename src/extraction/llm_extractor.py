@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 from src.extraction.pdf_reader import read_pdf_text
 from src.models import Programa
 
-load_dotenv()
+load_dotenv(override=True)
 
 _MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5")
 _API_KEY = os.getenv("ANTHROPIC_API_KEY")
@@ -50,6 +50,16 @@ Si el documento solo describe variaciones menores del mismo programa
 tipos de alojamiento elegibles), NO los duplicas; representa el programa
 con un único objeto, marcando los rangos correspondientes en sus
 campos de duración, precio o alojamiento.
+
+IMPORTANTE — LD20: los CURSOS ESPECIALISTAS (Specialist Courses tipo
+Football, Tennis, Horse Riding, etc.) NO son programas independientes,
+son MODALIDADES del programa base. Aunque el documento los liste como
+secciones separadas, extrae el programa base UNA sola vez y añade los
+especialistas dentro del campo `cursos_especialistas` de ese programa
+base. Ejemplo Millfield: NO extraigas "Millfield Summer Programme",
+"Millfield Specialist Course Tennis" y "Millfield Specialist Course
+Football" como tres programas — extrae UN programa "Millfield School
+Summer Programme" con dos cursos_especialistas [Tennis, Football].
 
 Si el documento contiene únicamente información comercial sin describir
 ningún programa concreto (por ejemplo, un documento de términos y
@@ -82,12 +92,90 @@ Existen dos conceptos distintos que conviene NO confundir:
    School"). Esto refleja CUÁNDO está disponible el programa, no 
    cuándo lo cursa el cliente.
 
-REGLA: si el documento solo da una ventana ("January to May"), 
-rellena vigencia_inicio/vigencia_fin y deja fecha_inicio/fecha_fin 
-en null. Si el documento da fechas concretas y fijas del programa, 
-rellena fecha_inicio/fecha_fin y deja vigencia_inicio/vigencia_fin 
-en null (o también rellenadas, si el documento las especifica 
+REGLA: si el documento solo da una ventana ("January to May"),
+rellena vigencia_inicio/vigencia_fin y deja fecha_inicio/fecha_fin
+en null. Si el documento da fechas concretas y fijas del programa,
+rellena fecha_inicio/fecha_fin y deja vigencia_inicio/vigencia_fin
+en null (o también rellenadas, si el documento las especifica
 también).
+
+REGLA LD19 — TURNOS DISCRETOS:
+Cuando el documento indique que el programa se ofrece en DOS O MÁS
+turnos separados con la misma duración (típico en summer camps y
+programas cerrados), extrae cada turno como una entrada en el campo
+`turnos` con su fecha_inicio y fecha_fin propias.
+
+- Ejemplo NSX Woodbridge 2026: "Turno 1: 5-18 julio; Turno 2: 19 julio
+  - 1 agosto" → turnos: [
+    {fecha_inicio: "2026-07-05", fecha_fin: "2026-07-18"},
+    {fecha_inicio: "2026-07-19", fecha_fin: "2026-08-01"}
+  ]
+- El programa base MANTIENE `fecha_inicio`/`fecha_fin` como la ventana
+  global (min de inicios y max de fines): 2026-07-05 y 2026-08-01.
+- Si el programa se ofrece en un ÚNICO turno, deja `turnos` como
+  lista vacía y usa solo fecha_inicio/fecha_fin.
+- No confundir con LD5 (recurrente): "Every Monday" NO es una lista de
+  turnos sino un patrón abierto; va en `fechas_inicio_recurrentes`.
+
+REGLA LD5 — FECHAS DE INICIO RECURRENTES:
+Cuando el documento indique que el programa admite arranques repetidos
+periódicos (ej. "Every Monday", "Starts weekly", "Cualquier lunes de
+enero a mayo", "Sessions begin every second Sunday"), rellena el campo
+`fechas_inicio_recurrentes` con el patrón textual EN LA FORMA MÁS
+COMPACTA POSIBLE, preservando la información:
+- "Every Monday" → fechas_inicio_recurrentes: "Every Monday"
+- "Cualquier lunes de enero a mayo" → fechas_inicio_recurrentes: "Cualquier lunes (enero-mayo)"
+- Si además el documento indica una ventana de vigencia, rellena también
+  vigencia_inicio/vigencia_fin, pero fecha_inicio/fecha_fin quedan null.
+Si no hay recurrencia explícita, deja `fechas_inicio_recurrentes` null.
+
+REGLAS DE FORMATO PARA CURSOS ESPECIALISTAS (LD20):
+El campo `cursos_especialistas` recoge modalidades específicas del
+programa base. Cada modalidad tiene nombre, actividad principal, horas
+semanales dedicadas si aparecen, y partnership si el documento lo cita.
+
+- Extrae SIEMPRE los cursos especialistas del programa base cuando el
+  documento los liste, incluso si son secciones separadas del PDF.
+- NO crees un programa aparte para cada especialista. Solo el programa
+  base va como entrada en `programas`.
+- Nombre: texto tal cual del documento (ej. "Specialist Course Tennis").
+- Actividad: palabra clave normalizada en minúsculas (ej. "tennis",
+  "football", "horse riding", "surf").
+- Horas dedicadas: número entero de horas semanales si aparece en el
+  doc (ej. "20 hours of tennis coaching" → 20). Si no aparece, null.
+- Partnership: si el documento cita colaboración con marca externa
+  (ej. "Active Away | Jamie Murray Tennis Programme"), captúrala.
+  Si no, null.
+- Precio adicional semanal (LD18): si la modalidad conlleva un
+  suplemento sobre la tarifa base del programa (ej. "English+ Horse
+  Riding: base + £565", "English+ Tennis: base + £600"), calcula el
+  suplemento POR SEMANA y rellena `precio_adicional_semanal_eur` en
+  euros y `precio_adicional_semanal_origen` en la moneda original.
+  Cuando el suplemento aparece como TOTAL (£565 para el programa
+  entero de 2 semanas), divide entre las semanas del programa:
+  £565/2 = £282.5/sem, en EUR £282.5 × 1.17 = 330.5 €/sem.
+  Si la modalidad no tiene suplemento, deja los dos campos null.
+
+IMPORTANTE — cuando existen variantes con suplemento, la tarifa
+`precio_semanal_max_eur` del programa BASE debe reflejar el máximo
+efectivo posible: precio semanal base + suplemento más caro. Si el
+base son 1720 €/sem y la variante Tennis añade +351 €/sem,
+precio_semanal_max_eur del programa debe ser 2071 €/sem, no 1720.
+Esto asegura que el rango de precios del programa cubre todas las
+opciones que el cliente puede elegir.
+
+Ejemplo Millfield: el documento describe Summer Programme como programa
+base y luego dedica secciones a "Specialist Course Tennis (Active Away
+| Jamie Murray) — 20 hours/week" y "Specialist Course Football — 30
+hours/week". Extracción esperada: 1 programa base con
+cursos_especialistas=[
+  {nombre: "Specialist Course Tennis", actividad: "tennis",
+   horas_dedicadas: 20, partnership: "Active Away | Jamie Murray"},
+  {nombre: "Specialist Course Football", actividad: "football",
+   horas_dedicadas: 30, partnership: null}
+].
+
+Si no hay cursos especialistas, deja la lista vacía.
 
 REGLAS DE FORMATO PARA DURACIÓN:
 - Si el programa tiene una duración fija (por ejemplo "7-day camp" o "2-week \
@@ -101,15 +189,34 @@ del programa puede ser muy distinta. Busca por separado cuántas semanas \
 dura el programa.
 - Si la duración no se especifica de ninguna forma, deja ambos campos null.
 
-REGLAS DE FORMATO PARA PRECIO:
-- Si hay un único precio claro, usa el mismo valor para precio_min_eur y \
-precio_max_eur.
-- Si hay varios precios (por temporada, por edad, por tipo de habitación, \
-por número de semanas), marca el menor en precio_min_eur y el mayor en \
-precio_max_eur.
-- Si el precio aparece en otra moneda (USD, GBP), conviértelo a euros con \
-una tasa aproximada (1 USD = 0.92 EUR, 1 GBP = 1.17 EUR).
+REGLAS DE FORMATO PARA PRECIO (NORMALIZADO A €/SEMANA):
+Los campos precio_semanal_min_eur y precio_semanal_max_eur representan
+SIEMPRE el precio POR SEMANA en euros. Nunca el precio total del programa.
+Debes hacer la conversión necesaria antes de rellenar los campos:
+
+- Si el documento da el precio POR SEMANA (por ejemplo "€232 per week",
+  "£450/week", "por semana 300€"), úsalo directamente como precio_semanal.
+- Si el documento da el precio TOTAL del programa completo (por ejemplo
+  "€1992 for 1 week", "€3701 for 2 weeks", "£2940 for the 2-week programme"),
+  DIVIDE entre el número de semanas del programa: 1992/1 = 1992€/sem,
+  3701/2 = 1850,50€/sem, £2940/2 = £1470/sem.
+- Si hay varias opciones (temporadas, duraciones, variantes, alojamientos)
+  con distinto precio por semana, marca el MENOR en precio_semanal_min y el
+  MAYOR en precio_semanal_max. Ejemplo DBS: opciones 1992€/sem (1 semana),
+  1850,5€/sem (2 semanas), 1878,4€/sem (5 semanas) → min=1850,5, max=1992.
+- Si el precio total viene con desglose base + suplementos (ej. "1992€ para
+  la primera semana + 1850€ cada semana adicional"), calcula el mínimo
+  €/semana usando la opción MÁS LARGA (donde el marginal domina) y el
+  máximo €/semana usando la opción MÁS CORTA (donde la base domina).
+- Si el precio aparece en otra moneda (USD, GBP), primero calcula el
+  €/semana en la moneda original, luego conviértelo a euros con tasa
+  aproximada (1 USD = 0.92 EUR, 1 GBP = 1.17 EUR).
 - Si el precio no aparece, deja ambos campos null.
+
+PRESERVACIÓN DEL VALOR ORIGINAL:
+- Rellena también precio_semanal_min_origen y precio_semanal_max_origen con
+  los valores POR SEMANA en la moneda original antes de convertir a EUR.
+- Si moneda_origen es EUR, precio_semanal_*_origen == precio_semanal_*_eur.
 
 REGLAS DE FORMATO PARA EDAD:
 - Si el documento describe varios programas con rangos de edad distintos \
@@ -122,6 +229,33 @@ las edades" (expresiones como "all ages", "kids, teens, adults", "ideal \
 for everyone", "any age", "todas las edades"), usa edad_min=0 y \
 edad_max=99 para preservar esa información de forma explícita.
 - Si la edad simplemente no se menciona, deja ambos campos null.
+
+REGLAS DE FORMATO PARA ACREDITACIONES:
+El campo acreditaciones recoge certificaciones, licencias y sellos de
+calidad mencionados en el documento (sea del centro, del profesorado o
+de las instalaciones). Busca ACTIVAMENTE las acreditaciones, no asumas
+que si no se mencionan no existen — suelen aparecer en pies de página,
+secciones "About us", "Quality", "Certifications" o junto a fotos del
+personal y de las instalaciones.
+
+Ejemplos de acreditaciones que pueden aparecer en este corpus:
+- Acreditaciones de profesorado: TEFL, TESOL, CELTA, DELTA, UEFA A,
+  UEFA Pro, UEFA B.
+- Acreditaciones de centro y escuelas de idiomas: British Council (BC),
+  EAQUALS, IALC, English UK, Quality English, ALTO, Bildungsurlaub.
+- Acreditaciones de examen y preparación: IELTS, Cambridge (FCE, CAE,
+  CPE), TOEFL iBT, TOEIC, Trinity, Pearson PTE.
+- Acreditaciones de instalaciones deportivas: FIFA, FAI (Football
+  Association of Ireland), LTA (Lawn Tennis Association).
+- Acreditaciones propias del proveedor: Berlitz Certificate.
+
+Reglas:
+- Extrae cada acreditación como un string corto y reconocible (ej.
+  "TEFL", "UEFA Pro", "IELTS"). NO incluyas la descripción larga.
+- Si el documento menciona "TEFL certified teachers", basta con "TEFL".
+- Si encuentras varias, lístalas todas, sin duplicar.
+- Si el documento no menciona ninguna acreditación, deja la lista vacía.
+- No inventes acreditaciones que no estén en el documento.
 
 REGLAS PARA IDENTIFICAR EL AÑO DEL DOCUMENTO:
 - Busca en el documento referencias explícitas al año de la campaña
@@ -150,22 +284,19 @@ tipo_documento con uno de estos valores:
 Si el documento mezcla varios tipos, escoge el dominante.
 
 REGLAS PARA PRESERVAR LA MONEDA ORIGINAL:
-- Identifica la moneda en la que aparecen los precios en el documento
-  (EUR, GBP, USD, CHF u OTRO) y rellena moneda_origen.
-- Rellena también precio_min_origen y precio_max_origen con los valores
-  numéricos EXACTOS que aparecen en el documento, SIN conversión.
-- Independientemente, sigue rellenando precio_min_eur y precio_max_eur
-  con los valores convertidos a euros según las tasas indicadas
-  (1 USD = 0,92 EUR, 1 GBP = 1,17 EUR).
-- Si el documento no especifica la moneda explícitamente, asume EUR.
-- Si hay precios en varias monedas en el mismo documento, escoge la
-  predominante o la que se aplica al programa principal.
-  
-COHERENCIA ENTRE PRECIO EUR Y PRECIO ORIGEN:
-- Cuando moneda_origen sea "EUR", los campos precio_min_eur/precio_max_eur
-  deben tener exactamente los mismos valores que precio_min_origen/precio_max_origen.
-- Cuando moneda_origen sea otra (GBP, USD, CHF), aplica la tasa de conversión
-  indicada y rellena ambos pares de campos.
+- Identifica la moneda de los precios (EUR, GBP, USD, CHF u OTRO) y rellena
+  moneda_origen.
+- Rellena precio_semanal_min_origen y precio_semanal_max_origen con los
+  valores POR SEMANA en la moneda del documento (aplicando la normalización
+  a semana descrita arriba, pero SIN conversión de moneda).
+- Rellena precio_semanal_min_eur y precio_semanal_max_eur con los mismos
+  valores por semana ya CONVERTIDOS a euros (1 USD = 0,92 EUR, 1 GBP = 1,17 EUR).
+- Si el documento no especifica moneda, asume EUR.
+
+COHERENCIA ENTRE EUR Y ORIGEN:
+- Si moneda_origen == "EUR", precio_semanal_*_origen y precio_semanal_*_eur
+  tienen exactamente los mismos valores.
+- Si moneda_origen es otra, aplica la tasa de conversión indicada.
   
 REGLAS PARA COSTES ADICIONALES Y COMPLEMENTARIOS:
 - Debes extraer cualquier coste económico mencionado en el documento que no sea claramente el precio principal del programa.
@@ -235,13 +366,19 @@ _PROGRAMA_SCHEMA = {
             "type": ["integer", "null"], "minimum": 1,
             "description": "Duración máxima del programa en días",
         },
-        "precio_min_eur": {
+        "precio_semanal_min_eur": {
             "type": ["number", "null"], "minimum": 0,
-            "description": "Precio mínimo en euros (opción más barata)",
+            "description": (
+                "Precio POR SEMANA en euros (opción más barata). "
+                "Si el documento da un total, DIVIDE por el número de semanas."
+            ),
         },
-        "precio_max_eur": {
+        "precio_semanal_max_eur": {
             "type": ["number", "null"], "minimum": 0,
-            "description": "Precio máximo en euros (opción más cara)",
+            "description": (
+                "Precio POR SEMANA en euros (opción más cara). "
+                "Si el documento da un total, DIVIDE por el número de semanas."
+            ),
         },
         "tipo_alojamiento": {
             "type": ["array", "null"],
@@ -296,9 +433,98 @@ _PROGRAMA_SCHEMA = {
             "type": ["string", "null"],
             "enum": ["EUR", "GBP", "USD", "CHF", "OTRO", None],
         },
-        "precio_min_origen": {"type": ["number", "null"], "minimum": 0},
-        "precio_max_origen": {"type": ["number", "null"], "minimum": 0},
-
+        "precio_semanal_min_origen": {
+            "type": ["number", "null"], "minimum": 0,
+            "description": "Precio por semana en la moneda original, sin conversión",
+        },
+        "precio_semanal_max_origen": {
+            "type": ["number", "null"], "minimum": 0,
+            "description": "Precio por semana en la moneda original, sin conversión",
+        },
+        "fechas_inicio_recurrentes": {
+            "type": ["string", "null"],
+            "description": (
+                "LD5 — patrón textual de recurrencia si el programa admite "
+                "arranques repetidos (ej. 'Every Monday'). Null si el "
+                "programa tiene fechas concretas o si no se especifica."
+            ),
+        },
+        "cursos_especialistas": {
+            "type": "array",
+            "description": (
+                "LD20 — modalidades especialistas del programa base "
+                "(Tennis, Football, Horse Riding, etc.). NO son programas "
+                "aparte; van como sub-elementos aquí."
+            ),
+            "items": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "description": "Nombre del curso especialista tal como aparece en el documento",
+                    },
+                    "actividad": {
+                        "type": "string",
+                        "description": "Actividad normalizada en minúsculas (tennis, football, horse riding, etc.)",
+                    },
+                    "horas_dedicadas": {
+                        "type": ["integer", "null"], "minimum": 0,
+                        "description": "Horas semanales dedicadas a la actividad, si el documento lo especifica",
+                    },
+                    "partnership": {
+                        "type": ["string", "null"],
+                        "description": "Colaboración de marca si aplica (ej. 'Active Away | Jamie Murray')",
+                    },
+                    "descripcion": {
+                        "type": ["string", "null"],
+                        "description": "Descripción breve extra si aporta información relevante",
+                    },
+                    "precio_adicional_semanal_eur": {
+                        "type": ["number", "null"], "minimum": 0,
+                        "description": (
+                            "LD18 — suplemento semanal en euros que añade "
+                            "esta modalidad sobre el precio base del programa. "
+                            "Si el suplemento aparece como TOTAL en el doc, "
+                            "divide por semanas antes de rellenar."
+                        ),
+                    },
+                    "precio_adicional_semanal_origen": {
+                        "type": ["number", "null"], "minimum": 0,
+                        "description": "Suplemento semanal en la moneda original del documento",
+                    },
+                },
+                "required": ["nombre", "actividad"],
+            },
+            "default": [],
+        },
+        "turnos": {
+            "type": "array",
+            "description": (
+                "LD19 — turnos discretos del programa cuando se ofrece en "
+                "varias sesiones separadas con misma duración. Lista vacía "
+                "si el programa se ofrece en un único turno o si se puede "
+                "empezar cualquier día."
+            ),
+            "items": {
+                "type": "object",
+                "properties": {
+                    "fecha_inicio": {
+                        "type": "string",
+                        "description": "Fecha de inicio del turno en ISO 8601 (YYYY-MM-DD)",
+                    },
+                    "fecha_fin": {
+                        "type": "string",
+                        "description": "Fecha de fin del turno en ISO 8601",
+                    },
+                    "nombre": {
+                        "type": ["string", "null"],
+                        "description": "Etiqueta del turno si el documento la especifica",
+                    },
+                },
+                "required": ["fecha_inicio", "fecha_fin"],
+            },
+            "default": [],
+        },
     },
     "required": ["nombre", "empresa_proveedora", "pais", "idioma"],
 }
@@ -437,14 +663,17 @@ def extract_programs(
 
     pdf_path = Path(pdf_path)
     texto = read_pdf_text(pdf_path)
-    texto = texto[:20000]
+    # Truncamiento generoso para que catálogos largos (ej. Berlitz ELA 2026,
+    # ~30 páginas) mantengan sus tablas de precios y anexos de alojamiento
+    # dentro del contexto. 80k chars ≈ 20-25k tokens, muy dentro de límites.
+    texto = texto[:80000]
 
     user_prompt = _build_user_prompt(texto, empresa_proveedora_hint)
 
     client = anthropic.Anthropic(api_key=_API_KEY)
     response = client.messages.create(
         model=_MODEL,
-        max_tokens=8192,             # ↑ mayor: cabe una lista de programas
+        max_tokens=16384,            # cabe una lista larga (Berlitz: 12+ programas)
         temperature=0,
         system=_SYSTEM_PROMPT,
         tools=[_EXTRACTION_TOOL],
@@ -455,12 +684,29 @@ def extract_programs(
     payload = _extract_tool_payload(response)
     programas_data = payload.get("programas", [])
 
+    # Fallback defensivo: ocasionalmente el LLM devuelve `programas` como
+    # string JSON en vez de como array directo (comportamiento observado con
+    # documentos largos y schemas anidados). Lo parseamos si hace falta.
+    if isinstance(programas_data, str):
+        try:
+            programas_data = json.loads(programas_data)
+        except json.JSONDecodeError:
+            programas_data = []
+
     programas: list[Programa] = []
     for prog_data in programas_data:
+        # Validación defensiva: si el LLM devuelve algo que no es un dict
+        # (respuesta truncada, alucinación de esquema), saltamos ese elemento
+        # en vez de romper todo el PDF.
+        if not isinstance(prog_data, dict):
+            continue
         prog_data["fuente_documento"] = str(pdf_path)
         if empresa_proveedora_hint and not prog_data.get("empresa_proveedora"):
             prog_data["empresa_proveedora"] = empresa_proveedora_hint
-        programas.append(Programa.model_validate(prog_data))
+        try:
+            programas.append(Programa.model_validate(prog_data))
+        except Exception as exc:  # noqa: BLE001 — mejor perder 1 programa que el PDF entero
+            print(f"    ⚠ programa descartado por validación: {exc}")
 
     return programas
 

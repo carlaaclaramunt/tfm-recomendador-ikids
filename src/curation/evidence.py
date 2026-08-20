@@ -9,10 +9,10 @@ from src.models import EvidenciaCampo, Programa
 
 
 CAMPOS_CRITICOS = [
-    "precio_min_eur",
-    "precio_max_eur",
-    "precio_min_origen",
-    "precio_max_origen",
+    "precio_semanal_min_eur",
+    "precio_semanal_max_eur",
+    "precio_semanal_min_origen",
+    "precio_semanal_max_origen",
     "edad_min",
     "edad_max",
     "duracion_min_dias",
@@ -70,7 +70,7 @@ def _clasificar_fidelidad(programa: Programa, campo: str, valor) -> str:
     """Clasifica el nivel de fidelidad del valor extraído."""
 
     # Precios convertidos a EUR desde otra moneda
-    if campo in {"precio_min_eur", "precio_max_eur"}:
+    if campo in {"precio_semanal_min_eur", "precio_semanal_max_eur"}:
         if programa.moneda_origen and programa.moneda_origen != "EUR":
             return "derivado"
 
@@ -80,7 +80,7 @@ def _clasificar_fidelidad(programa: Programa, campo: str, valor) -> str:
         return "desconocido"
 
     # Precios originales preservados
-    if campo in {"precio_min_origen", "precio_max_origen"}:
+    if campo in {"precio_semanal_min_origen", "precio_semanal_max_origen"}:
         return "literal"
 
     # Caso LD4: all ages / everyone convertido a 0-99
@@ -108,7 +108,7 @@ def _clasificar_fidelidad(programa: Programa, campo: str, valor) -> str:
 def _generar_fragmento_aproximado(programa: Programa, campo: str, valor) -> str:
     """Genera una justificación breve no literal para la evidencia."""
 
-    if campo in {"precio_min_eur", "precio_max_eur"}:
+    if campo in {"precio_semanal_min_eur", "precio_semanal_max_eur"}:
         if programa.moneda_origen and programa.moneda_origen != "EUR":
             return (
                 f"Valor convertido a EUR desde {programa.moneda_origen}. "
@@ -117,7 +117,7 @@ def _generar_fragmento_aproximado(programa: Programa, campo: str, valor) -> str:
 
         return "Precio identificado en la documentación del programa."
 
-    if campo in {"precio_min_origen", "precio_max_origen"}:
+    if campo in {"precio_semanal_min_origen", "precio_semanal_max_origen"}:
         return f"Precio preservado en moneda original: {programa.moneda_origen}."
 
     if campo in {"edad_min", "edad_max"}:

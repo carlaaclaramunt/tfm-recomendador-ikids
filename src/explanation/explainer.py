@@ -99,37 +99,44 @@ def _motivos_filtros(programa: Programa, perfil: PerfilCliente) -> list[str]:
 
     if (
             perfil.presupuesto_max_eur is not None
-            and programa.precio_min_eur is not None
+            and programa.precio_semanal_min_eur is not None
     ):
+        # Estimación del total mínimo para el cliente: precio/semana × semanas
+        # mínimas que acabará pasando.
+        cli_dias = perfil.duracion_min_dias or 7
+        prog_dias = programa.duracion_min_dias or cli_dias
+        semanas = max(1.0, max(cli_dias, prog_dias) / 7)
+        total_min = programa.precio_semanal_min_eur * semanas
+
+        origen_txt = ""
         if (
-                programa.precio_max_eur is not None
-                and programa.precio_max_eur != programa.precio_min_eur
+            programa.moneda_origen is not None
+            and programa.moneda_origen != "EUR"
+            and programa.precio_semanal_min_origen is not None
         ):
-            mostrar_moneda_origen = (
-                    programa.moneda_origen is not None
-                    and programa.moneda_origen != "EUR"
-                    and programa.precio_min_origen is not None
+            origen_txt = (
+                f" (equivalente a {programa.precio_semanal_min_origen:.0f}"
+                f"{('-' + format(programa.precio_semanal_max_origen, '.0f')) if programa.precio_semanal_max_origen and programa.precio_semanal_max_origen != programa.precio_semanal_min_origen else ''}"
+                f" {programa.moneda_origen}/semana en el documento original)"
             )
 
-            if mostrar_moneda_origen:
-                motivos.append(
-                    f"el precio (entre {programa.precio_min_eur:.0f}€ y "
-                    f"{programa.precio_max_eur:.0f}€, equivalente a "
-                    f"{programa.precio_min_origen:.0f}-"
-                    f"{programa.precio_max_origen:.0f} {programa.moneda_origen} "
-                    f"en el documento original) se ajusta al presupuesto "
-                    f"({perfil.presupuesto_max_eur:.0f}€)"
-                )
-            else:
-                motivos.append(
-                    f"el precio (entre {programa.precio_min_eur:.0f}€ y "
-                    f"{programa.precio_max_eur:.0f}€) se ajusta al presupuesto "
-                    f"({perfil.presupuesto_max_eur:.0f}€)"
-                )
+        if (
+                programa.precio_semanal_max_eur is not None
+                and programa.precio_semanal_max_eur != programa.precio_semanal_min_eur
+        ):
+            motivos.append(
+                f"el precio (entre {programa.precio_semanal_min_eur:.0f}€ y "
+                f"{programa.precio_semanal_max_eur:.0f}€ por semana{origen_txt}) "
+                f"deja un total mínimo estimado de {total_min:.0f}€ para "
+                f"{semanas:.0f} semana(s), dentro del presupuesto "
+                f"({perfil.presupuesto_max_eur:.0f}€)"
+            )
         else:
             motivos.append(
-                f"el precio ({programa.precio_min_eur:.0f}€) "
-                f"está dentro del presupuesto ({perfil.presupuesto_max_eur:.0f}€)"
+                f"el precio ({programa.precio_semanal_min_eur:.0f}€/semana{origen_txt}) "
+                f"deja un total estimado de {total_min:.0f}€ para "
+                f"{semanas:.0f} semana(s), dentro del presupuesto "
+                f"({perfil.presupuesto_max_eur:.0f}€)"
             )
 
     return motivos

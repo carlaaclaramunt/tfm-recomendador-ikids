@@ -31,7 +31,7 @@ from src.recommendation import filtrar_candidatos, puntuar_candidatos
 from src.curation.merge import fusionar_programas, resumen_fusion
 from src.curation.obsolescence import filtrar_no_obsoletos
 from src.curation import (evaluar_obsolescencia, evaluar_origen_documental, evaluar_partnerships, generar_evidencias, evaluar_costes_adicionales)
-load_dotenv()
+load_dotenv(override=True)
 
 DATA_RAW = Path(os.getenv("DATA_RAW_DIR", "data/raw"))
 DATA_PROCESSED = Path(os.getenv("DATA_PROCESSED_DIR", "data/processed"))

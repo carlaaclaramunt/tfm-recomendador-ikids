@@ -165,24 +165,24 @@ def fusionar_grupo_programas(grupo: list[Programa]) -> Programa:
     data["duracion_max_dias"] = max(duraciones_max) if duraciones_max else None
 
     # Precio: rango más amplio
-    precios_min = [p.precio_min_eur for p in grupo if p.precio_min_eur is not None]
-    precios_max = [p.precio_max_eur for p in grupo if p.precio_max_eur is not None]
+    precios_min = [p.precio_semanal_min_eur for p in grupo if p.precio_semanal_min_eur is not None]
+    precios_max = [p.precio_semanal_max_eur for p in grupo if p.precio_semanal_max_eur is not None]
 
-    data["precio_min_eur"] = min(precios_min) if precios_min else None
-    data["precio_max_eur"] = max(precios_max) if precios_max else None
+    data["precio_semanal_min_eur"] = min(precios_min) if precios_min else None
+    data["precio_semanal_max_eur"] = max(precios_max) if precios_max else None
 
     # Moneda y precio original
     data["moneda_origen"] = elegir_primer_no_nulo(*(p.moneda_origen for p in grupo))
 
     precios_min_origen = [
-        p.precio_min_origen for p in grupo if p.precio_min_origen is not None
+        p.precio_semanal_min_origen for p in grupo if p.precio_semanal_min_origen is not None
     ]
     precios_max_origen = [
-        p.precio_max_origen for p in grupo if p.precio_max_origen is not None
+        p.precio_semanal_max_origen for p in grupo if p.precio_semanal_max_origen is not None
     ]
 
-    data["precio_min_origen"] = min(precios_min_origen) if precios_min_origen else None
-    data["precio_max_origen"] = max(precios_max_origen) if precios_max_origen else None
+    data["precio_semanal_min_origen"] = min(precios_min_origen) if precios_min_origen else None
+    data["precio_semanal_max_origen"] = max(precios_max_origen) if precios_max_origen else None
 
     # Alojamiento
     alojamientos = []
@@ -299,7 +299,55 @@ def fusionar_grupo_programas(grupo: list[Programa]) -> Programa:
             data["costes_adicionales"].append(coste)
             vistos_costes.add(clave)
 
+    # LD5 — fechas recurrentes: preservamos el texto más informativo
+    # entre los del grupo.
+    data["fechas_inicio_recurrentes"] = elegir_texto_mas_largo(
+        *(getattr(p, "fechas_inicio_recurrentes", None) for p in grupo)
+    )
+
+    # LD19 — turnos: unión sin duplicados por fecha_inicio.
+    turnos = []
+    for p in grupo:
+        turnos.extend(getattr(p, "turnos", []) or [])
+    data["turnos"] = []
+    vistos_turnos: set = set()
+    for turno in turnos:
+        clave = (turno.fecha_inicio, turno.fecha_fin)
+        if clave not in vistos_turnos:
+            data["turnos"].append(turno)
+            vistos_turnos.add(clave)
+    # Ordenamos por fecha_inicio para reproducibilidad
+    data["turnos"].sort(key=lambda t: t.fecha_inicio)
+
+    # LD20 — cursos especialistas: unión sin duplicados (por nombre+actividad),
+    # preservando el ejemplar con más datos (horas o partnership rellenos).
+    especialistas = []
+    for p in grupo:
+        especialistas.extend(getattr(p, "cursos_especialistas", []) or [])
+
+    data["cursos_especialistas"] = []
+    vistos_esp: dict[tuple, object] = {}
+    for esp in especialistas:
+        clave = (esp.nombre.lower().strip(), esp.actividad.lower().strip())
+        actual = vistos_esp.get(clave)
+        # preferimos el que tenga más campos rellenos
+        if actual is None or _cuenta_campos_no_nulos(esp) > _cuenta_campos_no_nulos(actual):
+            vistos_esp[clave] = esp
+
+    data["cursos_especialistas"] = list(vistos_esp.values())
+
     return Programa(**data)
+
+
+def _cuenta_campos_no_nulos(esp) -> int:
+    """Cuenta cuántos campos opcionales rellenos tiene un CursoEspecialista."""
+    return sum(
+        1 for v in (
+            getattr(esp, "horas_dedicadas", None),
+            getattr(esp, "partnership", None),
+            getattr(esp, "descripcion", None),
+        ) if v is not None
+    )
 
 
 def elegir_tipo_documento_prioritario(grupo: list[Programa]) -> str:

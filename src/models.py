@@ -85,20 +85,32 @@ class Programa(BaseModel):
     duracion_min_dias: Optional[int] = Field(None, ge=1, description="Duración mínima del programa en días")
     duracion_max_dias: Optional[int] = Field(None, ge=1, description="Duración máxima del programa en días")
 
-    precio_min_eur: Optional[float] = Field(None, ge=0, description="Precio mínimo en euros")
-    precio_max_eur: Optional[float] = Field(None, ge=0, description="Precio máximo en euros")
+    # Precios NORMALIZADOS a €/semana. Los precios que aparezcan como total
+    # del programa se dividen por la duración en semanas antes de rellenarse.
+    # Los que ya aparecen por semana se copian tal cual. Esto permite comparar
+    # programas heterogéneos sobre una unidad común y evita el bug silencioso
+    # del filtro de presupuesto (LD8 parcial). El total real para el cliente
+    # se calcula multiplicando por la duración concreta que elige.
+    precio_semanal_min_eur: Optional[float] = Field(
+        None, ge=0,
+        description="Precio mínimo en euros por semana (opción más barata)"
+    )
+    precio_semanal_max_eur: Optional[float] = Field(
+        None, ge=0,
+        description="Precio máximo en euros por semana (opción más cara)"
+    )
 
     moneda_origen: Optional[MonedaOrigen] = Field(
         None,
         description="Moneda en la que aparece el precio en el documento original"
     )
-    precio_min_origen: Optional[float] = Field(
+    precio_semanal_min_origen: Optional[float] = Field(
         None, ge=0,
-        description="Precio mínimo en la moneda original del documento, sin conversión"
+        description="Precio mínimo por semana en la moneda original, sin conversión"
     )
-    precio_max_origen: Optional[float] = Field(
+    precio_semanal_max_origen: Optional[float] = Field(
         None, ge=0,
-        description="Precio máximo en la moneda original del documento, sin conversión"
+        description="Precio máximo por semana en la moneda original, sin conversión"
     )
 
     costes_adicionales: list[CosteAdicional] = Field(
@@ -195,6 +207,33 @@ class Programa(BaseModel):
     evidencias: list[EvidenciaCampo] = Field(
         default_factory=list,
         description="Trazabilidad de campos extraídos y nivel de fidelidad"
+    )
+
+    # LD5 — Fechas de inicio recurrentes ("Every Monday", "Cualquier lunes",
+    # "Starts weekly from January to May"). El schema tradicional forzaba una
+    # fecha única y perdía la semántica de recurrencia. Este campo captura el
+    # patrón textual tal como aparece en el documento.
+    fechas_inicio_recurrentes: Optional[str] = Field(
+        None,
+        description="Patrón textual de inicio recurrente si el programa admite arranques repetidos (ej. 'Every Monday')"
+    )
+
+    # LD20 — Cursos especialistas como modificadores del programa base.
+    # Antes generaban entradas duplicadas en el catálogo (Millfield Summer +
+    # Millfield Tennis + Millfield Football). Ahora se representan como
+    # modalidades del programa base sin duplicar la entrada.
+    cursos_especialistas: list[CursoEspecialista] = Field(
+        default_factory=list,
+        description="Modalidades o cursos especialistas ofrecidos dentro del programa base"
+    )
+
+    # LD19 — Turnos discretos del mismo programa. Cuando el programa se
+    # ofrece en varios turnos separados con misma duración (típicamente los
+    # summer camps con 2-3 sesiones), fecha_inicio/fecha_fin representan la
+    # ventana global y `turnos` contiene el detalle de cada sesión.
+    turnos: list[TurnoPrograma] = Field(
+        default_factory=list,
+        description="Turnos discretos del programa (fecha_inicio/fecha_fin de cada sesión)"
     )
 
 # ---------------------------------------------------------------------------
@@ -299,4 +338,58 @@ class CosteAdicional(BaseModel):
     descripcion: Optional[str] = Field(
         None,
         description="Descripción textual del coste"
+    )
+
+
+class CursoEspecialista(BaseModel):
+    """LD20 + LD18 — Modalidad especialista dentro del programa base.
+
+    Los cursos especialistas (Tennis, Football, Horse Riding, etc.) NO son
+    programas independientes, sino modalidades del programa base que
+    reemplazan parcialmente las horas del componente estándar (típicamente
+    las sesiones de inglés). Algunas modalidades conllevan un suplemento
+    de precio sobre la tarifa base (LD18), que se captura en los campos
+    precio_adicional_semanal_*.
+    """
+
+    nombre: str = Field(..., description="Nombre del curso especialista (ej. 'Specialist Course Football')")
+    actividad: str = Field(..., description="Actividad principal (ej. 'football', 'tennis', 'horse riding')")
+    horas_dedicadas: Optional[int] = Field(
+        None, ge=0,
+        description="Horas semanales dedicadas a la actividad especialista"
+    )
+    partnership: Optional[str] = Field(
+        None,
+        description="Colaboración o partnership asociado (ej. 'Active Away | Jamie Murray')"
+    )
+    descripcion: Optional[str] = Field(
+        None,
+        description="Descripción breve extra si aporta información relevante"
+    )
+
+    # LD18 — suplemento de precio de la variante sobre la tarifa base
+    precio_adicional_semanal_eur: Optional[float] = Field(
+        None, ge=0,
+        description="Suplemento semanal en euros que añade esta modalidad sobre el precio base del programa"
+    )
+    precio_adicional_semanal_origen: Optional[float] = Field(
+        None, ge=0,
+        description="Suplemento semanal en la moneda original del documento, sin conversión"
+    )
+
+
+class TurnoPrograma(BaseModel):
+    """LD19 — Turno discreto de un programa que se ofrece varias veces.
+
+    Algunos programas (típicamente los summer camps) se ofrecen en dos o más
+    turnos separados con la misma duración (ej. NSX Woodbridge: turno 1 del
+    5 al 18 de julio, turno 2 del 19 de julio al 1 de agosto). Cada turno se
+    representa como una entrada en la lista `turnos` del programa base.
+    """
+
+    fecha_inicio: date = Field(..., description="Fecha de inicio del turno (ISO 8601)")
+    fecha_fin: date = Field(..., description="Fecha de fin del turno (ISO 8601)")
+    nombre: Optional[str] = Field(
+        None,
+        description="Etiqueta opcional del turno si el documento la especifica (ej. 'Session A')"
     )

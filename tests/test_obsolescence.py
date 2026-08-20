@@ -26,7 +26,7 @@ def test_documento_2026_es_vigente():
 def test_documento_2025_es_parcialmente_obsoleto():
     p = evaluar_obsolescencia(_programa_minimo(2025), anyo_actual=2026)
     assert p.estado_documento == "parcialmente_obsoleto"
-    assert "precio_min_eur" in p.campos_obsoletos
+    assert "precio_semanal_min_eur" in p.campos_obsoletos
     assert "fecha_inicio" in p.campos_obsoletos
     assert p.razon_obsolescencia is not None
 
@@ -35,7 +35,7 @@ def test_documento_2024_es_obsoleto():
     p = evaluar_obsolescencia(_programa_minimo(2024), anyo_actual=2026)
     assert p.estado_documento == "obsoleto"
     assert "idioma" in p.campos_obsoletos  # también los campos estructurales
-    assert "precio_min_eur" in p.campos_obsoletos
+    assert "precio_semanal_min_eur" in p.campos_obsoletos
 
 
 def test_documento_sin_anyo_es_vigente_por_defecto():

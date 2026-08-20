@@ -10,15 +10,15 @@ def test_precio_origen_se_preserva_correctamente():
         pais="Reino Unido",
         idioma="inglés",
         fuente_documento="data/raw/test.pdf",
-        precio_min_eur=3402.6,
-        precio_max_eur=4095.9,
+        precio_semanal_min_eur=3402.6,
+        precio_semanal_max_eur=4095.9,
         moneda_origen="GBP",
-        precio_min_origen=2940.0,
-        precio_max_origen=3540.0,
+        precio_semanal_min_origen=2940.0,
+        precio_semanal_max_origen=3540.0,
     )
     assert p.moneda_origen == "GBP"
-    assert p.precio_min_origen == 2940.0
-    assert p.precio_max_origen == 3540.0
+    assert p.precio_semanal_min_origen == 2940.0
+    assert p.precio_semanal_max_origen == 3540.0
 
 
 def test_precio_origen_acepta_null():
@@ -30,4 +30,4 @@ def test_precio_origen_acepta_null():
         fuente_documento="data/raw/test.pdf",
     )
     assert p.moneda_origen is None
-    assert p.precio_min_origen is None
+    assert p.precio_semanal_min_origen is None
