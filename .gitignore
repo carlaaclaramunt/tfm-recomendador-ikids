@@ -54,4 +54,4 @@ logs/
 # Tests
 .pytest_cache/
 .coverage
-htmlcov/
+htmlcov/notas/
