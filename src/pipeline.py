@@ -36,6 +36,7 @@ load_dotenv(override=True)
 DATA_RAW = Path(os.getenv("DATA_RAW_DIR", "data/raw"))
 DATA_PROCESSED = Path(os.getenv("DATA_PROCESSED_DIR", "data/processed"))
 CATALOGO_PATH = DATA_PROCESSED / "programas.json"
+EXCLUSIONS_PATH = Path("data/exclusions.json")
 
 
 # ---------------------------------------------------------------------------
@@ -56,6 +57,22 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
 
     programas: list[Programa] = []
     pdfs = sorted(DATA_RAW.glob("**/*.pdf"))
+
+    # Filtrar los PDFs marcados como excluidos desde el dashboard.
+    # Los documentos excluidos NO se envían al extractor, ahorrando coste
+    # API y evitando que su información entre en el catálogo. La decisión
+    # de exclusión la toma el asesor humano desde la pestaña "Documentos".
+    excluidos = _cargar_exclusiones()
+    if excluidos:
+        pdfs_activos = [p for p in pdfs if not _esta_excluido(p, excluidos)]
+        omitidos = len(pdfs) - len(pdfs_activos)
+        if omitidos:
+            print(f"Omitidos {omitidos} PDF(s) por exclusion documental")
+            for p in pdfs:
+                if _esta_excluido(p, excluidos):
+                    print(f"  · excluido: {p.relative_to(Path.cwd()) if p.is_absolute() else p}")
+        pdfs = pdfs_activos
+
     print(f"Procesando {len(pdfs)} PDFs...")
 
     for i, pdf_path in enumerate(pdfs, start=1):
@@ -112,6 +129,56 @@ def recomendar(
         r.explicacion = explicar(r, perfil)
 
     return recomendaciones[:top_k]
+
+
+# ---------------------------------------------------------------------------
+# Gestión de exclusiones documentales
+# ---------------------------------------------------------------------------
+
+
+def _cargar_exclusiones() -> set[str]:
+    """Lee data/exclusions.json y devuelve el set de rutas relativas excluidas.
+
+    Este fichero lo gestiona el dashboard Streamlit desde la pestaña
+    "Documentos". Un asesor marca un PDF como excluido (documento
+    caducado, duplicado o superado por una versión más nueva) y esa
+    decisión se persiste aquí. El pipeline consulta esta lista al
+    construir el catálogo para omitir los ficheros marcados.
+
+    Formato del fichero:
+
+        {
+          "descripcion": "...",
+          "excluidos": ["data/raw/Berlitz/viejo_2024.pdf", ...]
+        }
+
+    Si el fichero no existe, devuelve un set vacío (comportamiento
+    equivalente a "ningún documento excluido").
+    """
+    if not EXCLUSIONS_PATH.exists():
+        return set()
+    try:
+        data = json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8"))
+        return set(data.get("excluidos", []))
+    except (json.JSONDecodeError, KeyError):
+        print(f"⚠ {EXCLUSIONS_PATH} malformado, se ignora")
+        return set()
+
+
+def _esta_excluido(pdf_path: Path, excluidos: set[str]) -> bool:
+    """Comprueba si el PDF está en la lista de exclusiones.
+
+    Normaliza a ruta POSIX relativa a la raíz del proyecto para que el
+    match sea estable independientemente de cómo se generó la ruta
+    (absoluta desde el dashboard, relativa desde el CLI).
+    """
+    if not excluidos:
+        return False
+    try:
+        rel = pdf_path.resolve().relative_to(Path.cwd().resolve()).as_posix()
+    except ValueError:
+        rel = pdf_path.as_posix()
+    return rel in excluidos or pdf_path.as_posix() in excluidos
 
 
 # ---------------------------------------------------------------------------

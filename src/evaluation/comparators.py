@@ -69,6 +69,12 @@ FIELD_COMPARATORS: dict[str, tuple] = {
     "fecha_fin": ("date_exact", {}),
     "acreditaciones": ("set_strings", {}),
     "idioma_documento_origen": ("enum_exact", {}),
+    # Comparador de listas de costes adicionales (LD14). Cada coste esperado y
+    # extraido es un dict con claves concepto/tipo/importe/moneda/obligatorio/
+    # incluido_en_precio. Se emparejan por clave (tipo, concepto normalizado) y
+    # se acepta como TP el match cuando el importe cae dentro de la tolerancia
+    # relativa configurada (por defecto 5%, mismo criterio que precios).
+    "costes_adicionales": ("list_of_costs", {"pct_importe": 0.05}),
 }
 
 
@@ -136,6 +142,8 @@ def _aplicar_comparador(kind: str, esperado: Any, extraido: Any, **kwargs) -> tu
         return _date_exact(esperado, extraido)
     if kind == "set_strings":
         return _set_strings(esperado, extraido)
+    if kind == "list_of_costs":
+        return _list_of_costs(esperado, extraido, pct_importe=kwargs.get("pct_importe", 0.05))
     raise ValueError(f"Comparador desconocido: {kind}")
 
 
@@ -244,3 +252,82 @@ def _to_set(value: Any) -> set[str]:
     if isinstance(value, (list, tuple, set)):
         return {_normalizar(x) for x in value if x is not None and x != ""}
     return {_normalizar(value)}
+
+
+def _cost_as_dict(coste: Any) -> dict:
+    """Normaliza un coste a dict, aceptando dict o instancia Pydantic."""
+    if hasattr(coste, "model_dump"):
+        return coste.model_dump()
+    if isinstance(coste, dict):
+        return coste
+    return {}
+
+
+def _cost_key(coste: dict) -> tuple[str, str]:
+    """Clave canonica para emparejar dos costes: (tipo normalizado, concepto normalizado)."""
+    tipo = _normalizar(str(coste.get("tipo", "")))
+    concepto = _normalizar(str(coste.get("concepto", "")))
+    return (tipo, concepto)
+
+
+def _importes_compatibles(a: Any, b: Any, pct: float) -> bool:
+    """True si dos importes coinciden dentro de la tolerancia relativa.
+
+    Casos: ambos None coinciden; uno None y otro no, no coinciden; si ambos
+    tienen valor, se aplica la tolerancia relativa como en `_numeric_tolerance`.
+    """
+    if a is None and b is None:
+        return True
+    if a is None or b is None:
+        return False
+    try:
+        fa, fb = float(a), float(b)
+    except (TypeError, ValueError):
+        return False
+    if fa == 0 and fb == 0:
+        return True
+    base = max(abs(fa), abs(fb))
+    if base == 0:
+        return False
+    return abs(fa - fb) / base <= pct
+
+
+def _list_of_costs(esperado: Any, extraido: Any, pct_importe: float) -> tuple[bool, str]:
+    """Comparacion de listas de CosteAdicional (LD14).
+
+    Reglas:
+      - Ambas listas se convierten a dicts (aceptando instancias Pydantic).
+      - Se indexan por clave canonica (tipo normalizado, concepto normalizado).
+      - Es TP si los conjuntos de claves coinciden Y para cada clave el
+        importe cae dentro de la tolerancia relativa configurada.
+      - Cualquier diferencia (clave faltante o de mas, importe fuera de
+        tolerancia) devuelve False con detalle explicito.
+
+    No se compara `descripcion` (texto libre), `obligatorio` ni
+    `incluido_en_precio` en esta version, para evitar penalizar
+    variabilidad menor de anotacion. Se pueden anadir en el futuro.
+    """
+    if not isinstance(esperado, list) or not isinstance(extraido, list):
+        return False, "alguno de los valores no es lista"
+
+    esp_map = {_cost_key(_cost_as_dict(c)): _cost_as_dict(c) for c in esperado}
+    ext_map = {_cost_key(_cost_as_dict(c)): _cost_as_dict(c) for c in extraido}
+
+    faltantes = sorted(esp_map.keys() - ext_map.keys())
+    sobrantes = sorted(ext_map.keys() - esp_map.keys())
+    if faltantes:
+        return False, f"costes faltantes en extraido: {faltantes[:3]}"
+    if sobrantes:
+        return False, f"costes sobrantes en extraido: {sobrantes[:3]}"
+
+    # Mismos conjuntos de claves: verificar importes
+    diffs = []
+    for k, esp in esp_map.items():
+        ext = ext_map[k]
+        if not _importes_compatibles(esp.get("importe"), ext.get("importe"), pct_importe):
+            diffs.append((k, esp.get("importe"), ext.get("importe")))
+    if diffs:
+        detalle = ", ".join(f"{k[1]}: GT={esp}, ext={ext}" for k, esp, ext in diffs[:3])
+        return False, f"importes fuera de tolerancia ({pct_importe*100:.0f}%): {detalle}"
+
+    return True, f"{len(esp_map)} costes emparejados por clave e importe"

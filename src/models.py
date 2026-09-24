@@ -257,15 +257,26 @@ class PerfilCliente(BaseModel):
     pais_preferido: Optional[str] = None
     tipo_alojamiento_preferido: Optional[TipoAlojamiento] = None
 
-    # Pesos relativos de los criterios sobre los que sí hay preferencia
-    # Suma esperada = 1.0; el sistema normaliza si no se cumple
+    # Intereses tematicos del perfil. Se usan para el criterio de afinidad:
+    # match textual entre estos keywords y el nombre/partnerships/cursos
+    # especialistas del programa. Ejemplos: ["football", "tennis"], ["business",
+    # "professional"], ["cambridge", "ielts"], ["50+"], ["clil"].
+    # Lista vacia -> afinidad neutra (0.5) en todos los programas.
+    intereses: list[str] = Field(
+        default_factory=list,
+        description="Intereses tematicos del perfil para el criterio de afinidad"
+    )
+
+    # Pesos relativos de los criterios sobre los que si hay preferencia.
+    # Suma esperada = 1.0; el sistema normaliza si no se cumple.
     pesos: dict[str, float] = Field(
         default_factory=lambda: {
-            "precio": 0.30,
-            "duracion": 0.20,
-            "ubicacion": 0.20,
+            "precio": 0.25,
+            "duracion": 0.15,
+            "ubicacion": 0.15,
             "alojamiento": 0.15,
             "edad_ajuste": 0.15,
+            "afinidad": 0.15,
         }
     )
 

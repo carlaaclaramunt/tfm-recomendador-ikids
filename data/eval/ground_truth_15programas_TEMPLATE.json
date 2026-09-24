@@ -1,0 +1,4228 @@
+{
+  "version": "iter12_15+4_TEMPLATE_ordenado_pricelist",
+  "fecha_creacion": "2026-08-25",
+  "fuente_catalogo": "data/processed/programas.json (iter 12)",
+  "tolerancia_precio_pct": 5.0,
+  "nota_semantica_precios": "Todos los precios están normalizados a €/semana.",
+  "instrucciones": [
+    "Este fichero es un ESQUELETO. Debes rellenar el campo 'esperado' de cada campos[campo] con el valor CORRECTO segun el PDF original.",
+    "El campo 'extraido_actual' muestra lo que el extractor produjo. Puedes copiarlo a 'esperado' si es correcto, o cambiarlo.",
+    "Si el campo NO aparece en el documento (ej. no hay precio), pon 'ausente_doc': true y deja 'esperado': null.",
+    "Cuando termines de revisar un programa, pon 'revisado': true.",
+    "Los campos complejos (turnos, cursos_especialistas, partners, etc.) NO se evaluan aun en H1 — quedan en '_referencia_extractor' como consulta. Se anadiran a la evaluacion cuando existan comparadores especificos.",
+    "Cuando este fichero este listo, se renombrara a data/eval/ground_truth.json (sustituyendo al actual de 5 programas).",
+    "PREFILL AUTOMÁTICO: precios Berlitz de PRICE LIST 2026 pág 31 y metadatos compartidos (empresa/país/ciudad/idioma) ya rellenados. Tienes que validar los campos edad_*, duracion_*, tipo_alojamiento, fecha_*, acreditaciones y fechas_inicio_recurrentes usando el PDF."
+  ],
+  "campos_evaluados": [
+    "nombre",
+    "empresa_proveedora",
+    "pais",
+    "ciudad",
+    "idioma",
+    "edad_min",
+    "edad_max",
+    "duracion_min_dias",
+    "duracion_max_dias",
+    "precio_semanal_min_eur",
+    "precio_semanal_max_eur",
+    "tipo_alojamiento",
+    "fecha_inicio",
+    "fecha_fin",
+    "acreditaciones",
+    "idioma_documento_origen",
+    "fechas_inicio_recurrentes"
+  ],
+  "programas": [
+    {
+      "id": "berlitz_general_english_20_16",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "General English 20",
+      "revisado": false,
+      "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "General English 20",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 0,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "todas las edades (LD4: 'all ages' min: 0)"
+        },
+        "edad_max": {
+          "esperado": 99,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "todas las edades (LD4: 'all ages' max: 99)"
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 210,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "210 (8+ sem), 230 (1-7 sem), 50 high season, según PRICE LIST 2026 pág 31"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 280,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "210 (8+ sem), 230 (1-7 sem), 50 high season, según PRICE LIST 2026 pág 31"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia'. Aplicado a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "se puede empezar en cualquier momento"
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_general_intensive_english_30_01",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "General Intensive English 30",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "General Intensive English 30",
+          "ausente_doc": false,
+          "extraido_actual": "General Intensive English 30",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians en Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 0,
+          "ausente_doc": false,
+          "extraido_actual": 0,
+          "nota": "todas las edades"
+        },
+        "edad_max": {
+          "esperado": 99,
+          "ausente_doc": false,
+          "extraido_actual": 99,
+          "nota": "todas las edades"
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 290,
+          "ausente_doc": false,
+          "extraido_actual": 210.0,
+          "nota": "290 (8+ sem) - 315 (1-7 sem) + 50 HS supplement, según PRICE LIST 2026 pág 31"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 365,
+          "ausente_doc": false,
+          "extraido_actual": 315.0,
+          "nota": "290 (8+ sem) - 315 (1-7 sem) + 50 HS supplement, según PRICE LIST 2026 pág 31"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia'. Aplicado a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": [
+            "Berlitz Certificate",
+            "ELA Certificate"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": "Every Monday",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 210.0,
+        "precio_semanal_max_origen": 315.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_business_english_20_17",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Business English 20",
+      "revisado": false,
+      "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Business English 20",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 16,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 250,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "250 (8+ sem) - 275 (1-7 sem) + 50 HS supplement"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 325,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "250 (8+ sem) - 275 (1-7 sem) + 50 HS supplement"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "a elegir"
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_intensive_business_english_30_02",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Intensive Business English 30",
+      "revisado": false,
+      "notas_globales": "costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs). En la PRICE LIST 2026 hay: Registration Fee €30, Digital Course Material €35 first level + €20 per level, Insurance €14/sem (opcional), Transfer one way €25, Transfer Return €48, Visa Admin €50, Minor Fee Homestay €10/día, ECO Tax €0.50/noche (máx €5). Pendiente: iteración C — extender extractor + comparador. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Intensive Business English 30",
+          "ausente_doc": false,
+          "extraido_actual": "Intensive Business English 30",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 16,
+          "ausente_doc": false,
+          "extraido_actual": 16,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 400,
+          "ausente_doc": false,
+          "extraido_actual": 250.0,
+          "nota": "400 (8+ sem) - 425 (1-7 sem) + 50 HS supplement"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 475,
+          "ausente_doc": false,
+          "extraido_actual": 425.0,
+          "nota": "400 (8+ sem) - 425 (1-7 sem) + 50 HS supplement"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia'. Aplicado a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": [
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": "Every Monday",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 250.0,
+        "precio_semanal_max_origen": 425.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_private_lessons_1_to_1_20_03",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Private Lessons 1-to-1 20",
+      "revisado": false,
+      "notas_globales": "costes adicionales NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs). En la PRICE LIST 2026 hay: Registration Fee €30, Digital Course Material €35 first level + €20 per level, Insurance €14/sem (opcional), Transfer one way €25, Transfer Return €48, Visa Admin €50, Minor Fee Homestay €10/día, ECO Tax €0.50/noche (máx €5). Pendiente: iteración C — extender extractor + comparador. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Private Lessons 1-to-1 20",
+          "ausente_doc": false,
+          "extraido_actual": "Private Lessons 1-to-1 20",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 0,
+          "ausente_doc": false,
+          "extraido_actual": 0,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": 99,
+          "ausente_doc": false,
+          "extraido_actual": 99,
+          "nota": "todas las edades"
+        },
+        "duracion_min_dias": {
+          "esperado": 5,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": "de lunes a viernes"
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 750,
+          "ausente_doc": false,
+          "extraido_actual": 750.0,
+          "nota": "750 (8+ sem) - 825 (1-7 sem) + 50 HS supplement"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 875,
+          "ausente_doc": false,
+          "extraido_actual": 825.0,
+          "nota": "750 (8+ sem) - 825 (1-7 sem) + 50 HS supplement"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia'. Aplicado a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": [
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Monday to Friday",
+          "ausente_doc": false,
+          "extraido_actual": "Monday to Friday",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 750.0,
+        "precio_semanal_max_origen": 825.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_conversation_10_group_18",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Conversation 10 (Group)",
+      "revisado": false,
+      "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Conversation 10 (Group)",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 16,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 120,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "120 €/sem + 50 HS supplement posible"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 170,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "120 €/sem + 50 HS supplement posible"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_private_electives_10_19",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Private Electives 10",
+      "revisado": false,
+      "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Private Electives 10",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 16,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 450,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "450 €/sem + 50 HS supplement posible"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 500,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "450 €/sem + 50 HS supplement posible"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_exam_preparation_04",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Exam Preparation",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Exam Preparation",
+          "ausente_doc": false,
+          "extraido_actual": "Exam Preparation",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 16,
+          "ausente_doc": false,
+          "extraido_actual": 16,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 28,
+          "ausente_doc": false,
+          "extraido_actual": 28,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 300,
+          "ausente_doc": false,
+          "extraido_actual": 300.0,
+          "nota": "cada semana si lo haces 8 semanas"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 330,
+          "ausente_doc": false,
+          "extraido_actual": 330.0,
+          "nota": "300 (8sem) / 315 (6sem) / 330 (4sem min)"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "IELTS",
+            "Cambridge",
+            "TOEFL iBT",
+            "TOEIC",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "IELTS",
+            "Cambridge",
+            "TOEFL iBT",
+            "TOEIC",
+            "Berlitz Certificate"
+          ],
+          "nota": "acreditaciones del centro (FELTOM asociacion Malta, EAQUALS acreditacion europea); Berlitz Certificate es metodologia propia"
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every first Monday of the month",
+          "ausente_doc": false,
+          "extraido_actual": "Every first Monday of the month",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 300.0,
+        "precio_semanal_max_origen": 330.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_total_immersion_executive_programme_06",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Total Immersion - Executive Programme",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "EXECUTIVE PROGRAMME: Total Immersion - Intensive Individual Instruction",
+          "ausente_doc": false,
+          "extraido_actual": "Total Immersion - Executive Programme",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 18,
+          "ausente_doc": false,
+          "extraido_actual": 18,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 2650,
+          "ausente_doc": false,
+          "extraido_actual": 2650.0,
+          "nota": "2650 €/sem base + 50 HS supplement posible"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 2650,
+          "ausente_doc": false,
+          "extraido_actual": 2650.0,
+          "nota": "2650 €/sem base + 50 HS supplement posible"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Monday to Friday",
+          "ausente_doc": false,
+          "extraido_actual": "Monday to Friday",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 2650.0,
+        "precio_semanal_max_origen": 2650.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_teacher_training_clil_05",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Teacher Training: CLIL",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Teacher Training: CLIL",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": 18,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 330,
+          "ausente_doc": false,
+          "extraido_actual": 330.0,
+          "nota": "330 €/sem fijo"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 330,
+          "ausente_doc": false,
+          "extraido_actual": 330.0,
+          "nota": "330 €/sem fijo"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 330.0,
+        "precio_semanal_max_origen": 330.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_specialised_programmes_20",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Specialised Programmes",
+      "revisado": true,
+      "notas_globales": "FALSO NEGATIVO — programa presente en el PDF Berlitz ELA 2026 (pag. 18, seccion SPECIALS | Course Category) pero NO extraído por el sistema en iter 12. Descripcion en el PDF: cursos especializados para propósitos profesionales (business communication, HR, sales, negotiations, presentaciones, public speaking...), en modalidad private 1-to-1 o closed groups (min 4 estudiantes). Sin precio explicito en la PRICE LIST 2026 (equivalente a 'price on request'). | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Specialised Programmes",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "aunque es entorno laboral podría cursarlo alguien menor de 18 para prepararse para el futuro laboral"
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "no se especifica maximo"
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "a demanda del cliente/grupo, no se fija en el doc"
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "no aparece en PRICE LIST 2026; equivalente a 'price on request'"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "Berlitz ELA 2026 ofrece Homestay (familia) + Self-Catering Apartments (residencia por interpretacion semantica)"
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "curso a demanda, sin fecha fija"
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "acreditaciones del centro Berlitz ELA Malta (FELTOM+EAQUALS) y metodologia propia"
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "a demanda/consulta, no hay patron recurrente publico"
+        }
+      },
+      "_referencia_extractor": {
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_50_programme_07",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "50+ Programme",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "50+ Programme",
+          "ausente_doc": false,
+          "extraido_actual": "50+ Programme",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 50,
+          "ausente_doc": false,
+          "extraido_actual": 50,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "'price on request' en la PRICE LIST 2026"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "'price on request' en la PRICE LIST 2026"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "varios turnos capturados en turnos"
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [
+          {
+            "fecha_inicio": "2026-02-08",
+            "fecha_fin": "2026-02-14",
+            "nombre": "Carnival Time"
+          },
+          {
+            "fecha_inicio": "2026-02-15",
+            "fecha_fin": "2026-02-21",
+            "nombre": "Carnival Time"
+          },
+          {
+            "fecha_inicio": "2026-03-29",
+            "fecha_fin": "2026-04-04",
+            "nombre": "Easter Time"
+          },
+          {
+            "fecha_inicio": "2026-04-05",
+            "fecha_fin": "2026-04-11",
+            "nombre": "Easter Time"
+          },
+          {
+            "fecha_inicio": "2026-06-14",
+            "fecha_fin": "2026-06-20",
+            "nombre": "Summer Time"
+          },
+          {
+            "fecha_inicio": "2026-06-21",
+            "fecha_fin": "2026-06-27",
+            "nombre": "Summer Time"
+          },
+          {
+            "fecha_inicio": "2026-09-27",
+            "fecha_fin": "2026-10-03",
+            "nombre": "Autumn Break"
+          },
+          {
+            "fecha_inicio": "2026-10-04",
+            "fecha_fin": "2026-10-10",
+            "nombre": "Autumn Break"
+          },
+          {
+            "fecha_inicio": "2026-12-20",
+            "fecha_fin": "2026-12-26",
+            "nombre": "Christmas Time"
+          },
+          {
+            "fecha_inicio": "2026-12-27",
+            "fecha_fin": "2027-01-02",
+            "nombre": "Christmas Time"
+          }
+        ],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": null,
+        "precio_semanal_max_origen": null,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_family_packages_08",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Family Packages",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Family Packages",
+          "ausente_doc": false,
+          "extraido_actual": "Family Packages",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 0,
+          "ausente_doc": false,
+          "extraido_actual": 0,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": 99,
+          "ausente_doc": false,
+          "extraido_actual": 99,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "'price on request' en la PRICE LIST 2026"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "'price on request' en la PRICE LIST 2026"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Every Monday",
+          "ausente_doc": false,
+          "extraido_actual": "Every Monday",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": null,
+        "precio_semanal_max_origen": null,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_youth_camps_easter_09",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Youth Camps - Easter",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Youth Camps - Easter",
+          "ausente_doc": false,
+          "extraido_actual": "Youth Camps - Easter",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 13,
+          "ausente_doc": false,
+          "extraido_actual": 13,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": 17,
+          "ausente_doc": false,
+          "extraido_actual": 17,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 825,
+          "ausente_doc": false,
+          "extraido_actual": 785.0,
+          "nota": ""
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 1100,
+          "ausente_doc": false,
+          "extraido_actual": 992.5,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": "2026-04-05",
+          "ausente_doc": false,
+          "extraido_actual": "2026-07-05",
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": "2026-04-14",
+          "ausente_doc": false,
+          "extraido_actual": "2026-08-14",
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [
+          {
+            "fecha_inicio": "2026-04-05",
+            "fecha_fin": "2026-04-12",
+            "nombre": "Turno 1"
+          }
+        ],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 785.0,
+        "precio_semanal_max_origen": 992.5,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_youth_camps_summer_21",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Youth Camps - Summer",
+      "revisado": true,
+      "notas_globales": "FALSO NEGATIVO — programa presente en el PDF Berlitz ELA 2026 (seccion YOUTH, con 3 turnos: 5-18 jul, 19 jul-1 ago, 2-14 ago 2026) pero NO extraido por el sistema en iter 12. Formato de campamento juvenil: los estudiantes pueden elegir 1, 2 o 3 turnos consecutivos (13-41 dias). Los turnos concretos estan capturados en _referencia_extractor.turnos conforme a la convencion LD19. Precios pendientes de verificar en la PRICE LIST 2026 (probablemente similar a Youth Camps - Easter, ~825-1100 EUR/sem con posible supplement de temporada alta).",
+      "campos": {
+        "nombre": {
+          "esperado": "Youth Camps - Summer",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 13,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "asumido igual que Youth Camps - Easter (mismo formato de programa); verificar en el PDF"
+        },
+        "edad_max": {
+          "esperado": 17,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "asumido igual que Easter; verificar en el PDF"
+        },
+        "duracion_min_dias": {
+          "esperado": 13,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "un turno individual dura 13-14 dias. El estudiante puede elegir 1, 2 o 3 turnos consecutivos"
+        },
+        "duracion_max_dias": {
+          "esperado": 41,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "3 turnos consecutivos encadenados: 5 jul (inicio turno 1) al 14 ago (fin turno 3) = 41 dias"
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 1570,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "pendiente verificar en la PRICE LIST 2026; probablemente similar al Easter (~785/sem)"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": 1985,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "pendiente verificar en la PRICE LIST 2026; probablemente similar al Easter (~992/sem) o con supplement HS"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "convencion Berlitz ELA (Homestay + Self-Catering Apartments)"
+        },
+        "fecha_inicio": {
+          "esperado": "2026-07-05",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "inicio del primer turno de los 3 posibles. Ventana global del programa"
+        },
+        "fecha_fin": {
+          "esperado": "2026-08-14",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "fin del ultimo turno. Ventana global del programa"
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "acreditaciones del centro Berlitz ELA Malta"
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": "3 turnos discretos, no patron recurrente periodico. Ver 'turnos' en _referencia_extractor (LD19)"
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [
+          {
+            "fecha_inicio": "2026-07-05",
+            "fecha_fin": "2026-07-18",
+            "nombre": "Turno 1"
+          },
+          {
+            "fecha_inicio": "2026-07-19",
+            "fecha_fin": "2026-08-01",
+            "nombre": "Turno 2"
+          },
+          {
+            "fecha_inicio": "2026-08-02",
+            "fecha_fin": "2026-08-14",
+            "nombre": "Turno 3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_closed_groups_tailor_made_10",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "Closed Groups - Tailor Made",
+      "revisado": false,
+      "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
+      "campos": {
+        "nombre": {
+          "esperado": "Closed Groups",
+          "ausente_doc": false,
+          "extraido_actual": "Closed Groups - Tailor Made",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": "St. Julians",
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": 13,
+          "ausente_doc": false,
+          "extraido_actual": 13,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": 17,
+          "ausente_doc": false,
+          "extraido_actual": 17,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": 7,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": 256,
+          "ausente_doc": false,
+          "extraido_actual": 256.0,
+          "nota": "'price on request' en la PRICE LIST 2026"
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": 256.0,
+          "nota": "'price on request' en la PRICE LIST 2026"
+        },
+        "tipo_alojamiento": {
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "residencia"
+          ],
+          "nota": "Berlitz ELA 2026 (seccion ACCOMMODATION del PDF, pag. 28) ofrece solo Homestay (Regular + Premium) y Self-Catering Apartments. Homestay -> 'familia'. Self-Catering Apartments -> 'residencia': interpretacion semantica de alojamiento colectivo no-familiar (apartamento compartido con espacios comunes, comparable a residencia estudiantil). Aplicado de forma uniforme a todos los programas Berlitz ELA 2026."
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": true,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": "Monday to Friday",
+          "ausente_doc": false,
+          "extraido_actual": "Monday to Friday",
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-12-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 256.0,
+        "precio_semanal_max_origen": 256.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente",
+        "costes_esperados_manual": [
+          {
+            "concepto": "Registration Fee",
+            "tipo": "material",
+            "importe": 30,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Registration Fee 30 EUR per Person (PRICE LIST 2026, Fees)"
+          },
+          {
+            "concepto": "Course Material first level",
+            "tipo": "material",
+            "importe": 35,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material first level 35 EUR"
+          },
+          {
+            "concepto": "Course Material additional levels",
+            "tipo": "material",
+            "importe": 20,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Digital Course Material 20 EUR per additional level"
+          },
+          {
+            "concepto": "Visa Administration",
+            "tipo": "otro",
+            "importe": 50,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Visa Administration 50 EUR (aplica solo a estudiantes que requieran visado)"
+          },
+          {
+            "concepto": "Insurance",
+            "tipo": "seguro",
+            "importe": 14,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Insurance per week (optional) 14 EUR/sem"
+          },
+          {
+            "concepto": "Transfer one way",
+            "tipo": "traslado",
+            "importe": 25,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer one way 25 EUR"
+          },
+          {
+            "concepto": "Transfer Return",
+            "tipo": "traslado",
+            "importe": 48,
+            "moneda": "EUR",
+            "obligatorio": false,
+            "incluido_en_precio": false,
+            "descripcion": "Transfer Return 48 EUR"
+          },
+          {
+            "concepto": "Minor Fee Homestay",
+            "tipo": "servicio_menores",
+            "importe": 10,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "Minor Fee 10 EUR/dia para menores alojados en homestay"
+          },
+          {
+            "concepto": "Malta Environmental Contribution (ECO Tax)",
+            "tipo": "otro",
+            "importe": 0.5,
+            "moneda": "EUR",
+            "obligatorio": true,
+            "incluido_en_precio": false,
+            "descripcion": "ECO Tax 0.50 EUR/noche, max 5 EUR/estancia, adultos 18+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "berlitz_english_language_closed_groups_mini_stay_11",
+      "pdf": "data/raw/Berlitz/NET Prices for Closed Groups 2026 - Sample of a group 15 students + 1 leader.pdf",
+      "match_nombre": "English Language Closed Groups Mini Stay",
+      "revisado": false,
+      "notas_globales": "",
+      "campos": {
+        "nombre": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "English Language Closed Groups Mini Stay",
+          "nota": "AQUIII"
+        },
+        "empresa_proveedora": {
+          "esperado": "Berlitz",
+          "ausente_doc": false,
+          "extraido_actual": "Berlitz",
+          "nota": "Berlitz | ELA Malta"
+        },
+        "pais": {
+          "esperado": "Malta",
+          "ausente_doc": false,
+          "extraido_actual": "Malta",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": "St. Julians",
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": "sede en St. Julians, Malta"
+        },
+        "idioma": {
+          "esperado": "inglés",
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 232.0,
+          "nota": ""
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 276.0,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "familia",
+            "hotel"
+          ],
+          "nota": ""
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": "en",
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": "2026-01-01",
+        "vigencia_fin": "2026-05-31",
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 232.0,
+        "precio_semanal_max_origen": 276.0,
+        "tipo_documento": "tarifa_b2b",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente"
+      }
+    },
+    {
+      "id": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+      "pdf": "data/raw/DBS/IKIDS DBS Dublin Elite Soccer and English-canva-040326.pdf",
+      "match_nombre": "High performance football & English learning Summer Camp Experience in Ireland",
+      "revisado": false,
+      "notas_globales": "",
+      "campos": {
+        "nombre": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "High performance football & English learning Summer Camp Experience in Ireland",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "DBS",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Irlanda",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Dublín",
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 12,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 17,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 7,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 35,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 1850.5,
+          "nota": ""
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 1992.0,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "residencia"
+          ],
+          "nota": ""
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-06-29",
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-07-31",
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "UEFA A",
+            "UEFA Pro",
+            "FIFA",
+            "FAI"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "ca",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [],
+        "cursos_especialistas": [],
+        "partners": [
+          {
+            "nombre": "I-KIDS",
+            "rol": "intermediario"
+          },
+          {
+            "nombre": "DBS Sports",
+            "rol": "actividades"
+          },
+          {
+            "nombre": "Future Learning",
+            "rol": "escuela"
+          }
+        ],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": null,
+        "vigencia_fin": null,
+        "moneda_origen": "EUR",
+        "precio_semanal_min_origen": 1850.5,
+        "precio_semanal_max_origen": 1992.0,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "mixto",
+        "es_programa_colaborativo": true,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente"
+      }
+    },
+    {
+      "id": "nsx_nsx_at_woodbridge_school_13",
+      "pdf": "data/raw/NSX/NSX 2026 - Gross Prices.pdf",
+      "match_nombre": "NSX at Woodbridge School",
+      "revisado": false,
+      "notas_globales": "",
+      "campos": {
+        "nombre": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "NSX at Woodbridge School",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "NSX",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Reino Unido",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Woodbridge",
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 1721.25,
+          "nota": ""
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 2071.75,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "residencia"
+          ],
+          "nota": ""
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-07-05",
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-08-01",
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "TEFL"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [
+          {
+            "fecha_inicio": "2026-07-05",
+            "fecha_fin": "2026-07-18",
+            "nombre": "Turno 1"
+          },
+          {
+            "fecha_inicio": "2026-07-19",
+            "fecha_fin": "2026-08-01",
+            "nombre": "Turno 2"
+          }
+        ],
+        "cursos_especialistas": [
+          {
+            "nombre": "English+ Horse Riding",
+            "actividad": "horse riding",
+            "horas_dedicadas": null,
+            "partnership": null,
+            "descripcion": null,
+            "precio_adicional_semanal_eur": 351.0,
+            "precio_adicional_semanal_origen": 300.0
+          },
+          {
+            "nombre": "English+ Tennis",
+            "actividad": "tennis",
+            "horas_dedicadas": null,
+            "partnership": null,
+            "descripcion": null,
+            "precio_adicional_semanal_eur": 330.75,
+            "precio_adicional_semanal_origen": 282.5
+          }
+        ],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": null,
+        "vigencia_fin": null,
+        "moneda_origen": "GBP",
+        "precio_semanal_min_origen": 1470.0,
+        "precio_semanal_max_origen": 1770.0,
+        "tipo_documento": "tarifa_b2b",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente"
+      }
+    },
+    {
+      "id": "nsx_nsx_at_millfield_school_14",
+      "pdf": "data/raw/NSX/NSX 2026 - Gross Prices.pdf",
+      "match_nombre": "NSX at Millfield School",
+      "revisado": false,
+      "notas_globales": "",
+      "campos": {
+        "nombre": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "NSX at Millfield School",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "NSX",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Reino Unido",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Millfield",
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 1978.13,
+          "nota": ""
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 2329.13,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "residencia"
+          ],
+          "nota": ""
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-07-05",
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-08-01",
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "TEFL"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [
+          {
+            "fecha_inicio": "2026-07-05",
+            "fecha_fin": "2026-07-18",
+            "nombre": "Turno 1"
+          },
+          {
+            "fecha_inicio": "2026-07-19",
+            "fecha_fin": "2026-08-01",
+            "nombre": "Turno 2"
+          }
+        ],
+        "cursos_especialistas": [
+          {
+            "nombre": "English+ Tennis",
+            "actividad": "tennis",
+            "horas_dedicadas": null,
+            "partnership": null,
+            "descripcion": null,
+            "precio_adicional_semanal_eur": 351.0,
+            "precio_adicional_semanal_origen": 300.0
+          },
+          {
+            "nombre": "English+ Football",
+            "actividad": "football",
+            "horas_dedicadas": null,
+            "partnership": null,
+            "descripcion": null,
+            "precio_adicional_semanal_eur": 269.1,
+            "precio_adicional_semanal_origen": 230.0
+          }
+        ],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": null,
+        "vigencia_fin": null,
+        "moneda_origen": "GBP",
+        "precio_semanal_min_origen": 1687.5,
+        "precio_semanal_max_origen": 1987.5,
+        "tipo_documento": "tarifa_b2b",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente"
+      }
+    },
+    {
+      "id": "nsx_millfield_school_summer_programme_15",
+      "pdf": "data/raw/NSX/NSX 2026 Summer School Guide - Millfield School.pdf",
+      "match_nombre": "Millfield School Summer Programme",
+      "revisado": false,
+      "notas_globales": "",
+      "campos": {
+        "nombre": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Millfield School Summer Programme",
+          "nota": ""
+        },
+        "empresa_proveedora": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "NSX",
+          "nota": ""
+        },
+        "pais": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Reino Unido",
+          "nota": ""
+        },
+        "ciudad": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "Street, Somerset",
+          "nota": ""
+        },
+        "idioma": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "inglés",
+          "nota": ""
+        },
+        "edad_min": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "edad_max": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 17,
+          "nota": ""
+        },
+        "duracion_min_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "duracion_max_dias": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": 14,
+          "nota": ""
+        },
+        "precio_semanal_min_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "precio_semanal_max_eur": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        },
+        "tipo_alojamiento": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "residencia"
+          ],
+          "nota": ""
+        },
+        "fecha_inicio": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-07-05",
+          "nota": ""
+        },
+        "fecha_fin": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "2026-08-01",
+          "nota": ""
+        },
+        "acreditaciones": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": [
+            "TEFL"
+          ],
+          "nota": ""
+        },
+        "idioma_documento_origen": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": "en",
+          "nota": ""
+        },
+        "fechas_inicio_recurrentes": {
+          "esperado": null,
+          "ausente_doc": false,
+          "extraido_actual": null,
+          "nota": ""
+        }
+      },
+      "_referencia_extractor": {
+        "turnos": [
+          {
+            "fecha_inicio": "2026-07-05",
+            "fecha_fin": "2026-07-18",
+            "nombre": "Turno 1"
+          },
+          {
+            "fecha_inicio": "2026-07-19",
+            "fecha_fin": "2026-08-01",
+            "nombre": "Turno 2"
+          }
+        ],
+        "cursos_especialistas": [
+          {
+            "nombre": "Specialist Course Tennis",
+            "actividad": "tennis",
+            "horas_dedicadas": 20,
+            "partnership": "Active Away | Jamie Murray Tennis Programme",
+            "descripcion": "20 hours over 1 week. Covers team-based games, forehand, backhand, volley & smash, doubles strategy, serve & return, beat the coach, tennis Olympics & team challenges, tournament.",
+            "precio_adicional_semanal_eur": null,
+            "precio_adicional_semanal_origen": null
+          },
+          {
+            "nombre": "Specialist Course Football",
+            "actividad": "football",
+            "horas_dedicadas": 30,
+            "partnership": null,
+            "descripcion": "30 hours total. Indoor and outdoor sessions covering technical skills including passing, tackling, defending, game play, boosting individual abilities.",
+            "precio_adicional_semanal_eur": null,
+            "precio_adicional_semanal_origen": null
+          }
+        ],
+        "partners": [],
+        "partnerships": [],
+        "costes_adicionales": [],
+        "vigencia_inicio": null,
+        "vigencia_fin": null,
+        "moneda_origen": "GBP",
+        "precio_semanal_min_origen": null,
+        "precio_semanal_max_origen": null,
+        "tipo_documento": "folleto_cliente_final",
+        "origen_documento": "proveedor_externo",
+        "es_programa_colaborativo": false,
+        "anyo_documento": 2026,
+        "estado_documento": "vigente"
+      }
+    }
+  ],
+  "fecha_actualizacion": "2026-08-25"
+}

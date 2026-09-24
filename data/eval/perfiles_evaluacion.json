@@ -1,0 +1,139 @@
+{
+  "version": "iter15_h2_12perfiles_con_intereses",
+  "fecha_creacion": "2026-09-16",
+  "nota": "Perfiles H2 (12) con campo 'intereses' para el criterio de afinidad tematica. Los perfiles no tematicos (p2, p6, p8, p10) declaran intereses vacios, dejando la afinidad neutra. Los perfiles tematicos declaran keywords que se comparan contra nombre/partnerships/specialists del programa.",
+  "perfiles": [
+    {
+      "id": "p1_adolescente_deportivo",
+      "descripcion": "Adolescente 14 años, interes deportivo (football), presupuesto amplio, verano largo, residencia",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 14,
+        "presupuesto_max_eur": 8000, "duracion_min_dias": 21, "duracion_max_dias": 35,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "residencia",
+        "intereses": ["football", "soccer", "deportivo"],
+        "pesos": {"precio": 0.15, "duracion": 0.15, "ubicacion": 0.10, "alojamiento": 0.15, "edad_ajuste": 0.15, "afinidad": 0.30}
+      }
+    },
+    {
+      "id": "p2_adolescente_estandar",
+      "descripcion": "Adolescente 15 años estandar (sin tema especifico), presupuesto ajustado, familia",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 15,
+        "presupuesto_max_eur": 3000, "duracion_min_dias": 14, "duracion_max_dias": 21,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "familia",
+        "intereses": [],
+        "pesos": {"precio": 0.30, "duracion": 0.15, "ubicacion": 0.10, "alojamiento": 0.20, "edad_ajuste": 0.20, "afinidad": 0.05}
+      }
+    },
+    {
+      "id": "p3_adulto_profesional_business",
+      "descripcion": "Adulto 30 años motivo profesional business",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 30,
+        "presupuesto_max_eur": 3000, "duracion_min_dias": 14, "duracion_max_dias": 21,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "hotel",
+        "intereses": ["business", "professional"],
+        "pesos": {"precio": 0.20, "duracion": 0.15, "ubicacion": 0.05, "alojamiento": 0.10, "edad_ajuste": 0.20, "afinidad": 0.30}
+      }
+    },
+    {
+      "id": "p4_adulto_inmersion_premium",
+      "descripcion": "Adulto 26 años inmersion premium",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 26,
+        "presupuesto_max_eur": 6000, "duracion_min_dias": 7, "duracion_max_dias": 14,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "familia",
+        "intereses": ["immersion", "intensive", "total", "private"],
+        "pesos": {"precio": 0.10, "duracion": 0.10, "ubicacion": 0.05, "alojamiento": 0.20, "edad_ajuste": 0.25, "afinidad": 0.30}
+      }
+    },
+    {
+      "id": "p5_senior_50plus",
+      "descripcion": "Senior 55 años segmento 50+",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 55,
+        "presupuesto_max_eur": 3000, "duracion_min_dias": 14, "duracion_max_dias": 21,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "familia",
+        "intereses": ["50+", "senior"],
+        "pesos": {"precio": 0.20, "duracion": 0.15, "ubicacion": 0.05, "alojamiento": 0.10, "edad_ajuste": 0.20, "afinidad": 0.30}
+      }
+    },
+    {
+      "id": "p6_adolescente_pais_preferido_uk",
+      "descripcion": "Adolescente 16 años, prefiere UK, sin tema especifico",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 16,
+        "presupuesto_max_eur": 5000, "duracion_min_dias": 14, "duracion_max_dias": 14,
+        "pais_preferido": "Reino Unido", "tipo_alojamiento_preferido": "residencia",
+        "intereses": [],
+        "pesos": {"precio": 0.15, "duracion": 0.10, "ubicacion": 0.30, "alojamiento": 0.20, "edad_ajuste": 0.20, "afinidad": 0.05}
+      }
+    },
+    {
+      "id": "p7_familia_niño_verano",
+      "descripcion": "Niño 12 primera experiencia con familia",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 12,
+        "presupuesto_max_eur": 4500, "duracion_min_dias": 14, "duracion_max_dias": 21,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "familia",
+        "intereses": ["family", "families", "junior", "youth"],
+        "pesos": {"precio": 0.15, "duracion": 0.10, "ubicacion": 0.05, "alojamiento": 0.25, "edad_ajuste": 0.20, "afinidad": 0.25}
+      }
+    },
+    {
+      "id": "p8_estudiante_ajustado_corto",
+      "descripcion": "Estudiante 17 presupuesto muy ajustado, sin tema",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 17,
+        "presupuesto_max_eur": 2000, "duracion_min_dias": 7, "duracion_max_dias": 14,
+        "pais_preferido": null, "tipo_alojamiento_preferido": null,
+        "intereses": [],
+        "pesos": {"precio": 0.45, "duracion": 0.15, "ubicacion": 0.05, "alojamiento": 0.05, "edad_ajuste": 0.25, "afinidad": 0.05}
+      }
+    },
+    {
+      "id": "p9_adulto_examen_oficial",
+      "descripcion": "Adulto 24 preparando examen oficial (Cambridge/IELTS/TOEFL/TOEIC)",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 24,
+        "presupuesto_max_eur": 3500, "duracion_min_dias": 21, "duracion_max_dias": 35,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "familia",
+        "intereses": ["exam", "cambridge", "ielts", "toefl", "toeic", "preparation"],
+        "pesos": {"precio": 0.15, "duracion": 0.20, "ubicacion": 0.05, "alojamiento": 0.10, "edad_ajuste": 0.20, "afinidad": 0.30}
+      }
+    },
+    {
+      "id": "p10_grupo_cerrado_semana",
+      "descripcion": "Estudiante 16 en grupo cerrado 1 semana",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 16,
+        "presupuesto_max_eur": 2500, "duracion_min_dias": 7, "duracion_max_dias": 7,
+        "pais_preferido": null, "tipo_alojamiento_preferido": null,
+        "intereses": ["closed", "grupo", "group"],
+        "pesos": {"precio": 0.30, "duracion": 0.15, "ubicacion": 0.05, "alojamiento": 0.05, "edad_ajuste": 0.20, "afinidad": 0.25}
+      }
+    },
+    {
+      "id": "p11_adolescente_tenis_uk",
+      "descripcion": "Adolescente 15 tenista UK",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 15,
+        "presupuesto_max_eur": 5500, "duracion_min_dias": 14, "duracion_max_dias": 14,
+        "pais_preferido": "Reino Unido", "tipo_alojamiento_preferido": "residencia",
+        "intereses": ["tennis", "sports"],
+        "pesos": {"precio": 0.10, "duracion": 0.10, "ubicacion": 0.20, "alojamiento": 0.15, "edad_ajuste": 0.15, "afinidad": 0.30}
+      }
+    },
+    {
+      "id": "p12_docente_clil",
+      "descripcion": "Docente 35 buscando formacion CLIL",
+      "perfil": {
+        "idioma_deseado": "inglés", "edad_estudiante": 35,
+        "presupuesto_max_eur": 2500, "duracion_min_dias": 7, "duracion_max_dias": 14,
+        "pais_preferido": null, "tipo_alojamiento_preferido": "familia",
+        "intereses": ["clil", "teacher training", "teacher"],
+        "pesos": {"precio": 0.15, "duracion": 0.10, "ubicacion": 0.05, "alojamiento": 0.10, "edad_ajuste": 0.25, "afinidad": 0.35}
+      }
+    }
+  ]
+}

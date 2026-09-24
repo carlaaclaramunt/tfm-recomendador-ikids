@@ -1,0 +1,322 @@
+{
+  "fecha": "2026-09-16",
+  "etiqueta": "iteracion13_h2_inicial",
+  "resultados_por_rankeador": {
+    "sistema_mcdm": {
+      "por_perfil": [
+        {
+          "perfil_id": "p1_adolescente_deportivo",
+          "n_candidatos": 5,
+          "ranking_top5": [
+            "Closed Groups - Tailor Made",
+            "General Intensive English 30",
+            "Private Lessons 1-to-1 20",
+            "Family Packages",
+            "High performance football & English learning Summer Camp Experience in Ireland"
+          ],
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2627
+        },
+        {
+          "perfil_id": "p2_adolescente_estandar",
+          "n_candidatos": 6,
+          "ranking_top5": [
+            "Closed Groups - Tailor Made",
+            "General Intensive English 30",
+            "Family Packages",
+            "Youth Camps - Easter",
+            "Private Lessons 1-to-1 20"
+          ],
+          "precision_at_5": 0.8,
+          "ndcg_at_10": 0.7508
+        },
+        {
+          "perfil_id": "p3_adulto_profesional_business",
+          "n_candidatos": 5,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Intensive Business English 30",
+            "Family Packages",
+            "Teacher Training: CLIL",
+            "Private Lessons 1-to-1 20"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.7855
+        },
+        {
+          "perfil_id": "p4_adulto_inmersion_premium",
+          "n_candidatos": 9,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Private Lessons 1-to-1 20",
+            "Family Packages",
+            "Intensive Business English 30",
+            "Teacher Training: CLIL"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.6154
+        },
+        {
+          "perfil_id": "p5_senior_50plus",
+          "n_candidatos": 6,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Intensive Business English 30",
+            "Family Packages",
+            "Teacher Training: CLIL",
+            "50+ Programme"
+          ],
+          "precision_at_5": 0.8,
+          "ndcg_at_10": 0.7095
+        },
+        {
+          "perfil_id": "p6_adolescente_pais_preferido_uk",
+          "n_candidatos": 3,
+          "ranking_top5": [
+            "NSX at Woodbridge School",
+            "Millfield School Summer Programme",
+            "NSX at Millfield School"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.7747
+        }
+      ],
+      "precision_at_5_serie": [
+        0.2,
+        0.8,
+        0.6,
+        0.6,
+        0.8,
+        0.6
+      ],
+      "ndcg_at_10_serie": [
+        0.2627,
+        0.7508,
+        0.7855,
+        0.6154,
+        0.7095,
+        0.7747
+      ],
+      "precision_at_5_macro": 0.6,
+      "ndcg_at_10_macro": 0.6498
+    },
+    "baseline_random": {
+      "por_perfil": [
+        {
+          "perfil_id": "p1_adolescente_deportivo",
+          "n_candidatos": 5,
+          "ranking_top5": [
+            "Closed Groups - Tailor Made",
+            "Family Packages",
+            "Private Lessons 1-to-1 20",
+            "General Intensive English 30",
+            "High performance football & English learning Summer Camp Experience in Ireland"
+          ],
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2627
+        },
+        {
+          "perfil_id": "p2_adolescente_estandar",
+          "n_candidatos": 6,
+          "ranking_top5": [
+            "Closed Groups - Tailor Made",
+            "Private Lessons 1-to-1 20",
+            "Youth Camps - Easter",
+            "Millfield School Summer Programme",
+            "Family Packages"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.7483
+        },
+        {
+          "perfil_id": "p3_adulto_profesional_business",
+          "n_candidatos": 5,
+          "ranking_top5": [
+            "Family Packages",
+            "Private Lessons 1-to-1 20",
+            "Teacher Training: CLIL",
+            "Intensive Business English 30",
+            "General Intensive English 30"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.4525
+        },
+        {
+          "perfil_id": "p4_adulto_inmersion_premium",
+          "n_candidatos": 9,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Private Lessons 1-to-1 20",
+            "Family Packages",
+            "Teacher Training: CLIL",
+            "NSX at Millfield School"
+          ],
+          "precision_at_5": 0.4,
+          "ndcg_at_10": 0.6078
+        },
+        {
+          "perfil_id": "p5_senior_50plus",
+          "n_candidatos": 6,
+          "ranking_top5": [
+            "Family Packages",
+            "50+ Programme",
+            "General Intensive English 30",
+            "Private Lessons 1-to-1 20",
+            "Teacher Training: CLIL"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.7696
+        },
+        {
+          "perfil_id": "p6_adolescente_pais_preferido_uk",
+          "n_candidatos": 3,
+          "ranking_top5": [
+            "NSX at Millfield School",
+            "NSX at Woodbridge School",
+            "Millfield School Summer Programme"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.7942
+        }
+      ],
+      "precision_at_5_serie": [
+        0.2,
+        0.6,
+        0.6,
+        0.4,
+        0.6,
+        0.6
+      ],
+      "ndcg_at_10_serie": [
+        0.2627,
+        0.7483,
+        0.4525,
+        0.6078,
+        0.7696,
+        0.7942
+      ],
+      "precision_at_5_macro": 0.5,
+      "ndcg_at_10_macro": 0.6059
+    },
+    "baseline_precio_asc": {
+      "por_perfil": [
+        {
+          "perfil_id": "p1_adolescente_deportivo",
+          "n_candidatos": 5,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Closed Groups - Tailor Made",
+            "Private Lessons 1-to-1 20",
+            "High performance football & English learning Summer Camp Experience in Ireland",
+            "Family Packages"
+          ],
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2925
+        },
+        {
+          "perfil_id": "p2_adolescente_estandar",
+          "n_candidatos": 6,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Closed Groups - Tailor Made",
+            "Private Lessons 1-to-1 20",
+            "Youth Camps - Easter",
+            "Family Packages"
+          ],
+          "precision_at_5": 0.8,
+          "ndcg_at_10": 0.6786
+        },
+        {
+          "perfil_id": "p3_adulto_profesional_business",
+          "n_candidatos": 5,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Intensive Business English 30",
+            "Teacher Training: CLIL",
+            "Private Lessons 1-to-1 20",
+            "Family Packages"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.79
+        },
+        {
+          "perfil_id": "p4_adulto_inmersion_premium",
+          "n_candidatos": 9,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "English Language Closed Groups Mini Stay",
+            "Intensive Business English 30",
+            "Teacher Training: CLIL",
+            "Private Lessons 1-to-1 20"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.5276
+        },
+        {
+          "perfil_id": "p5_senior_50plus",
+          "n_candidatos": 6,
+          "ranking_top5": [
+            "General Intensive English 30",
+            "Intensive Business English 30",
+            "Teacher Training: CLIL",
+            "Private Lessons 1-to-1 20",
+            "50+ Programme"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.6875
+        },
+        {
+          "perfil_id": "p6_adolescente_pais_preferido_uk",
+          "n_candidatos": 3,
+          "ranking_top5": [
+            "NSX at Woodbridge School",
+            "NSX at Millfield School",
+            "Millfield School Summer Programme"
+          ],
+          "precision_at_5": 0.6,
+          "ndcg_at_10": 0.727
+        }
+      ],
+      "precision_at_5_serie": [
+        0.2,
+        0.8,
+        0.6,
+        0.6,
+        0.6,
+        0.6
+      ],
+      "ndcg_at_10_serie": [
+        0.2925,
+        0.6786,
+        0.79,
+        0.5276,
+        0.6875,
+        0.727
+      ],
+      "precision_at_5_macro": 0.5667,
+      "ndcg_at_10_macro": 0.6172
+    }
+  },
+  "comparaciones_wilcoxon": {
+    "sistema_vs_baseline_random": {
+      "wilcoxon_precision_at_5": {
+        "stat": 6.0,
+        "p_value": 0.125
+      },
+      "wilcoxon_ndcg_at_10": {
+        "stat": 8.0,
+        "p_value": 0.5
+      }
+    },
+    "sistema_vs_baseline_precio_asc": {
+      "wilcoxon_precision_at_5": {
+        "stat": 1.0,
+        "p_value": 0.5
+      },
+      "wilcoxon_ndcg_at_10": {
+        "stat": 17.0,
+        "p_value": 0.109375
+      }
+    }
+  }
+}
