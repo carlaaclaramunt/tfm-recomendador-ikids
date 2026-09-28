@@ -24,7 +24,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from src.curation import (
-    evaluar_costes_adicionales,
     evaluar_obsolescencia,
     evaluar_origen_documental,
     evaluar_partnerships,
@@ -91,7 +90,11 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
     programas = [evaluar_obsolescencia(p) for p in programas]
     programas = [evaluar_origen_documental(p) for p in programas]
     programas = [evaluar_partnerships(p) for p in programas]
-    programas = [evaluar_costes_adicionales(p) for p in programas]
+    # Nota: la antigua etapa `evaluar_costes_adicionales` (heurístico sobre
+    # nombre de fichero y ruta del PDF) se retiró tras detectar que su
+    # entrada no contenía el texto del documento y por tanto producía
+    # importes fantasma. Los costes adicionales ahora los reporta el LLM
+    # como campo anidado dentro de cada Programa en la extracción (C1).
     programas = [generar_evidencias(p) for p in programas]
 
     # Curación cross-doc: fusión/deduplicación de programas equivalentes.

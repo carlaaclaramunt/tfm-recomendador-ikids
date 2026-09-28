@@ -57,3 +57,6 @@ logs/
 htmlcov/
 notas/
 informes/
+
+# Ficheros internos del desktop app (worktrees, sesiones, etc.)
+.claude/

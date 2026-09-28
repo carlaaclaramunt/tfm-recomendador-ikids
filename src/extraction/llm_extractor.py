@@ -640,6 +640,99 @@ _PROGRAMA_SCHEMA["properties"]["evidencias"] = {
     "default": [],
 }
 
+# Esquema de coste adicional. Se anida DENTRO del programa (no como hermano
+# de `programas` en la tool) para que el sistema lea los costes por
+# programa: previamente el campo vivía como hermano y nunca se consumía,
+# de modo que los ~40 líneas del system prompt dedicadas a costes se
+# perdían y `Programa.costes_adicionales` llegaba siempre vacío.
+_COSTE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "concepto": {
+            "type": "string",
+            "description": (
+                "Nombre breve del coste adicional. Ejemplos: "
+                "'Airport transfer', 'Servei de menor no acompanyat', "
+                "'Pocket money recomendado', 'Damage deposit'."
+            ),
+        },
+        "tipo": {
+            "type": "string",
+            "enum": [
+                "traslado",
+                "seguro",
+                "deposito",
+                "excursion",
+                "lavanderia",
+                "material",
+                "servicio_menores",
+                "pocket_money",
+                "otro",
+            ],
+            "description": "Categoría del coste adicional.",
+        },
+        "importe": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "description": (
+                "Importe numérico del coste. Si aparece un rango como "
+                "'£30-£50', usa el valor mínimo y conserva el rango completo "
+                "en descripcion."
+            ),
+        },
+        "moneda": {
+            "type": ["string", "null"],
+            "enum": ["EUR", "GBP", "USD", "CHF", "OTRO", None],
+            "description": "Moneda original en la que aparece el coste.",
+        },
+        "obligatorio": {
+            "type": "boolean",
+            "description": (
+                "True si el documento indica que el coste es obligatorio, "
+                "compulsory, mandatory, required, obligatori u obligatorio."
+            ),
+        },
+        "incluido_en_precio": {
+            "type": "boolean",
+            "description": (
+                "True si el documento indica que el coste está incluido "
+                "en el precio principal."
+            ),
+        },
+        "descripcion": {
+            "type": ["string", "null"],
+            "description": (
+                "Fragmento breve o resumen del texto original donde aparece "
+                "el coste. Debe conservar expresiones como '95 € per trajecte' "
+                "o '£30-£50 per week'."
+            ),
+        },
+    },
+    "required": [
+        "concepto",
+        "tipo",
+        "importe",
+        "moneda",
+        "obligatorio",
+        "incluido_en_precio",
+        "descripcion",
+    ],
+}
+
+_PROGRAMA_SCHEMA["properties"]["costes_adicionales"] = {
+    "type": "array",
+    "items": _COSTE_SCHEMA,
+    "description": (
+        "Lista de costes adicionales asociados a ESTE programa: "
+        "traslados, seguros, depósitos, servicios para menores no "
+        "acompañados, pocket money, lavandería, excursiones extra, "
+        "material, registration fees o suplementos. Deja lista vacía "
+        "si el programa no tiene costes adicionales identificables "
+        "en el documento."
+    ),
+    "default": [],
+}
+
 # La tool ahora devuelve una LISTA de programas
 _EXTRACTION_TOOL = {
     "name": "extract_programas",
@@ -657,90 +750,6 @@ _EXTRACTION_TOOL = {
                 "type": "array",
                 "items": _PROGRAMA_SCHEMA,
                 "description": "Lista de programas extraídos del documento",
-            },
-            "costes_adicionales": {
-                "type": "array",
-                "description": (
-                    "Lista de costes económicos adicionales, opcionales, obligatorios o "
-                    "recomendados que aparecen en el documento y que no son el precio "
-                    "principal del programa. Deben incluirse traslados, seguros, depósitos, "
-                    "servicios para menores no acompañados, pocket money, lavandería, "
-                    "excursiones extra, material, registration fees o suplementos."
-                ),
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "concepto": {
-                            "type": "string",
-                            "description": (
-                                "Nombre breve del coste adicional. Ejemplos: "
-                                "'Airport transfer', 'Servei de menor no acompanyat', "
-                                "'Pocket money recomendado', 'Damage deposit'."
-                            ),
-                        },
-                        "tipo": {
-                            "type": "string",
-                            "enum": [
-                                "traslado",
-                                "seguro",
-                                "deposito",
-                                "excursion",
-                                "lavanderia",
-                                "material",
-                                "servicio_menores",
-                                "pocket_money",
-                                "otro",
-                            ],
-                            "description": "Categoría del coste adicional.",
-                        },
-                        "importe": {
-                            "type": ["number", "null"],
-                            "minimum": 0,
-                            "description": (
-                                "Importe numérico del coste. Si aparece un rango como "
-                                "'£30-£50', usa el valor mínimo y conserva el rango completo "
-                                "en descripcion."
-                            ),
-                        },
-                        "moneda": {
-                            "type": ["string", "null"],
-                            "enum": ["EUR", "GBP", "USD", "CHF", "OTRO", None],
-                            "description": "Moneda original en la que aparece el coste.",
-                        },
-                        "obligatorio": {
-                            "type": "boolean",
-                            "description": (
-                                "True si el documento indica que el coste es obligatorio, "
-                                "compulsory, mandatory, required, obligatori u obligatorio."
-                            ),
-                        },
-                        "incluido_en_precio": {
-                            "type": "boolean",
-                            "description": (
-                                "True si el documento indica que el coste está incluido "
-                                "en el precio principal."
-                            ),
-                        },
-                        "descripcion": {
-                            "type": ["string", "null"],
-                            "description": (
-                                "Fragmento breve o resumen del texto original donde aparece "
-                                "el coste. Debe conservar expresiones como '95 € per trajecte' "
-                                "o '£30-£50 per week'."
-                            ),
-                        },
-                    },
-                    "required": [
-                        "concepto",
-                        "tipo",
-                        "importe",
-                        "moneda",
-                        "obligatorio",
-                        "incluido_en_precio",
-                        "descripcion",
-                    ],
-                },
-                "default": [],
             },
         },
         "required": ["programas"],

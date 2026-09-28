@@ -8,7 +8,6 @@ from src.curation.evidence import (
     tasa_trazabilidad_literal,
     verificar_evidencias,
 )
-from src.curation.costs import evaluar_costes_adicionales
 
 __all__ = [
     "evaluar_obsolescencia",
@@ -19,5 +18,4 @@ __all__ = [
     "generar_evidencias",
     "verificar_evidencias",
     "tasa_trazabilidad_literal",
-    "evaluar_costes_adicionales",
 ]

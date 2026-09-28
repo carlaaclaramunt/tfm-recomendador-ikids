@@ -35,9 +35,9 @@ from typing import Any
 import pandas as pd
 import streamlit as st
 
-from src.explanation import explicar
+from src.application.recomendar import recomendar
 from src.models import PerfilCliente, Programa
-from src.recommendation import filtrar_candidatos, puntuar_candidatos
+from src.recommendation import filtrar_candidatos
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -348,9 +348,12 @@ with tab_recomendar:
         },
     )
 
-    # Filtrar y puntuar
+    # La lista final se produce con el mismo caso de uso que consume el CLI
+    # (`src.application.recomendar`), garantizando que la webapp y la
+    # evaluación miden exactamente el mismo código. `filtrar_candidatos` se
+    # invoca aparte solo para el contador de candidatos mostrado en la UI.
     candidatos = filtrar_candidatos(perfil, catalogo)
-    recomendaciones = puntuar_candidatos(perfil, candidatos)[:top_k]
+    recomendaciones = recomendar(perfil, catalogo, top_k=top_k)
 
     col_a, col_b, col_c = st.columns(3)
     col_a.metric("Programas en catálogo", len(catalogo))
@@ -368,7 +371,9 @@ with tab_recomendar:
 
         for i, rec in enumerate(recomendaciones, start=1):
             programa = rec.programa
-            explicacion = explicar(rec, perfil)
+            # La explicación la genera el caso de uso `recomendar()` y se
+            # anexa como atributo `explicacion` de cada Recomendacion.
+            explicacion = rec.explicacion or ""
 
             # Título con la puntuación en el encabezado
             titulo = f"**#{i}.** {programa.nombre} · {programa.empresa_proveedora}"
