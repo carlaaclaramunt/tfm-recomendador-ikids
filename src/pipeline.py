@@ -1,127 +1,52 @@
-"""Orquestador end-to-end del recomendador.
+"""Punto de entrada CLI del recomendador.
 
-Encadena los tres subsistemas:
-
-    PDFs en data/raw  →  extracción (LLM + OCR)
-                      →  catálogo de Programas en data/processed/programas.json
-                      →  filtrado por restricciones
-                      →  puntuación MCDM
-                      →  generación de explicaciones
-                      →  recomendaciones finales
+Este fichero es un `main` delgado: no implementa lógica de negocio,
+solo orquesta la invocación de los casos de uso de `src.application`
+con un perfil de cliente sintético para poder ejecutar el pipeline
+completo desde línea de comandos.
 
 Ejecución:
 
     python -m src.pipeline
 
-Por defecto usa un perfil de cliente sintético definido al final del fichero.
+La lógica real vive en:
+
+    - src/application/construir_catalogo.py
+    - src/application/recomendar.py
+
+Por compatibilidad con código anterior a la refactorización a capa de
+aplicación, este módulo reexporta los símbolos principales bajo el
+namespace `src.pipeline`.
 """
 
 from __future__ import annotations
 
-import json
-import os
-from pathlib import Path
+from src.application.construir_catalogo import (
+    CATALOGO_PATH,
+    DATA_PROCESSED,
+    DATA_RAW,
+    EXCLUSIONS_PATH,
+    _cargar_catalogo,
+    _cargar_exclusiones,
+    _esta_excluido,
+    _guardar_catalogo,
+    construir_catalogo,
+)
+from src.application.recomendar import recomendar
+from src.models import PerfilCliente
 
-from dotenv import load_dotenv
-
-from src.explanation import explicar
-from src.extraction import extract_programs
-from src.models import PerfilCliente, Programa, Recomendacion
-from src.recommendation import filtrar_candidatos, puntuar_candidatos
-
-load_dotenv()
-
-DATA_RAW = Path(os.getenv("DATA_RAW_DIR", "data/raw"))
-DATA_PROCESSED = Path(os.getenv("DATA_PROCESSED_DIR", "data/processed"))
-CATALOGO_PATH = DATA_PROCESSED / "programas.json"
-
-
-# ---------------------------------------------------------------------------
-# Pipeline principal
-# ---------------------------------------------------------------------------
-
-
-def construir_catalogo(reextraer: bool = False) -> list[Programa]:
-    """Construye el catálogo de programas a partir de los PDFs en data/raw.
-
-    Args:
-        reextraer: Si es False y existe data/processed/programas.json,
-            se carga desde disco en lugar de volver a llamar al LLM.
-            Si es True, fuerza la reextracción.
-    """
-    if not reextraer and CATALOGO_PATH.exists():
-        return _cargar_catalogo()
-
-    programas: list[Programa] = []
-    pdfs = sorted(DATA_RAW.glob("**/*.pdf"))
-    print(f"Procesando {len(pdfs)} PDFs...")
-
-    for i, pdf_path in enumerate(pdfs, start=1):
-        # Asumimos estructura data/raw/<empresa>/archivo.pdf
-        empresa_hint = pdf_path.parent.name if pdf_path.parent != DATA_RAW else None
-        try:
-            extraidos = extract_programs(
-                pdf_path, empresa_proveedora_hint=empresa_hint
-            )
-        except Exception as exc:  # noqa: BLE001 — queremos seguir procesando
-            print(f"  [{i}/{len(pdfs)}] ERROR en {pdf_path.name}: {exc}")
-            continue
-
-        print(
-            f"  [{i}/{len(pdfs)}] {pdf_path.name}: "
-            f"{len(extraidos)} programa(s) identificado(s)"
-        )
-        for p in extraidos:
-            print(f"      · {p.nombre}")
-        programas.extend(extraidos)
-
-    print(f"\nCatálogo total: {len(programas)} programas a partir de {len(pdfs)} PDFs")
-    _guardar_catalogo(programas)
-    return programas
-
-
-def recomendar(
-    perfil: PerfilCliente,
-    programas: list[Programa],
-    top_k: int = 5,
-) -> list[Recomendacion]:
-    """Genera las top-k recomendaciones para un perfil dado."""
-    candidatos = filtrar_candidatos(perfil, programas)
-    print(
-        f"Tras el filtrado: {len(candidatos)} candidatos de {len(programas)} programas"
-    )
-
-    recomendaciones = puntuar_candidatos(perfil, candidatos)
-    for r in recomendaciones:
-        r.explicacion = explicar(r, perfil)
-
-    return recomendaciones[:top_k]
-
-
-# ---------------------------------------------------------------------------
-# Persistencia del catálogo
-# ---------------------------------------------------------------------------
-
-
-def _guardar_catalogo(programas: list[Programa]) -> None:
-    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
-    payload = [p.model_dump(mode="json") for p in programas]
-    CATALOGO_PATH.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    print(f"Catálogo guardado en {CATALOGO_PATH} ({len(programas)} programas)")
-
-
-def _cargar_catalogo() -> list[Programa]:
-    payload = json.loads(CATALOGO_PATH.read_text(encoding="utf-8"))
-    programas = [Programa.model_validate(p) for p in payload]
-    print(f"Catálogo cargado desde {CATALOGO_PATH} ({len(programas)} programas)")
-    return programas
-
-
-# ---------------------------------------------------------------------------
-# Demo: perfil sintético
-# ---------------------------------------------------------------------------
+__all__ = [
+    "construir_catalogo",
+    "recomendar",
+    "CATALOGO_PATH",
+    "DATA_PROCESSED",
+    "DATA_RAW",
+    "EXCLUSIONS_PATH",
+    "_cargar_catalogo",
+    "_cargar_exclusiones",
+    "_esta_excluido",
+    "_guardar_catalogo",
+]
 
 
 def _perfil_demo() -> PerfilCliente:
