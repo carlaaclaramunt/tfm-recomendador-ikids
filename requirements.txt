@@ -24,3 +24,6 @@ ipykernel>=6.29.0
 
 # Tests (opcional, para más adelante)
 pytest>=8.0.0
+
+# Interfaz web
+streamlit>=1.64.0

@@ -16,7 +16,7 @@ from __future__ import annotations
 from src.models import PerfilCliente, Programa, Recomendacion
 
 
-CRITERIOS = ("precio", "duracion", "ubicacion", "alojamiento", "edad_ajuste")
+CRITERIOS = ("precio", "duracion", "ubicacion", "alojamiento", "edad_ajuste", "afinidad")
 
 
 def puntuar_candidatos(
@@ -69,6 +69,7 @@ def _descomponer(
         "ubicacion": _score_ubicacion(perfil, programa),
         "alojamiento": _score_alojamiento(perfil, programa),
         "edad_ajuste": _score_edad_ajuste(perfil, programa),
+        "afinidad": _score_afinidad(perfil, programa),
     }
 
 
@@ -79,15 +80,15 @@ def _score_precio(
 ) -> float:
     """Programas más baratos puntúan más alto, normalizado sobre el catálogo.
 
-    Usa precio_min_eur como referencia (la opción más barata del programa).
+    Usa precio_semanal_min_eur como referencia (la opción más barata del programa).
     Si el programa no tiene precio extraído, score neutro (0.5).
     """
     # Sin datos del programa: neutro
-    if programa.precio_min_eur is None:
+    if programa.precio_semanal_min_eur is None:
         return 0.5
 
     # Normalizamos sobre el rango de precios mínimos del catálogo entero
-    precios_min = [p.precio_min_eur for p in todos if p.precio_min_eur is not None]
+    precios_min = [p.precio_semanal_min_eur for p in todos if p.precio_semanal_min_eur is not None]
     if not precios_min:
         return 0.5
 
@@ -96,7 +97,7 @@ def _score_precio(
         return 1.0
 
     # Más barato = mejor
-    return 1.0 - (programa.precio_min_eur - pmin) / (pmax - pmin)
+    return 1.0 - (programa.precio_semanal_min_eur - pmin) / (pmax - pmin)
 
 
 def _score_duracion(perfil: PerfilCliente, programa: Programa) -> float:
@@ -121,11 +122,12 @@ def _score_duracion(perfil: PerfilCliente, programa: Programa) -> float:
     if cli_min is None and cli_max is None:
         return 0.5
 
-    # Rellenar valores ausentes con extremos razonables
-    prog_min = prog_min or prog_max or 1
-    prog_max = prog_max or prog_min
-    cli_min = cli_min or 1
-    cli_max = cli_max or 365
+    # Rellenar nulls como cotas abiertas, coherente con _duracion_compatible:
+    # prog_min=None → 1; prog_max=None → 365 (curso abierto, no fijo).
+    prog_min = prog_min if prog_min is not None else 1
+    prog_max = prog_max if prog_max is not None else 365
+    cli_min = cli_min if cli_min is not None else 1
+    cli_max = cli_max if cli_max is not None else 365
 
     # Solapamiento entre rangos
     overlap_min = max(prog_min, cli_min)
@@ -150,9 +152,9 @@ def _score_ubicacion(perfil: PerfilCliente, programa: Programa) -> float:
 
 
 def _score_alojamiento(perfil: PerfilCliente, programa: Programa) -> float:
-    if perfil.tipo_alojamiento_preferido is None or programa.tipo_alojamiento is None:
+    if perfil.tipo_alojamiento_preferido is None or not programa.tipo_alojamiento:
         return 0.5
-    return 1.0 if programa.tipo_alojamiento == perfil.tipo_alojamiento_preferido else 0.0
+    return 1.0 if perfil.tipo_alojamiento_preferido in programa.tipo_alojamiento else 0.0
 
 
 def _score_edad_ajuste(perfil: PerfilCliente, programa: Programa) -> float:
@@ -163,6 +165,43 @@ def _score_edad_ajuste(perfil: PerfilCliente, programa: Programa) -> float:
     rango_amplitud = max(programa.edad_max - programa.edad_min, 1)
     distancia_normalizada = abs(perfil.edad_estudiante - rango_centro) / rango_amplitud
     return max(0.0, 1.0 - distancia_normalizada)
+
+
+def _score_afinidad(perfil: PerfilCliente, programa: Programa) -> float:
+    """Score de afinidad tematica entre el perfil y el programa.
+
+    Compara los keywords declarados en ``perfil.intereses`` contra el texto
+    combinado del programa (nombre + partnerships + cursos especialistas +
+    acreditaciones). Cada match aporta relevancia adicional.
+
+    - Sin intereses declarados: score neutro (0.5), no penaliza ni bonifica.
+    - Con intereses y al menos un match: 0.75 (1 match) o 1.0 (2+ matches).
+    - Con intereses y ningun match: 0.0 (no encaja tematicamente).
+
+    Esta funcion introduce el criterio LDX (afinidad tematica) motivado por
+    los perfiles temaicos (adolescente deportivo, senior 50+, docente CLIL,
+    preparacion de examenes oficiales) donde los cinco criterios genericos
+    no capturaban la relevancia semantica del programa para el segmento.
+    """
+    if not perfil.intereses:
+        return 0.5
+
+    partes = [programa.nombre or ""]
+    for pt in getattr(programa, "partnerships", []) or []:
+        partes.append(getattr(pt, "nombre", "") or "")
+        partes.append(getattr(pt, "descripcion", "") or "")
+    for ce in getattr(programa, "cursos_especialistas", []) or []:
+        partes.append(getattr(ce, "nombre", "") or "")
+        partes.append(getattr(ce, "actividad", "") or "")
+    for acr in getattr(programa, "acreditaciones", []) or []:
+        partes.append(acr)
+
+    texto = " ".join(partes).lower()
+
+    hits = sum(1 for interes in perfil.intereses if interes.lower() in texto)
+    if hits == 0:
+        return 0.0
+    return min(1.0, 0.5 + 0.25 * hits)
 
 
 # ---------------------------------------------------------------------------

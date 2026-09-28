@@ -1,0 +1,774 @@
+{
+  "fecha": "2026-08-20T18:52:58",
+  "version_gt": "iter03_minima_semanal",
+  "n_programas_gt": 5,
+  "n_programas_emparejados": 5,
+  "macro_f1": 0.9218,
+  "programas_sin_match": [],
+  "por_campo": {
+    "nombre": {
+      "tp": 4,
+      "fp": 1,
+      "fn": 0,
+      "tn": 0,
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.8889,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "FP",
+          "razon": "divergencia (similitud 0.70 < 0.7, GT no contenido): GT='General English', extraído='General Intensive English 30'",
+          "esperado": "General English",
+          "extraido": "General Intensive English 30"
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Closed Groups Mini Stay",
+          "extraido": "English Language Closed Groups Mini Stay"
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "similitud 0.99 ≥ 0.7",
+          "esperado": "High performance football & English learning - Summer Camp Experience in Ireland",
+          "extraido": "High performance football & English learning Summer Camp Experience in Ireland"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "NSX at Woodbridge School",
+          "extraido": "NSX at Woodbridge School - English+"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Millfield School",
+          "extraido": "Millfield School Summer Programme"
+        }
+      ]
+    },
+    "empresa_proveedora": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "DBS",
+          "extraido": "DBS"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "NSX",
+          "extraido": "NSX"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "NSX",
+          "extraido": "NSX"
+        }
+      ]
+    },
+    "pais": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Irlanda",
+          "extraido": "Irlanda"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Reino Unido",
+          "extraido": "Reino Unido"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Reino Unido",
+          "extraido": "Reino Unido"
+        }
+      ]
+    },
+    "ciudad": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "tn": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "Dublín",
+          "extraido": "Dublín"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "Woodbridge",
+          "extraido": "Woodbridge"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "Street, Somerset",
+          "extraido": "Street, Somerset"
+        }
+      ]
+    },
+    "idioma": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        }
+      ]
+    },
+    "edad_min": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 1,
+      "tn": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 0,
+          "extraido": 0
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "FN",
+          "razon": "omisión: GT=15, extraído vacío",
+          "esperado": 15,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 12,
+          "extraido": 12
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        }
+      ]
+    },
+    "edad_max": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 99,
+          "extraido": 99
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        }
+      ]
+    },
+    "duracion_min_dias": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        }
+      ]
+    },
+    "duracion_max_dias": {
+      "tp": 3,
+      "fp": 1,
+      "fn": 0,
+      "tn": 1,
+      "precision": 0.75,
+      "recall": 1.0,
+      "f1": 0.8571,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=7",
+          "esperado": null,
+          "extraido": 7
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 35,
+          "extraido": 35
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        }
+      ]
+    },
+    "precio_semanal_min_eur": {
+      "tp": 3,
+      "fp": 1,
+      "fn": 0,
+      "tn": 1,
+      "precision": 0.75,
+      "recall": 1.0,
+      "f1": 0.8571,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 25.0% > 5%): GT=280, extraído=210.0",
+          "esperado": 280,
+          "extraido": 210.0
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 232,
+          "extraido": 232.0
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 1850.5,
+          "extraido": 1850.5
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 1720.5,
+          "extraido": 1720.5
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        }
+      ]
+    },
+    "precio_semanal_max_eur": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 0,
+      "tn": 1,
+      "precision": 0.25,
+      "recall": 1.0,
+      "f1": 0.4,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 61.8% > 5%): GT=825, extraído=315.0",
+          "esperado": 825,
+          "extraido": 315.0
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 52.4% > 5%): GT=580, extraído=276.0",
+          "esperado": 580,
+          "extraido": 276.0
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 1992,
+          "extraido": 1992.0
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 16.9% > 5%): GT=2071, extraído=1720.5",
+          "esperado": 2071,
+          "extraido": 1720.5
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        }
+      ]
+    },
+    "tipo_alojamiento": {
+      "tp": 4,
+      "fp": 1,
+      "fn": 0,
+      "tn": 0,
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.8889,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "FP",
+          "razon": "divergencia (GT=['familia', 'otro'] vs extraído=['familia', 'residencia']): GT=['familia', 'otro'], extraído=['familia', 'residencia']",
+          "esperado": [
+            "familia",
+            "otro"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "hotel"
+          ],
+          "extraido": [
+            "familia",
+            "hotel"
+          ]
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        }
+      ]
+    },
+    "fecha_inicio": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-06-29",
+          "extraido": "2026-06-29"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-05",
+          "extraido": "2026-07-05"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-05",
+          "extraido": "2026-07-05"
+        }
+      ]
+    },
+    "fecha_fin": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-31",
+          "extraido": "2026-07-31"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-08-01",
+          "extraido": "2026-08-01"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-08-01",
+          "extraido": "2026-08-01"
+        }
+      ]
+    },
+    "acreditaciones": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "UEFA A",
+            "UEFA Pro",
+            "FIFA",
+            "FAI"
+          ],
+          "extraido": [
+            "UEFA A",
+            "UEFA Pro",
+            "FIFA",
+            "FAI"
+          ]
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "TEFL"
+          ],
+          "extraido": [
+            "TEFL"
+          ]
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "TEFL"
+          ],
+          "extraido": [
+            "TEFL"
+          ]
+        }
+      ]
+    },
+    "idioma_documento_origen": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_net_prices_closed_groups",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "dbs_dublin_elite_soccer",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "ca",
+          "extraido": "ca"
+        },
+        {
+          "programa": "nsx_woodbridge_gross_prices",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "nsx_millfield_summer_guide",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "version": "iter14_h2_baseline_12perfiles",
+  "fecha_creacion": "2026-09-16",
+  "criterio_construccion": "Para cada perfil, la autora del TFM ha ordenado los 5 programas mas adecuados aplicando criterio de dominio: (a) prioridad a programas cuyo publico objetivo declarado coincide con el segmento del perfil, (b) prioridad a programas del pais preferido cuando existe, (c) prioridad a programas con afinidad tematica al motivo (deportivo, business, senior 50+, examen oficial, docente), (d) descarte de programas cuyo enfoque no encaja aunque tecnicamente pasen el filtro duro. Este baseline reemplaza al ground truth aportado por asesores humanos reales de I-KIDS, cuya obtencion esta pendiente. Se documenta en la memoria como limitacion.",
+  "escala_relevancia": {
+    "posicion_1": 5, "posicion_2": 4, "posicion_3": 3, "posicion_4": 2, "posicion_5": 1, "fuera_top5": 0
+  },
+  "baseline_por_perfil": [
+    {
+      "perfil_id": "p1_adolescente_deportivo",
+      "razonamiento": "Adolescente 14 con interes deportivo. DBS Dublin (football + ingles, 12-17, residencia) es fit perfecto. NSX Millfield tiene specialists deportivos. Millfield Summer y NSX Woodbridge cubren edad y residencia. Youth Camps queda como opcion.",
+      "top5": [
+        "High performance football & English learning Summer Camp Experience in Ireland",
+        "NSX at Millfield School",
+        "Millfield School Summer Programme",
+        "NSX at Woodbridge School",
+        "Youth Camps - Easter"
+      ]
+    },
+    {
+      "perfil_id": "p2_adolescente_estandar",
+      "razonamiento": "Adolescente 15 estandar, presupuesto ajustado, familia. Youth Camps rango 13-17 perfecto. Closed Groups cubre 13-17. General English (all ages) y Family Packages son flexibles con familia. NET Prices Closed Groups incluye familia a precio bajo.",
+      "top5": [
+        "Youth Camps - Easter",
+        "Closed Groups - Tailor Made",
+        "General Intensive English 30",
+        "Family Packages",
+        "English Language Closed Groups Mini Stay"
+      ]
+    },
+    {
+      "perfil_id": "p3_adulto_profesional_business",
+      "razonamiento": "Adulto 30 profesional. Intensive Business English 30 es fit obvio. General Intensive alternativa. Exam Preparation para certificaciones. Teacher Training si ensena. NET Prices Closed Groups incluye hotel.",
+      "top5": [
+        "Intensive Business English 30",
+        "General Intensive English 30",
+        "Exam Preparation",
+        "Teacher Training: CLIL",
+        "English Language Closed Groups Mini Stay"
+      ]
+    },
+    {
+      "perfil_id": "p4_adulto_inmersion_premium",
+      "razonamiento": "Adulto 26 con foco en inmersion maxima. Total Immersion Executive (60 lessons/sem) es el mas intensivo. Private Lessons personalizado. General Intensive y Business Intensive complementan. Exam Preparation para certificacion.",
+      "top5": [
+        "Total Immersion - Executive Programme",
+        "Private Lessons 1-to-1 20",
+        "General Intensive English 30",
+        "Intensive Business English 30",
+        "Exam Preparation"
+      ]
+    },
+    {
+      "perfil_id": "p5_senior_50plus",
+      "razonamiento": "Senior 55. 50+ Programme es producto especifico del segmento y va primero pese a no tener precio extraido. General Intensive (all ages) sigue. Family Packages ofrece flexibilidad. Business e Intensive complementan.",
+      "top5": [
+        "50+ Programme",
+        "General Intensive English 30",
+        "Family Packages",
+        "Intensive Business English 30",
+        "Exam Preparation"
+      ]
+    },
+    {
+      "perfil_id": "p6_adolescente_pais_preferido_uk",
+      "razonamiento": "Adolescente 16 UK residencia. Solo 3 candidatos. Millfield Summer aporta ficha detallada. NSX Millfield tiene specialists. NSX Woodbridge cubre base.",
+      "top5": [
+        "Millfield School Summer Programme",
+        "NSX at Millfield School",
+        "NSX at Woodbridge School"
+      ]
+    },
+    {
+      "perfil_id": "p7_familia_niño_verano",
+      "razonamiento": "Niño 12 primera experiencia. Family Packages target obvio (familia + niños). NSX Millfield y Woodbridge cubren 12+ con specialists atractivos. Private Lessons ofrece atencion 1-a-1 buena para primera vez. General Intensive como alternativa flexible.",
+      "top5": [
+        "Family Packages",
+        "NSX at Millfield School",
+        "NSX at Woodbridge School",
+        "Private Lessons 1-to-1 20",
+        "General Intensive English 30"
+      ]
+    },
+    {
+      "perfil_id": "p8_estudiante_ajustado_corto",
+      "razonamiento": "Estudiante 17 presupuesto muy ajustado. Prioridad al precio semanal mas bajo con opciones para adolescente. Youth Camps (target edad), Closed Groups Tailor Made (13-17, precio ajustado), NET Prices Closed Groups (232 sem), General English (210 sem), Family Packages.",
+      "top5": [
+        "Youth Camps - Easter",
+        "Closed Groups - Tailor Made",
+        "English Language Closed Groups Mini Stay",
+        "General Intensive English 30",
+        "Family Packages"
+      ]
+    },
+    {
+      "perfil_id": "p9_adulto_examen_oficial",
+      "razonamiento": "Adulto 24 examen oficial. Exam Preparation es fit obvio (4-8 sem con IELTS/Cambridge/TOEFL/TOEIC). General Intensive complementa base. Business Intensive si el examen es profesional. Teacher Training si docente. Family Packages como opcion familia.",
+      "top5": [
+        "Exam Preparation",
+        "General Intensive English 30",
+        "Intensive Business English 30",
+        "Teacher Training: CLIL",
+        "Family Packages"
+      ]
+    },
+    {
+      "perfil_id": "p10_grupo_cerrado_semana",
+      "razonamiento": "Estudiante 16 en grupo cerrado 1 semana. Closed Groups Tailor Made y Closed Groups Mini Stay son target directo. Youth Camps es adecuado para adolescentes. General English como base flexible. Family Packages para acompañantes.",
+      "top5": [
+        "Closed Groups - Tailor Made",
+        "English Language Closed Groups Mini Stay",
+        "Youth Camps - Easter",
+        "General Intensive English 30",
+        "Family Packages"
+      ]
+    },
+    {
+      "perfil_id": "p11_adolescente_tenis_uk",
+      "razonamiento": "Adolescente 15 tenista UK. Solo 3 candidatos pasan filtro (UK + residencia + 14 dias). NSX Millfield tiene specialist Tennis con partnership Jamie Murray. NSX Woodbridge tiene tambien opcion Tennis como variante. Millfield Summer Programme tiene specialist Tennis. Todos son fit potencial.",
+      "top5": [
+        "NSX at Millfield School",
+        "NSX at Woodbridge School",
+        "Millfield School Summer Programme"
+      ]
+    },
+    {
+      "perfil_id": "p12_docente_clil",
+      "razonamiento": "Docente 35 buscando CLIL. Teacher Training: CLIL es fit total (nombre coincide con objetivo). General Intensive y Business Intensive como refuerzo linguistico. Private Lessons para preparacion especifica. Family Packages como opcion adicional.",
+      "top5": [
+        "Teacher Training: CLIL",
+        "General Intensive English 30",
+        "Intensive Business English 30",
+        "Private Lessons 1-to-1 20",
+        "Family Packages"
+      ]
+    }
+  ]
+}
