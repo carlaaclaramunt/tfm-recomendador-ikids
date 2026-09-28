@@ -5,21 +5,32 @@ from pathlib import Path
 
 import pytest
 
+import importlib
+
+# El paquete `src.application` reexporta la función `construir_catalogo` en
+# su `__init__`, por lo que `src.application.construir_catalogo` como
+# atributo resuelve a la función, no al módulo. `importlib.import_module`
+# devuelve el módulo real, que es donde vive `EXCLUSIONS_PATH`.
+_cc_mod = importlib.import_module("src.application.construir_catalogo")
+
 from src.application.construir_catalogo import (
     _cargar_exclusiones,
     _esta_excluido,
     EXCLUSIONS_PATH,
 )
 
-# Módulo donde vive el atributo EXCLUSIONS_PATH que consulta `_cargar_exclusiones`.
-# Tras la refactorización a capa de aplicación, la lógica de exclusiones vive en
-# `src.application.construir_catalogo`; `src.pipeline` la reexporta por compat.
-_MODULO_EXCL = "src.application.construir_catalogo.EXCLUSIONS_PATH"
+# Nota: tras la refactorización a capa de aplicación, la lógica de exclusiones
+# vive en `src.application.construir_catalogo`; `src.pipeline` la reexporta
+# por compatibilidad, pero el atributo `EXCLUSIONS_PATH` que consulta
+# `_cargar_exclusiones` está en el módulo. Como el paquete `application`
+# reexporta la función `construir_catalogo` en su `__init__`, no podemos
+# usar la string "src.application.construir_catalogo.EXCLUSIONS_PATH"
+# (resolvería a la función); usamos la referencia directa al módulo.
 
 
 def test_cargar_exclusiones_sin_fichero(tmp_path, monkeypatch):
     """Sin fichero, devuelve set vacío (comportamiento seguro por defecto)."""
-    monkeypatch.setattr(_MODULO_EXCL, tmp_path / "no_existe.json")
+    monkeypatch.setattr(_cc_mod, "EXCLUSIONS_PATH", tmp_path / "no_existe.json")
     assert _cargar_exclusiones() == set()
 
 
@@ -27,14 +38,14 @@ def test_cargar_exclusiones_fichero_valido(tmp_path, monkeypatch):
     payload = {"descripcion": "test", "excluidos": ["a.pdf", "b/c.pdf"]}
     exc_file = tmp_path / "exclusions.json"
     exc_file.write_text(json.dumps(payload), encoding="utf-8")
-    monkeypatch.setattr(_MODULO_EXCL, exc_file)
+    monkeypatch.setattr(_cc_mod, "EXCLUSIONS_PATH", exc_file)
     assert _cargar_exclusiones() == {"a.pdf", "b/c.pdf"}
 
 
 def test_cargar_exclusiones_fichero_malformado(tmp_path, monkeypatch, capsys):
     exc_file = tmp_path / "exclusions.json"
     exc_file.write_text("no es json {{", encoding="utf-8")
-    monkeypatch.setattr(_MODULO_EXCL, exc_file)
+    monkeypatch.setattr(_cc_mod, "EXCLUSIONS_PATH", exc_file)
     resultado = _cargar_exclusiones()
     assert resultado == set()
     assert "malformado" in capsys.readouterr().out

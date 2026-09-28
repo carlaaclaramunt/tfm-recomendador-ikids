@@ -40,7 +40,13 @@ RolPartner = Literal[
     "otro",
 ]
 
-FidelidadExtraccion = Literal["literal", "derivado", "inferido", "desconocido"]
+FidelidadExtraccion = Literal[
+    "literal",         # cita del LLM verificada carácter a carácter en el PDF
+    "derivado",        # cita similar (>0.9) al PDF: OCR, espaciado, normalización menor
+    "inferido",        # valor deducido a partir de expresiones cualitativas
+    "no_verificable",  # el LLM aportó cita pero no aparece en el PDF (posible alucinación)
+    "desconocido",     # no hay cita o el campo no se evalúa
+]
 
 TipoCoste = Literal[
     "traslado",

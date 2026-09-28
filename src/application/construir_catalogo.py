@@ -29,6 +29,7 @@ from src.curation import (
     evaluar_origen_documental,
     evaluar_partnerships,
     generar_evidencias,
+    tasa_trazabilidad_literal,
 )
 from src.curation.merge import fusionar_programas, resumen_fusion
 from src.curation.obsolescence import filtrar_no_obsoletos
@@ -106,6 +107,22 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
         print(f"Filtrados por obsolescencia: {descartados} programa(s)")
 
     programas = programas_vigentes
+
+    # Métrica de trazabilidad verificable (LD24): fracción de evidencias de
+    # campos críticos cuya cita se ha localizado en el texto original del
+    # documento. Se reporta por consola y se persiste como resultado propio
+    # del sistema, complementario a H1 (extracción) y H2 (ranking).
+    metrica = tasa_trazabilidad_literal(programas)
+    print(
+        "Trazabilidad: "
+        f"{metrica['n_literales']}/{metrica['n_evidencias']} literales "
+        f"({metrica['tasa_literal']:.1%}), "
+        f"{metrica['n_derivadas']} derivadas, "
+        f"{metrica['n_no_verificables']} no verificables, "
+        f"{metrica['n_inferidas']} inferidas · "
+        f"tasa verificable = {metrica['tasa_verificable']:.1%}"
+    )
+
     _guardar_catalogo(programas)
     return programas
 

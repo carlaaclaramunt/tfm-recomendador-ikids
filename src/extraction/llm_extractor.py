@@ -338,7 +338,55 @@ EJEMPLOS DE EXTRACCIÓN DE COSTES:
 - Texto: "Pocket Money £30-£50 per week"
   → tipo="pocket_money", importe=30, moneda="GBP",
     descripcion="Pocket Money £30-£50 per week"
-  
+
+## EVIDENCIAS DE TRAZABILIDAD (obligatorio para campos numéricos)
+
+Para CADA campo numérico o de fecha que rellenes en un programa (precios,
+edades, duraciones, fechas de programa y fechas de vigencia), añade una
+entrada al array `evidencias` con la CITA LITERAL del documento de la que
+sale ese valor. Reglas estrictas:
+
+1. Copia la cita CARÁCTER A CARÁCTER, tal como aparece en el documento.
+   No parafrasees, no traduzcas, no normalices puntuación, no añadas
+   espacios ni los quites. La cita debe poder encontrarse por búsqueda
+   textual exacta en el documento original.
+
+2. Escoge el fragmento MÁS CORTO que contiene el dato. Por ejemplo, si
+   el precio es 950 £/semana y el documento dice "Standard tuition:
+   £950 per week including all materials", copia solo "£950 per week".
+
+3. Si el valor está DEDUCIDO de una expresión cualitativa (ej. "all
+   ages" → edad_min=0, edad_max=99) copia la expresión de la que lo
+   deduces y marca fidelidad="inferido". Si el valor aparece
+   explícitamente marca fidelidad="literal".
+
+4. Si un campo queda a null en el programa, NO añadas evidencia para él.
+
+5. Para precios normalizados a €/semana desde otra moneda o desde un
+   total del programa, copia la cita ORIGINAL (ej. "$3,600 for 4 weeks")
+   y marca fidelidad="literal". La conversión posterior se documenta en
+   otro lugar del sistema.
+
+Ejemplo completo:
+
+  Documento contiene: "Age: 13-17 · £950/week · from 07/04 to 25/08 2026"
+  Programa extraído: edad_min=13, edad_max=17,
+                     precio_semanal_min_eur=1112 (950 GBP × 1.17),
+                     fecha_inicio=2026-04-07, fecha_fin=2026-08-25
+
+  evidencias = [
+    {"campo": "edad_min", "valor": "13",
+     "fragmento_fuente": "Age: 13-17", "fidelidad": "literal"},
+    {"campo": "edad_max", "valor": "17",
+     "fragmento_fuente": "Age: 13-17", "fidelidad": "literal"},
+    {"campo": "precio_semanal_min_eur", "valor": "1112",
+     "fragmento_fuente": "£950/week", "fidelidad": "literal"},
+    {"campo": "fecha_inicio", "valor": "2026-04-07",
+     "fragmento_fuente": "from 07/04 to 25/08 2026", "fidelidad": "literal"},
+    {"campo": "fecha_fin", "valor": "2026-08-25",
+     "fragmento_fuente": "from 07/04 to 25/08 2026", "fidelidad": "literal"},
+  ]
+
 """
 
 # Esquema interno de un único programa (extraído del actual input_schema).
@@ -529,6 +577,69 @@ _PROGRAMA_SCHEMA = {
     "required": ["nombre", "empresa_proveedora", "pais", "idioma"],
 }
 
+# Ampliación del esquema con la lista de evidencias por campo crítico.
+# El LLM debe devolver, para cada dato numérico o de fecha que rellene, una
+# CITA LITERAL del documento (fragmento_fuente), copiada carácter a carácter.
+# Estas citas se verifican después contra el texto del PDF en la etapa de
+# curación (`src/curation/evidence.py::verificar_evidencias`). Las citas que
+# aparecen literalmente pasan a fidelidad="literal"; las que difieren
+# ligeramente (OCR, espaciado) pasan a "derivado"; las que no se encuentran
+# se marcan "no_verificable" y actúan como señal de posible alucinación.
+_EVIDENCIA_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "campo": {
+            "type": "string",
+            "description": (
+                "Nombre EXACTO del campo del programa al que corresponde la cita. "
+                "Solo se aceptan: precio_semanal_min_eur, precio_semanal_max_eur, "
+                "precio_semanal_min_origen, precio_semanal_max_origen, "
+                "edad_min, edad_max, duracion_min_dias, duracion_max_dias, "
+                "fecha_inicio, fecha_fin, vigencia_inicio, vigencia_fin."
+            ),
+        },
+        "valor": {
+            "type": "string",
+            "description": "Valor extraído para ese campo, como cadena.",
+        },
+        "fragmento_fuente": {
+            "type": "string",
+            "description": (
+                "CITA LITERAL del documento de la que sale el valor. Copia "
+                "carácter a carácter la frase o expresión más corta que "
+                "contiene el dato. NO parafrasees, NO traduzcas, NO añadas "
+                "puntuación. Ejemplos válidos: '£950 per week', "
+                "'Age range: 13 to 17', 'from 07/04 to 25/08 2026'. "
+                "Si el valor no aparece literalmente sino que lo has deducido, "
+                "copia la frase de la que lo deduces y marca fidelidad='inferido'."
+            ),
+        },
+        "fidelidad": {
+            "type": "string",
+            "enum": ["literal", "inferido"],
+            "description": (
+                "'literal' si el valor aparece explícitamente en el fragmento. "
+                "'inferido' si has deducido el valor a partir de una expresión "
+                "cualitativa (por ejemplo 'all ages' → edad_min=0, edad_max=99)."
+            ),
+        },
+    },
+    "required": ["campo", "valor", "fragmento_fuente", "fidelidad"],
+}
+
+_PROGRAMA_SCHEMA["properties"]["evidencias"] = {
+    "type": "array",
+    "items": _EVIDENCIA_SCHEMA,
+    "description": (
+        "Para CADA campo numérico o de fecha que rellenes en el programa, "
+        "añade una entrada con la cita literal del documento. Campos "
+        "cubiertos: precios, edades, duraciones y fechas. Si dejas un campo "
+        "a null, no añadas entrada para él. La cita debe ser verificable "
+        "carácter a carácter en el texto del documento."
+    ),
+    "default": [],
+}
+
 # La tool ahora devuelve una LISTA de programas
 _EXTRACTION_TOOL = {
     "name": "extract_programas",
@@ -693,6 +804,12 @@ def extract_programs(
         except json.JSONDecodeError:
             programas_data = []
 
+    # Se importa localmente para evitar el ciclo extraction ↔ curation en
+    # tiempo de import: curation ya importa src.models, y models no depende
+    # de curation, pero mantener la importación diferida deja claro que la
+    # verificación es una etapa opcional adyacente a la extracción.
+    from src.curation.evidence import verificar_evidencias
+
     programas: list[Programa] = []
     for prog_data in programas_data:
         # Validación defensiva: si el LLM devuelve algo que no es un dict
@@ -704,9 +821,16 @@ def extract_programs(
         if empresa_proveedora_hint and not prog_data.get("empresa_proveedora"):
             prog_data["empresa_proveedora"] = empresa_proveedora_hint
         try:
-            programas.append(Programa.model_validate(prog_data))
+            programa = Programa.model_validate(prog_data)
         except Exception as exc:  # noqa: BLE001 — mejor perder 1 programa que el PDF entero
             print(f"    ⚠ programa descartado por validación: {exc}")
+            continue
+        # Verificamos las evidencias del LLM contra el texto real del PDF
+        # antes de anexar el programa al catálogo. Esto convierte la fidelidad
+        # declarada por el modelo en fidelidad medida: literal / derivado /
+        # no_verificable, según si la cita aparece en el texto (LD24).
+        programa = verificar_evidencias(programa, texto)
+        programas.append(programa)
 
     return programas
 
