@@ -357,6 +357,56 @@ class CosteAdicional(BaseModel):
         description="Descripción textual del coste"
     )
 
+    @field_validator("tipo", mode="before")
+    @classmethod
+    def _normalizar_tipo(cls, v):
+        """Tolera variantes ortográficas del LLM y aliases interlingüísticos.
+
+        El LLM ocasionalmente devuelve `outro` (gallego/portugués o typo por
+        `otro`), `transfer`, `insurance` u otros aliases. En lugar de tirar
+        el programa entero por validación estricta, normalizamos a valores
+        conocidos del enum; los valores irreconocibles caen a `otro` para
+        que la información al menos se preserve como categoría genérica.
+        """
+        if v is None:
+            return "otro"
+        if not isinstance(v, str):
+            return v
+        s = v.strip().lower()
+        aliases = {
+            "outro": "otro",
+            "other": "otro",
+            "otros": "otro",
+            "transfer": "traslado",
+            "transport": "traslado",
+            "transporte": "traslado",
+            "insurance": "seguro",
+            "assegurança": "seguro",
+            "deposit": "deposito",
+            "depósito": "deposito",
+            "damage_deposit": "deposito",
+            "excursion_extra": "excursion",
+            "excursión": "excursion",
+            "laundry": "lavanderia",
+            "supplies": "material",
+            "materials": "material",
+            "unaccompanied_minor": "servicio_menores",
+            "menor_no_acompanyat": "servicio_menores",
+            "menores": "servicio_menores",
+            "pocket": "pocket_money",
+            "spending_money": "pocket_money",
+        }
+        if s in aliases:
+            return aliases[s]
+        canonicos = {
+            "traslado", "seguro", "deposito", "excursion",
+            "lavanderia", "material", "servicio_menores",
+            "pocket_money", "otro",
+        }
+        if s in canonicos:
+            return s
+        return "otro"
+
 
 class CursoEspecialista(BaseModel):
     """LD20 + LD18 — Modalidad especialista dentro del programa base.
