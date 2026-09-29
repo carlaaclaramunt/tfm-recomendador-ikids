@@ -387,6 +387,34 @@ Ejemplo completo:
      "fragmento_fuente": "from 07/04 to 25/08 2026", "fidelidad": "literal"},
   ]
 
+## RECORDATORIO FINAL (antes de emitir la respuesta)
+
+Las evidencias son una capa ADICIONAL para los campos numéricos y de
+fecha. NO deben desplazar la extracción de los demás campos. Antes de
+emitir cada programa, verifica que has rellenado también:
+
+1. `acreditaciones` — repasa el documento buscando activamente TEFL,
+   TESOL, CELTA, DELTA, British Council, EAQUALS, IALC, English UK,
+   Quality English, IELTS, Cambridge, TOEFL iBT, TOEIC, FIFA, FAI, LTA,
+   UEFA A/B/Pro, Berlitz Certificate, Bildungsurlaub, etc. Suelen estar
+   en pies de página, secciones "About us"/"Quality"/"Certifications"
+   o junto a fotos del centro. Si el documento las menciona, DEBEN
+   aparecer en el array; omitirlas es un error grave.
+
+2. `tipo_alojamiento` — lista completa de opciones (familia,
+   residencia, hotel, campamento) mencionadas para el programa.
+
+3. `precio_semanal_min_eur` y `precio_semanal_max_eur` — si el
+   documento contiene una TABLA de precios con varias opciones para
+   el mismo programa (semanas distintas, temporadas alta/baja,
+   variantes), extrae los DOS extremos del rango, no dos valores
+   arbitrarios. El min es la opción más barata realmente contratable;
+   el max es la más cara realmente contratable.
+
+Producir un programa completo con todos sus campos cualitativos vale
+más que producir citas exhaustivas de campos numéricos. Ambos son
+importantes; ninguno se sacrifica por el otro.
+
 """
 
 # Esquema interno de un único programa (extraído del actual input_schema).
