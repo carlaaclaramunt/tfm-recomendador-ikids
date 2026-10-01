@@ -27,7 +27,10 @@ def recomendar(
         f"Tras el filtrado: {len(candidatos)} candidatos de {len(programas)} programas"
     )
 
-    recomendaciones = puntuar_candidatos(perfil, candidatos)
+    # Pasamos el catálogo completo como referencia estable para la
+    # normalización min-max del precio (C3): la puntuación de un programa
+    # no debe depender del subconjunto de rivales que sobrevivió al filtro.
+    recomendaciones = puntuar_candidatos(perfil, candidatos, catalogo=programas)
     for r in recomendaciones:
         r.explicacion = explicar(r, perfil)
 

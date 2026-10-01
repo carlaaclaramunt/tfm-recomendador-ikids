@@ -22,12 +22,19 @@ CRITERIOS = ("precio", "duracion", "ubicacion", "alojamiento", "edad_ajuste", "a
 def puntuar_candidatos(
     perfil: PerfilCliente,
     candidatos: list[Programa],
+    catalogo: list[Programa] | None = None,
 ) -> list[Recomendacion]:
     """Calcula la puntuación MCDM de cada programa candidato.
 
     Args:
         perfil: Perfil del cliente con sus preferencias y pesos.
         candidatos: Programas que ya han pasado el filtrado duro.
+        catalogo: Catálogo completo del sistema, usado como referencia
+            estable para la normalización min-max del criterio precio.
+            Si no se proporciona, se cae a `candidatos` para compatibilidad
+            con llamadas antiguas (comportamiento INESTABLE: la puntuación
+            de un mismo programa depende del conjunto de rivales que
+            sobrevivieron al filtro).
 
     Returns:
         Lista de recomendaciones ordenadas de mayor a menor puntuación.
@@ -36,10 +43,15 @@ def puntuar_candidatos(
         return []
 
     pesos = _normalizar_pesos(perfil.pesos)
+    # Referencia de normalización: el catálogo completo cuando se pasa.
+    # Esto hace que la puntuación de un programa sea estable entre
+    # consultas distintas (ver C3 de la revisión arquitectónica); el
+    # mismo programa a 1200€/sem puntúa igual con 3 rivales que con 30.
+    referencia_precio = catalogo if catalogo is not None else candidatos
 
     recomendaciones: list[Recomendacion] = []
     for programa in candidatos:
-        descomposicion = _descomponer(perfil, programa, candidatos)
+        descomposicion = _descomponer(perfil, programa, referencia_precio)
         puntuacion = sum(pesos.get(c, 0.0) * descomposicion[c] for c in CRITERIOS)
         recomendaciones.append(
             Recomendacion(
@@ -94,7 +106,10 @@ def _score_precio(
 
     pmin, pmax = min(precios_min), max(precios_min)
     if pmax == pmin:
-        return 1.0
+        # Un único precio en la referencia: score neutro, no 1.0.
+        # Devolver 1.0 era un sesgo que premiaba injustamente al único
+        # programa con precio frente a cualquier futura comparación.
+        return 0.5
 
     # Más barato = mejor
     return 1.0 - (programa.precio_semanal_min_eur - pmin) / (pmax - pmin)
