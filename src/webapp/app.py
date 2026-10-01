@@ -118,8 +118,25 @@ def _filtrar_por_exclusiones(
     ]
 
 
+def _leer_exclusiones_rapido() -> set[str]:
+    """Lectura ligera de data/exclusions.json para filtrar el catálogo al
+    inicio de cada rerun de Streamlit.
+
+    Se define inline aquí porque `_cargar_exclusiones` (más abajo) se
+    utiliza en callbacks y vive en la zona de helpers; a nivel de módulo
+    no está todavía disponible cuando se carga el catálogo.
+    """
+    if not EXCLUSIONS_PATH.exists():
+        return set()
+    try:
+        data = json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8"))
+        return set(data.get("excluidos", []))
+    except (json.JSONDecodeError, KeyError):
+        return set()
+
+
 catalogo_completo = cargar_catalogo()
-excluidos_actuales_render = _cargar_exclusiones()
+excluidos_actuales_render = _leer_exclusiones_rapido()
 catalogo = _filtrar_por_exclusiones(catalogo_completo, excluidos_actuales_render)
 
 if not catalogo_completo:
