@@ -1,0 +1,39 @@
+# Reglas declarativas de detección de colaboraciones y partnerships.
+#
+# Formato versionado: externaliza las reglas que antes vivían dentro del
+# código (`if "jamie murray" in texto`, `if "fifa" in texto`, el bloque
+# específico de DBS Dublin...) a datos declarativos ampliables sin tocar
+# código, respondiendo al hallazgo V3 del code review externo.
+#
+# Dos tipos de reglas:
+#
+# - `origenes_mixtos`: cuando el documento es B2B2C y el patrón match
+#   indica una colaboración entre I-KIDS y un proveedor + opcionalmente
+#   otros partners. El sistema marca el programa como mixto / colaborativo
+#   y añade los partners listados a la ficha.
+#
+# - `partnerships`: colaboraciones de marca individuales (patrocinadores,
+#   embajadores, acreditaciones de marca) que se añaden al array
+#   `partnerships` del programa sin cambiar su origen documental.
+#
+# Las coincidencias se buscan sobre el texto normalizado del programa
+# (nombre + empresa + rutas de documento, en minúsculas). Los patrones
+# son substrings literales — no expresiones regulares — para mantener
+# el fichero legible sin requerir conocimiento técnico del asesor que
+# lo mantiene.
+
+origenes_mixtos:
+  - patron: "dublin elite soccer"
+    descripcion: "Catálogo colaborativo DBS Dublin / Future Learning / I-KIDS"
+    partners:
+      - { nombre: "I-KIDS", rol: "intermediario" }
+      - { nombre: "DBS Sports", rol: "actividades" }
+      - { nombre: "Future Learning", rol: "escuela" }
+
+partnerships:
+  - patron: "jamie murray"
+    nombre: "Jamie Murray"
+    descripcion: "Colaboración o referencia deportiva asociada al programa"
+  - patron: "fifa"
+    nombre: "FIFA"
+    descripcion: "Colaboración o referencia de marca deportiva reconocida"

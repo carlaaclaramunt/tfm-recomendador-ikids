@@ -13,6 +13,7 @@ anthropic>=0.39.0
 # Validación de datos y configuración
 pydantic>=2.6.0
 python-dotenv>=1.0.0
+pyyaml>=6.0
 
 # MCDM
 pymcdm>=1.2.0
