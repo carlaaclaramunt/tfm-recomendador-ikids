@@ -36,7 +36,10 @@ CAMPOS_ESTRUCTURALES = {
 }
 
 
-def evaluar_obsolescencia(programa: Programa, anyo_actual: int = 2026) -> Programa:
+def evaluar_obsolescencia(
+    programa: Programa,
+    anyo_actual: int | None = None,
+) -> Programa:
     """Determina el estado de obsolescencia de un Programa.
 
     Reglas:
@@ -53,11 +56,18 @@ def evaluar_obsolescencia(programa: Programa, anyo_actual: int = 2026) -> Progra
 
     Args:
         programa: El Programa a evaluar.
-        anyo_actual: Año contra el que comparar (por defecto 2026).
+        anyo_actual: Año contra el que comparar. Si no se especifica,
+            se toma el año actual del sistema (date.today().year). La
+            parametrización explícita se usa en tests para hacer la
+            función determinista (ver V4 del code review); el valor
+            por defecto evita que el sistema caduque solo cuando
+            cambie el año civil.
 
     Returns:
         El mismo Programa con los campos de curación rellenados.
     """
+    if anyo_actual is None:
+        anyo_actual = date.today().year
     anyo = programa.anyo_documento
 
     if anyo is None:

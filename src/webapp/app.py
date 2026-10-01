@@ -76,9 +76,53 @@ st.caption(
     "Facultad de Informática de Barcelona (UPC)"
 )
 
-catalogo = cargar_catalogo()
+def _filtrar_por_exclusiones(
+    programas: list[Programa], excluidos: set[str]
+) -> list[Programa]:
+    """Filtra programas cuyo documento de origen esté en la lista de exclusiones.
 
-if not catalogo:
+    Permite que las exclusiones aplicadas desde la pestaña "Documentos" se
+    reflejen INMEDIATAMENTE en la pestaña "Recomendar" y en la vista de
+    "Catálogo" sin requerir una re-extracción del catálogo. Los PDFs
+    excluidos siguen omitiéndose además en la próxima re-extracción (ahorro
+    de tokens de API); este filtro añade sobre eso la aplicación en vivo
+    sobre el catálogo ya construido.
+
+    Normaliza las rutas a POSIX relativo a la raíz del proyecto para que el
+    match funcione tanto si `fuente_documento` se guardó como ruta absoluta
+    como relativa.
+    """
+    if not excluidos:
+        return programas
+
+    def _esta_excluido(ruta: str | None) -> bool:
+        if not ruta:
+            return False
+        candidato = Path(ruta)
+        normalizada = candidato.as_posix()
+        if normalizada in excluidos:
+            return True
+        try:
+            rel = candidato.resolve().relative_to(ROOT).as_posix()
+            if rel in excluidos:
+                return True
+        except (ValueError, OSError):
+            pass
+        return False
+
+    return [
+        p
+        for p in programas
+        if not _esta_excluido(p.fuente_documento)
+        and not any(_esta_excluido(d) for d in (p.documentos_fuente or []))
+    ]
+
+
+catalogo_completo = cargar_catalogo()
+excluidos_actuales_render = _cargar_exclusiones()
+catalogo = _filtrar_por_exclusiones(catalogo_completo, excluidos_actuales_render)
+
+if not catalogo_completo:
     st.error(
         "No se ha encontrado el catálogo procesado en "
         f"`{CATALOGO_PATH.relative_to(ROOT)}`. "
@@ -87,7 +131,21 @@ if not catalogo:
     )
     st.stop()
 
-st.metric("Programas en el catálogo", len(catalogo))
+if excluidos_actuales_render:
+    omitidos = len(catalogo_completo) - len(catalogo)
+    col_a, col_b = st.columns(2)
+    col_a.metric("Programas activos", len(catalogo))
+    col_b.metric(
+        "Omitidos por exclusión documental",
+        omitidos,
+        help=(
+            "Programas filtrados en vivo porque su PDF fue marcado como "
+            "excluido en la pestaña Documentos. No participan en las "
+            "recomendaciones ni aparecen en el catálogo visible."
+        ),
+    )
+else:
+    st.metric("Programas en el catálogo", len(catalogo))
 
 tab_recomendar, tab_catalogo, tab_documentos = st.tabs(["🎯 Recomendar", "📚 Catálogo", "📁 Documentos"])
 

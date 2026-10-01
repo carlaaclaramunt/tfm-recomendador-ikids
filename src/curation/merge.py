@@ -65,28 +65,54 @@ def son_equivalentes(p1: Programa, p2: Programa, umbral_nombre: float = 0.65) ->
 
 
 def agrupar_programas_equivalentes(programas: list[Programa]) -> list[list[Programa]]:
-    """Agrupa programas que parecen equivalentes.
+    """Agrupa programas que parecen equivalentes mediante union-find.
 
-    Devuelve una lista de grupos. Cada grupo contiene uno o más programas.
+    V2 — El algoritmo anterior comparaba cada programa solo contra el
+    REPRESENTANTE del grupo y hacía break al primer match. Con similitud
+    de nombre por SequenceMatcher y umbral 0,65 esto producía dos
+    patologías: la agrupación no era transitiva (si A≈B y B≈C pero
+    A≉C, el resultado dependía del orden) y el primer grupo compatible
+    "ganaba" aunque hubiera uno mejor. Como el orden procedía del
+    `sorted(glob)` del pipeline, renombrar un PDF podía cambiar el
+    catálogo final.
+
+    La implementación actual compara TODOS los pares de programas y
+    unifica con union-find. El resultado es transitivo por construcción
+    e independiente del orden de entrada.
     """
+    n = len(programas)
+    if n == 0:
+        return []
 
-    grupos: list[list[Programa]] = []
+    padre = list(range(n))
 
-    for programa in programas:
-        asignado = False
+    def find(i: int) -> int:
+        while padre[i] != i:
+            padre[i] = padre[padre[i]]
+            i = padre[i]
+        return i
 
-        for grupo in grupos:
-            representante = grupo[0]
+    def union(i: int, j: int) -> None:
+        ri, rj = find(i), find(j)
+        if ri != rj:
+            # Fijamos la raíz al índice más bajo para hacer el resultado
+            # determinista y auditable.
+            if ri < rj:
+                padre[rj] = ri
+            else:
+                padre[ri] = rj
 
-            if son_equivalentes(representante, programa):
-                grupo.append(programa)
-                asignado = True
-                break
+    for i in range(n):
+        for j in range(i + 1, n):
+            if son_equivalentes(programas[i], programas[j]):
+                union(i, j)
 
-        if not asignado:
-            grupos.append([programa])
+    grupos_por_raiz: dict[int, list[Programa]] = {}
+    for i, programa in enumerate(programas):
+        grupos_por_raiz.setdefault(find(i), []).append(programa)
 
-    return grupos
+    # Preservamos un orden estable y auditable: el orden de las claves raíz.
+    return [grupos_por_raiz[raiz] for raiz in sorted(grupos_por_raiz)]
 
 
 # ---------------------------------------------------------------------------
@@ -97,7 +123,12 @@ def elegir_texto_mas_largo(*valores: Optional[str]) -> Optional[str]:
     valores_validos = [v for v in valores if v]
     if not valores_validos:
         return None
-    return max(valores_validos, key=len)
+    # Tie-breaker lexicográfico para que empates de longitud sean
+    # deterministas: antes `max(key=len)` devolvía el primer máximo
+    # encontrado, de modo que el orden de entrada decidía el nombre
+    # elegido entre dos candidatos de la misma longitud (p. ej.
+    # "General Intensive English 30" vs "General Intensive English 20").
+    return max(valores_validos, key=lambda s: (len(s), s))
 
 
 def elegir_primer_no_nulo(*valores):

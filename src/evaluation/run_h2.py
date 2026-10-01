@@ -57,7 +57,7 @@ def ranking_sistema(perfil: PerfilCliente, catalogo: list[Programa]) -> list[str
     candidatos = filtrar_candidatos(perfil, catalogo)
     if not candidatos:
         return []
-    rec = puntuar_candidatos(perfil, candidatos)
+    rec = puntuar_candidatos(perfil, candidatos, catalogo=catalogo)
     return [r.programa.nombre for r in rec]
 
 
