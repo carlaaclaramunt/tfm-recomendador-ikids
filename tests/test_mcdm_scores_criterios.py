@@ -1,8 +1,10 @@
 """Tests T1 — cobertura unitaria de los scorers MCDM restantes.
 
 `_score_precio` ya está cubierto en test_mcdm_precio_estable.py (invariante
-C3). Este fichero completa la cobertura con los tres scorers que faltaban:
+C3). Este fichero completa la cobertura con los cinco scorers que faltaban:
 
+- `_score_duracion` (solapamiento entre rangos cliente/programa)
+- `_score_ubicacion` (match categórico de país)
 - `_score_alojamiento` (match categórico sobre lista)
 - `_score_edad_ajuste` (distancia al centro del rango de edad)
 - `_score_afinidad` (keywords del perfil contra texto combinado del programa)
@@ -20,7 +22,9 @@ from src.models import CursoEspecialista, PerfilCliente, Programa
 from src.recommendation.mcdm import (
     _score_afinidad,
     _score_alojamiento,
+    _score_duracion,
     _score_edad_ajuste,
+    _score_ubicacion,
 )
 
 
@@ -51,6 +55,76 @@ def _perfil(**overrides) -> PerfilCliente:
     )
     base.update(overrides)
     return PerfilCliente(**base)
+
+
+# ---------------------------------------------------------------------------
+# _score_duracion
+# ---------------------------------------------------------------------------
+
+
+def test_duracion_programa_sin_rango_es_neutro():
+    perfil = _perfil(duracion_min_dias=7, duracion_max_dias=14)
+    programa = _programa(duracion_min_dias=None, duracion_max_dias=None)
+    assert _score_duracion(perfil, programa) == pytest.approx(0.5)
+
+
+def test_duracion_cliente_sin_rango_es_neutro():
+    perfil = _perfil(duracion_min_dias=None, duracion_max_dias=None)
+    programa = _programa(duracion_min_dias=7, duracion_max_dias=14)
+    assert _score_duracion(perfil, programa) == pytest.approx(0.5)
+
+
+def test_duracion_cobertura_total_puntua_maximo():
+    """El programa cubre todo el rango del cliente → 1.0 (0.7 base + 0.3)."""
+    perfil = _perfil(duracion_min_dias=7, duracion_max_dias=14)
+    programa = _programa(duracion_min_dias=1, duracion_max_dias=84)
+    assert _score_duracion(perfil, programa) == pytest.approx(1.0)
+
+
+def test_duracion_cobertura_parcial_queda_entre_base_y_maximo():
+    """Solapamiento parcial: el score está entre 0.7 (base) y 1.0."""
+    perfil = _perfil(duracion_min_dias=7, duracion_max_dias=14)
+    programa = _programa(duracion_min_dias=10, duracion_max_dias=20)
+    score = _score_duracion(perfil, programa)
+    assert 0.7 < score < 1.0
+
+
+def test_duracion_rangos_disjuntos_puntua_cero():
+    """El programa no ofrece ninguna duración dentro del rango del cliente."""
+    perfil = _perfil(duracion_min_dias=7, duracion_max_dias=14)
+    programa = _programa(duracion_min_dias=30, duracion_max_dias=60)
+    assert _score_duracion(perfil, programa) == pytest.approx(0.0)
+
+
+# ---------------------------------------------------------------------------
+# _score_ubicacion
+# ---------------------------------------------------------------------------
+
+
+def test_ubicacion_sin_preferencia_del_cliente_es_neutro():
+    perfil = _perfil(pais_preferido=None)
+    programa = _programa(pais="Reino Unido")
+    assert _score_ubicacion(perfil, programa) == pytest.approx(0.5)
+
+
+def test_ubicacion_match_puntua_maximo():
+    perfil = _perfil(pais_preferido="Reino Unido")
+    programa = _programa(pais="Reino Unido")
+    assert _score_ubicacion(perfil, programa) == pytest.approx(1.0)
+
+
+def test_ubicacion_match_insensible_a_mayusculas_y_espacios():
+    """El comparador normaliza con lower() y strip(), para absorber variantes
+    de capitalización y padding del extractor."""
+    perfil = _perfil(pais_preferido="REINO UNIDO")
+    programa = _programa(pais="  reino unido  ")
+    assert _score_ubicacion(perfil, programa) == pytest.approx(1.0)
+
+
+def test_ubicacion_sin_match_puntua_cero():
+    perfil = _perfil(pais_preferido="Irlanda")
+    programa = _programa(pais="Reino Unido")
+    assert _score_ubicacion(perfil, programa) == pytest.approx(0.0)
 
 
 # ---------------------------------------------------------------------------
