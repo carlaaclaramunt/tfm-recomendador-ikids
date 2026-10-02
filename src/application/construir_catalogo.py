@@ -5,9 +5,10 @@ el resultado en `data/processed/programas.json`.
 
 Flujo:
 
-    PDFs en data/raw
+    Documentos en data/raw (PDFs e imágenes)
         → filtrado por exclusiones documentales del asesor
-        → extracción LLM (con OCR fallback) por PDF
+        → extracción LLM (con OCR fallback para PDFs escaneados, OCR
+          directo para imágenes) por documento
         → evaluación de obsolescencia / origen / partnerships / costes
         → generación de evidencias
         → fusión / deduplicación cross-doc
@@ -33,7 +34,14 @@ from src.curation import (
 from src.curation.merge import fusionar_programas, resumen_fusion
 from src.curation.obsolescence import filtrar_no_obsoletos
 from src.extraction import extract_programs
+from src.extraction.image_reader import EXTENSIONES_IMAGEN
 from src.models import Programa
+
+# Formatos de documento que el pipeline sabe procesar hoy: PDF más los
+# formatos de imagen soportados por el OCR directo. Mantener centralizado
+# aquí evita divergencia entre el router de extracción y el glob del
+# catálogo.
+EXTENSIONES_SOPORTADAS = {".pdf", *EXTENSIONES_IMAGEN}
 
 load_dotenv(override=True)
 
@@ -55,36 +63,40 @@ def construir_catalogo(reextraer: bool = False) -> list[Programa]:
         return _cargar_catalogo()
 
     programas: list[Programa] = []
-    pdfs = sorted(DATA_RAW.glob("**/*.pdf"))
+    documentos = sorted(
+        p
+        for p in DATA_RAW.glob("**/*")
+        if p.is_file() and p.suffix.lower() in EXTENSIONES_SOPORTADAS
+    )
 
-    # Filtrar los PDFs marcados como excluidos desde el dashboard.
+    # Filtrar los documentos marcados como excluidos desde el dashboard.
     # Los documentos excluidos NO se envían al extractor, ahorrando coste
     # API y evitando que su información entre en el catálogo. La decisión
     # de exclusión la toma el asesor humano desde la pestaña "Documentos".
     excluidos = _cargar_exclusiones()
     if excluidos:
-        pdfs_activos = [p for p in pdfs if not _esta_excluido(p, excluidos)]
-        omitidos = len(pdfs) - len(pdfs_activos)
+        activos = [d for d in documentos if not _esta_excluido(d, excluidos)]
+        omitidos = len(documentos) - len(activos)
         if omitidos:
-            print(f"Omitidos {omitidos} PDF(s) por exclusion documental")
-            for p in pdfs:
-                if _esta_excluido(p, excluidos):
-                    print(f"  · excluido: {p.relative_to(Path.cwd()) if p.is_absolute() else p}")
-        pdfs = pdfs_activos
+            print(f"Omitidos {omitidos} documento(s) por exclusion documental")
+            for d in documentos:
+                if _esta_excluido(d, excluidos):
+                    print(f"  · excluido: {d.relative_to(Path.cwd()) if d.is_absolute() else d}")
+        documentos = activos
 
-    print(f"Procesando {len(pdfs)} PDFs...")
+    print(f"Procesando {len(documentos)} documento(s)...")
 
-    for i, pdf_path in enumerate(pdfs, start=1):
-        empresa_hint = pdf_path.parent.name if pdf_path.parent != DATA_RAW else None
+    for i, doc_path in enumerate(documentos, start=1):
+        empresa_hint = doc_path.parent.name if doc_path.parent != DATA_RAW else None
         try:
-            nuevos = extract_programs(pdf_path, empresa_proveedora_hint=empresa_hint)
+            nuevos = extract_programs(doc_path, empresa_proveedora_hint=empresa_hint)
             programas.extend(nuevos)
             nombres = ", ".join(p.nombre for p in nuevos[:3])
             extra = "" if len(nuevos) <= 3 else f" (+{len(nuevos) - 3} más)"
             etiqueta = f"{len(nuevos)} programa(s): {nombres}{extra}" if nuevos else "sin programas"
-            print(f"  [{i}/{len(pdfs)}] OK: {pdf_path.name} → {etiqueta}")
+            print(f"  [{i}/{len(documentos)}] OK: {doc_path.name} → {etiqueta}")
         except Exception as exc:
-            print(f"  [{i}/{len(pdfs)}] ERROR en {pdf_path.name}: {exc}")
+            print(f"  [{i}/{len(documentos)}] ERROR en {doc_path.name}: {exc}")
 
     # Enriquecimientos de curación programa a programa.
     programas = [evaluar_obsolescencia(p) for p in programas]
