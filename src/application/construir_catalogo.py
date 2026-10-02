@@ -200,3 +200,33 @@ def _cargar_catalogo() -> list[Programa]:
     programas = [Programa.model_validate(p) for p in payload]
     print(f"Catálogo cargado desde {CATALOGO_PATH} ({len(programas)} programas)")
     return programas
+
+
+# ---------------------------------------------------------------------------
+# Entrada de línea de comandos
+# ---------------------------------------------------------------------------
+
+
+def _main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description=(
+            "Construye el catálogo de programas a partir de los documentos "
+            "en data/raw (PDFs e imágenes)."
+        )
+    )
+    parser.add_argument(
+        "--reextraer",
+        action="store_true",
+        help=(
+            "Fuerza la re-extracción con LLM aunque exista el catálogo "
+            "persistido. Sin este flag se carga desde data/processed/programas.json."
+        ),
+    )
+    args = parser.parse_args()
+    construir_catalogo(reextraer=args.reextraer)
+
+
+if __name__ == "__main__":
+    _main()
