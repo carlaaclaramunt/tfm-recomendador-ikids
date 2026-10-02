@@ -436,11 +436,59 @@ with tab_recomendar:
     col_c.metric("Recomendaciones devueltas", len(recomendaciones))
 
     if not recomendaciones:
-        st.warning(
-            "Ningún programa pasa las restricciones duras del perfil. "
-            "Ajusta el presupuesto, la duración o las preferencias en el "
-            "panel lateral."
-        )
+        # Mensaje de error diagnóstico: identifica cuál de los filtros duros
+        # ha vaciado la lista para que el asesor sepa qué ajustar. Analiza
+        # los motivos más habituales (presupuesto insuficiente, idioma,
+        # país, duración incompatible) sobre el catálogo completo.
+        motivos = []
+        if catalogo:
+            # 1) Presupuesto: calcula el coste mínimo esperable del programa
+            #    más barato del catálogo dadas las semanas que el cliente
+            #    acabaría cursando.
+            precios = [p.precio_semanal_min_eur for p in catalogo
+                       if p.precio_semanal_min_eur is not None]
+            if precios and perfil.presupuesto_max_eur:
+                precio_minimo = min(precios)
+                dias_minimo = max(1, perfil.duracion_min_dias or 7)
+                coste_minimo = precio_minimo * dias_minimo / 7
+                if coste_minimo > perfil.presupuesto_max_eur:
+                    motivos.append(
+                        f"**Presupuesto insuficiente**: el programa más "
+                        f"barato del catálogo cuesta {precio_minimo:.0f} €/sem, "
+                        f"lo que con tu duración mínima de {dias_minimo} días "
+                        f"suma un total estimado de {coste_minimo:.0f} € "
+                        f"frente a tu presupuesto de "
+                        f"{perfil.presupuesto_max_eur:.0f} €."
+                    )
+            # 2) Idioma: ningún programa del catálogo coincide con el deseado
+            idiomas = {p.idioma for p in catalogo}
+            if perfil.idioma_deseado and perfil.idioma_deseado not in idiomas:
+                motivos.append(
+                    f"**Idioma no disponible**: ningún programa del catálogo "
+                    f"se imparte en {perfil.idioma_deseado}; los idiomas "
+                    f"disponibles son {', '.join(sorted(idiomas))}."
+                )
+            # 3) País: si el usuario fijó una preferencia dura no cubierta
+            paises = {p.pais for p in catalogo if p.pais}
+            if perfil.pais_preferido and perfil.pais_preferido not in paises:
+                motivos.append(
+                    f"**País no disponible**: ningún programa del catálogo "
+                    f"está ubicado en {perfil.pais_preferido}; los países "
+                    f"disponibles son {', '.join(sorted(paises))}."
+                )
+        if motivos:
+            st.warning(
+                "**Ningún programa pasa las restricciones duras del perfil.**\n\n"
+                + "\n\n".join(f"- {m}" for m in motivos)
+                + "\n\nAjusta el campo correspondiente en el panel lateral "
+                "y la lista se recalculará automáticamente."
+            )
+        else:
+            st.warning(
+                "Ningún programa pasa las restricciones duras del perfil. "
+                "Ajusta el presupuesto, la duración, el país o el alojamiento "
+                "en el panel lateral."
+            )
     else:
         st.subheader(f"Top {len(recomendaciones)} recomendaciones")
 
@@ -635,19 +683,22 @@ with tab_documentos:
     st.divider()
 
     # ---- Filtros de la tabla
-    col_f1, col_f2, col_f3 = st.columns(3)
+    # Los documentos excluidos SIEMPRE aparecen en la tabla con la marca "🚫"
+    # para que el asesor pueda reactivarlos sin tener que buscar un toggle
+    # oculto. Antes había un `Mostrar excluidos` que, al desactivarse,
+    # hacía desaparecer la fila y el documento solo podía recuperarse
+    # editando `data/exclusions.json` a mano, lo que era confuso.
+    col_f1, col_f2 = st.columns(2)
     empresas_disp = sorted({d["empresa"] for d in documentos})
     estados_disp = sorted({d["estado"] for d in documentos})
 
     filtro_emp = col_f1.multiselect("Proveedor", empresas_disp, default=empresas_disp, key="docs_prov")
     filtro_est = col_f2.multiselect("Estado", estados_disp, default=estados_disp, key="docs_estado")
-    mostrar_excluidos = col_f3.checkbox("Mostrar excluidos", value=True, key="docs_mostrar_excl")
 
     docs_filtrados = [
         d for d in documentos
         if d["empresa"] in filtro_emp
         and d["estado"] in filtro_est
-        and (mostrar_excluidos or not d["excluido"])
     ]
 
     # ---- Tabla resumen
