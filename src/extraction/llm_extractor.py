@@ -18,7 +18,7 @@ from typing import Optional
 import anthropic
 from dotenv import load_dotenv
 
-from src.extraction.pdf_reader import read_pdf_text
+from src.extraction.document_reader import read_document_text
 from src.models import Programa
 
 load_dotenv(override=True)
@@ -440,7 +440,7 @@ def extract_programs(
         )
 
     pdf_path = Path(pdf_path)
-    texto = read_pdf_text(pdf_path)
+    texto = read_document_text(pdf_path)
     # Truncamiento generoso para que catálogos largos (ej. Berlitz ELA 2026,
     # ~30 páginas) mantengan sus tablas de precios y anexos de alojamiento
     # dentro del contexto. 80k chars ≈ 20-25k tokens, muy dentro de límites.

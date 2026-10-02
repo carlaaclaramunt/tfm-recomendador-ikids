@@ -173,14 +173,18 @@ tab_recomendar, tab_catalogo, tab_documentos = st.tabs(["🎯 Recomendar", "📚
 
 
 def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
-    """Recorre data/raw/**/*.pdf y devuelve metadatos combinados con el catálogo.
+    """Recorre data/raw/** y devuelve metadatos combinados con el catálogo.
 
-    IMPORTANTE: espera recibir el catálogo COMPLETO (sin filtrar por
-    exclusiones), para que los PDFs excluidos conserven la cuenta real de
-    programas que contienen. El filtro de exclusiones se aplica solo al
-    `estado` del documento (que pasa a `excluido`), no a los metadatos.
+    Incluye PDFs e imágenes (los dos formatos que el pipeline procesa
+    hoy). IMPORTANTE: espera recibir el catálogo COMPLETO (sin filtrar
+    por exclusiones), para que los documentos excluidos conserven la
+    cuenta real de programas que contienen. El filtro de exclusiones
+    se aplica solo al `estado` del documento (que pasa a `excluido`),
+    no a los metadatos.
     """
     from datetime import datetime
+
+    from src.application.construir_catalogo import EXTENSIONES_SOPORTADAS
 
     if not RAW_DIR.exists():
         return []
@@ -197,13 +201,18 @@ def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
 
     excluidos = _cargar_exclusiones()
     docs = []
-    for pdf in sorted(RAW_DIR.glob("**/*.pdf")):
-        rel = pdf.relative_to(ROOT).as_posix()
-        empresa = pdf.parent.name if pdf.parent != RAW_DIR else "(sin proveedor)"
+    ficheros = sorted(
+        f
+        for f in RAW_DIR.glob("**/*")
+        if f.is_file() and f.suffix.lower() in EXTENSIONES_SOPORTADAS
+    )
+    for doc in ficheros:
+        rel = doc.relative_to(ROOT).as_posix()
+        empresa = doc.parent.name if doc.parent != RAW_DIR else "(sin proveedor)"
         programas = programas_por_doc.get(rel, [])
         # También intentar por nombre absoluto (algunos guardados usan absoluto)
         if not programas:
-            programas = programas_por_doc.get(str(pdf), [])
+            programas = programas_por_doc.get(str(doc), [])
 
         anyos = [p.anyo_documento for p in programas if p.anyo_documento]
         estados = [p.estado_documento for p in programas]
@@ -214,7 +223,7 @@ def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
         #    prevalece sobre el estado documental automático).
         # 2. "obsoleto" / "parcialmente_obsoleto" según evaluación.
         # 3. "vigente" si hay programas en el catálogo.
-        # 4. "sin_procesar" si el PDF no ha pasado por la extracción.
+        # 4. "sin_procesar" si el documento no ha pasado por la extracción.
         if esta_excluido:
             estado_peor = "excluido"
         elif "obsoleto" in estados:
@@ -226,12 +235,13 @@ def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
         else:
             estado_peor = "sin_procesar"
 
-        stat = pdf.stat()
+        stat = doc.stat()
         docs.append({
             "ruta": rel,
-            "ruta_abs": str(pdf),
-            "nombre": pdf.name,
+            "ruta_abs": str(doc),
+            "nombre": doc.name,
             "empresa": empresa,
+            "tipo": doc.suffix.lower().lstrip("."),
             "tamano_kb": round(stat.st_size / 1024, 1),
             "modificado": datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M"),
             "n_programas": len(programas),
