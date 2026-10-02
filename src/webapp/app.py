@@ -173,7 +173,13 @@ tab_recomendar, tab_catalogo, tab_documentos = st.tabs(["🎯 Recomendar", "📚
 
 
 def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
-    """Recorre data/raw/**/*.pdf y devuelve metadatos combinados con el catálogo."""
+    """Recorre data/raw/**/*.pdf y devuelve metadatos combinados con el catálogo.
+
+    IMPORTANTE: espera recibir el catálogo COMPLETO (sin filtrar por
+    exclusiones), para que los PDFs excluidos conserven la cuenta real de
+    programas que contienen. El filtro de exclusiones se aplica solo al
+    `estado` del documento (que pasa a `excluido`), no a los metadatos.
+    """
     from datetime import datetime
 
     if not RAW_DIR.exists():
@@ -201,12 +207,24 @@ def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
 
         anyos = [p.anyo_documento for p in programas if p.anyo_documento]
         estados = [p.estado_documento for p in programas]
-        estado_peor = (
-            "obsoleto" if "obsoleto" in estados
-            else "parcialmente_obsoleto" if "parcialmente_obsoleto" in estados
-            else "vigente" if estados
-            else "sin_procesar"
-        )
+        esta_excluido = rel in excluidos
+
+        # Prioridad del estado mostrado:
+        # 1. "excluido" si el asesor lo marcó manualmente (decisión humana
+        #    prevalece sobre el estado documental automático).
+        # 2. "obsoleto" / "parcialmente_obsoleto" según evaluación.
+        # 3. "vigente" si hay programas en el catálogo.
+        # 4. "sin_procesar" si el PDF no ha pasado por la extracción.
+        if esta_excluido:
+            estado_peor = "excluido"
+        elif "obsoleto" in estados:
+            estado_peor = "obsoleto"
+        elif "parcialmente_obsoleto" in estados:
+            estado_peor = "parcialmente_obsoleto"
+        elif estados:
+            estado_peor = "vigente"
+        else:
+            estado_peor = "sin_procesar"
 
         stat = pdf.stat()
         docs.append({
@@ -219,7 +237,7 @@ def _escanear_documentos(catalogo: list[Programa]) -> list[dict]:
             "n_programas": len(programas),
             "estado": estado_peor,
             "anyo_detectado": max(anyos) if anyos else None,
-            "excluido": rel in excluidos,
+            "excluido": esta_excluido,
         })
     return docs
 
@@ -638,7 +656,10 @@ with tab_documentos:
         "extraídos proceden de cada fichero."
     )
 
-    documentos = _escanear_documentos(catalogo)
+    # Pasamos el catálogo COMPLETO (no el filtrado por exclusiones) a
+    # `_escanear_documentos` para que los PDFs excluidos sigan mostrando
+    # la cuenta real de programas que producen cuando se reactiven.
+    documentos = _escanear_documentos(catalogo_completo)
     excluidos_actuales = _cargar_exclusiones()
 
     # ---- Métricas resumen
