@@ -609,17 +609,52 @@ with tab_recomendar:
 with tab_catalogo:
     st.subheader("Catálogo completo de programas extraídos")
 
-    # Filtros
+    # Filtros tipo Excel: cada popover contiene checkboxes + atajos
+    # "Seleccionar todo" y "Limpiar". El label del botón resume el
+    # estado (todos / N de M), de modo que el asesor ve de un vistazo
+    # qué filtros están activos sin desplegarlos.
+    def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]:
+        # Estado inicial: todos seleccionados
+        if key not in st.session_state:
+            st.session_state[key] = list(opciones)
+        seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
+        if len(seleccion_actual) == len(opciones):
+            boton = f"{label}: todos ({len(opciones)})"
+        elif len(seleccion_actual) == 1:
+            boton = f"{label}: {seleccion_actual[0]}"
+        else:
+            boton = f"{label}: {len(seleccion_actual)} de {len(opciones)}"
+        with col.popover(boton, use_container_width=True):
+            c_all, c_none = st.columns(2)
+            if c_all.button("Todos", key=f"{key}_all", use_container_width=True):
+                st.session_state[key] = list(opciones)
+                st.rerun()
+            if c_none.button("Ninguno", key=f"{key}_none", use_container_width=True):
+                st.session_state[key] = []
+                st.rerun()
+            st.divider()
+            nueva: list[str] = []
+            for opcion in opciones:
+                marcada = st.checkbox(
+                    str(opcion),
+                    value=opcion in seleccion_actual,
+                    key=f"{key}_{opcion}",
+                )
+                if marcada:
+                    nueva.append(opcion)
+            st.session_state[key] = nueva
+        return st.session_state[key]
+
     col_f1, col_f2, col_f3, col_f4 = st.columns(4)
     proveedores = sorted({p.empresa_proveedora for p in catalogo})
     tipos_doc = sorted({p.tipo_documento for p in catalogo})
     estados = sorted({p.estado_documento for p in catalogo})
     paises = sorted({p.pais for p in catalogo})
 
-    filtro_prov = col_f1.multiselect("Proveedor", proveedores, default=proveedores)
-    filtro_tipo = col_f2.multiselect("Tipo de documento", tipos_doc, default=tipos_doc)
-    filtro_estado = col_f3.multiselect("Estado documental", estados, default=estados)
-    filtro_pais = col_f4.multiselect("País", paises, default=paises)
+    filtro_prov = _filtro_popover(col_f1, "Proveedor", proveedores, "f_prov")
+    filtro_tipo = _filtro_popover(col_f2, "Tipo de documento", tipos_doc, "f_tipo")
+    filtro_estado = _filtro_popover(col_f3, "Estado documental", estados, "f_estado")
+    filtro_pais = _filtro_popover(col_f4, "País", paises, "f_pais")
 
     filtrados = [
         p for p in catalogo
