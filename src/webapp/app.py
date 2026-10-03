@@ -626,20 +626,30 @@ with tab_catalogo:
             boton = f"{label}: {len(seleccion_actual)} de {len(opciones)}"
         with col.popover(boton, use_container_width=True):
             c_all, c_none = st.columns(2)
+            # Los botones "Todos" / "Ninguno" tienen que actualizar también
+            # el estado de cada checkbox individual, porque Streamlit guarda
+            # el valor del widget por su `key` y lo prioriza sobre el
+            # argumento `value` en re-ejecuciones posteriores.
             if c_all.button("Todos", key=f"{key}_all", use_container_width=True):
                 st.session_state[key] = list(opciones)
+                for opcion in opciones:
+                    st.session_state[f"{key}_{opcion}"] = True
                 st.rerun()
             if c_none.button("Ninguno", key=f"{key}_none", use_container_width=True):
                 st.session_state[key] = []
+                for opcion in opciones:
+                    st.session_state[f"{key}_{opcion}"] = False
                 st.rerun()
             st.divider()
             nueva: list[str] = []
             for opcion in opciones:
-                marcada = st.checkbox(
-                    str(opcion),
-                    value=opcion in seleccion_actual,
-                    key=f"{key}_{opcion}",
-                )
+                ck_key = f"{key}_{opcion}"
+                # Inicializar el checkbox desde el estado maestro solo si
+                # aún no tiene estado propio; en lo sucesivo Streamlit
+                # ignora `value` y mantiene el click del usuario.
+                if ck_key not in st.session_state:
+                    st.session_state[ck_key] = opcion in seleccion_actual
+                marcada = st.checkbox(str(opcion), key=ck_key)
                 if marcada:
                     nueva.append(opcion)
             st.session_state[key] = nueva
