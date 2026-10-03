@@ -401,9 +401,18 @@ with tab_recomendar:
         with col_dur2:
             dur_max = st.number_input("Duración máx. (días)", min_value=1, value=30)
 
+        # Las opciones de país se derivan del catálogo activo, para que
+        # el selector refleje siempre los destinos realmente disponibles
+        # tras cualquier ampliación del corpus procesado. Se filtran las
+        # entradas sin país y las etiquetas multi-destino, que no son
+        # seleccionables de forma unívoca por el asesor.
+        paises_catalogo = sorted({
+            p.pais for p in catalogo
+            if p.pais and not p.pais.lower().startswith("múltiples destinos")
+        })
         pais_pref = st.selectbox(
             "País preferido",
-            options=["Sin preferencia", "Malta", "Irlanda", "Reino Unido"],
+            options=["Sin preferencia", *paises_catalogo],
         )
         alojamiento_pref = st.selectbox(
             "Alojamiento preferido",
