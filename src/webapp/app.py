@@ -70,8 +70,20 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("🌍 Recomendador de programas de inmersión lingüística")
-st.caption(
+# Logo de I-KIDS como marca persistente en la cabecera de la sidebar
+# (st.logo requiere Streamlit >= 1.34; se degrada con silencio si la
+# versión instalada es más antigua, mostrando solo el título).
+_LOGO_PATH = Path(__file__).parent / "assets" / "logo_ikids.png"
+if _LOGO_PATH.exists() and hasattr(st, "logo"):
+    st.logo(str(_LOGO_PATH), size="large")
+
+# Header principal: logo + título alineados en dos columnas, para que
+# el branding de I-KIDS sea visible desde la primera vista.
+col_logo, col_titulo = st.columns([1, 5], vertical_alignment="center")
+if _LOGO_PATH.exists():
+    col_logo.image(str(_LOGO_PATH), width=110)
+col_titulo.title("Recomendador de programas de inmersión lingüística")
+col_titulo.caption(
     "Sistema de apoyo a la decisión desarrollado para I-KIDS · TFM MEI · "
     "Facultad de Informática de Barcelona (UPC)"
 )
