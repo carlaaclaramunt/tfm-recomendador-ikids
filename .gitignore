@@ -3,11 +3,14 @@
 .env.local
 *.key
 
-# Datos (PDFs originales y resultados procesados)
+# Datos (PDFs originales no se versionan, pero sí el catálogo procesado
+# y las exclusiones del dashboard, para que la app desplegada arranque
+# con el catálogo activo sin necesidad de llamar al LLM).
 data/raw/*
-data/processed/*
 !data/raw/.gitkeep
+data/processed/*
 !data/processed/.gitkeep
+!data/processed/programas.json
 
 # Entornos virtuales
 .venv/
