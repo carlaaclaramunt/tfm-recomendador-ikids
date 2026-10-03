@@ -1,0 +1,8 @@
+data/raw/**/*.pdf filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.PDF filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.png filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.PNG filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.JPG filter=lfs diff=lfs merge=lfs -text
+data/raw/**/*.JPEG filter=lfs diff=lfs merge=lfs -text
