@@ -646,19 +646,21 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
     el asesor ve de un vistazo qué filtros están activos sin
     desplegarlos.
 
-    Nota de implementación: los botones ``Todos`` y ``Ninguno`` no
-    reescriben el estado interno de cada checkbox; en su lugar, lo
-    \textbf{borran} con ``pop()`` y actualizan sólo el estado maestro
-    (``st.session_state[key]``). Al reconstruirse en el siguiente run,
-    cada checkbox se instancia con el ``value=`` derivado del estado
-    maestro, de modo que la UI queda garantizadamente sincronizada
-    tanto en el popover activo como en los demás que puedan compartir
-    página. Mantener la escritura directa del estado por checkbox
-    producía una desincronización observable cuando se abría otro
-    popover tras una secuencia ``Ninguno → Todos``.
+    Nota de implementación: los botones ``Todos`` y ``Ninguno`` actualizan
+    el estado maestro (``st.session_state[key]``) y además incrementan
+    un contador de versión por filtro que se incluye en la ``key`` de
+    cada checkbox. Al cambiar la ``key`` entre reruns, Streamlit trata
+    cada checkbox como un widget \textbf{nuevo} sin estado previo, por
+    lo que el argumento ``value=`` derivado del estado maestro se
+    respeta de forma garantizada. Sin este contador, Streamlit conservaba
+    el estado interno del widget por posición y lo priorizaba sobre el
+    nuevo ``value=``, dejando los checkboxes desincronizados tras pulsar
+    los atajos \"Todos\" o \"Ninguno\".
     """
     if key not in st.session_state:
         st.session_state[key] = list(opciones)
+    ver_key = f"{key}__ver"
+    ver: int = st.session_state.get(ver_key, 0)
     seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
     if len(seleccion_actual) == len(opciones):
         boton = f"{label}: todos ({len(opciones)})"
@@ -670,18 +672,16 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
         c_all, c_none = st.columns(2)
         if c_all.button("Todos", key=f"{key}_all", use_container_width=True):
             st.session_state[key] = list(opciones)
-            for opcion in opciones:
-                st.session_state.pop(f"{key}_{opcion}", None)
+            st.session_state[ver_key] = ver + 1
             st.rerun()
         if c_none.button("Ninguno", key=f"{key}_none", use_container_width=True):
             st.session_state[key] = []
-            for opcion in opciones:
-                st.session_state.pop(f"{key}_{opcion}", None)
+            st.session_state[ver_key] = ver + 1
             st.rerun()
         st.divider()
         nueva: list[str] = []
         for opcion in opciones:
-            ck_key = f"{key}_{opcion}"
+            ck_key = f"{key}_{opcion}__v{ver}"
             marcada = st.checkbox(
                 str(opcion),
                 value=opcion in seleccion_actual,
