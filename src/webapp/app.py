@@ -47,11 +47,20 @@ EXCLUSIONS_PATH = ROOT / "data" / "exclusions.json"
 
 
 # ---------------------------------------------------------------------------
-# Carga del catálogo (cacheada por Streamlit)
+# Carga del catálogo
 # ---------------------------------------------------------------------------
+#
+# No se cachea deliberadamente con @st.cache_data: el catálogo persistido es
+# un JSON de ~75\,KB cuya lectura y validación Pydantic cuesta pocos
+# milisegundos en cada rerun. A cambio, se garantiza que cualquier
+# modificación de exclusiones documentales ---hecha desde la pestaña
+# Documentos--- se refleje de forma inmediata en el resto del dashboard
+# sin que el asesor tenga que recargar la página. La versión cacheada
+# producía una desincronización observable entre el estado del
+# ``data/exclusions.json`` recién escrito y el ``catalogo_completo``
+# servido desde la caché.
 
 
-@st.cache_data(show_spinner="Cargando catálogo...")
 def cargar_catalogo() -> list[Programa]:
     if not CATALOGO_PATH.exists():
         return []
@@ -287,13 +296,20 @@ def _guardar_exclusiones(excluidos: set[str]) -> None:
 
 
 def _toggle_exclusion(ruta: str) -> None:
+    """Alterna el estado de exclusión de un documento.
+
+    Streamlit lanza automáticamente un rerun al terminar la callback,
+    de modo que el catálogo (que se re-lee en cada rerun, sin caché) y
+    todas las vistas que dependen de él (métrica superior, pestañas
+    Catálogo y Recomendar) reflejan la nueva lista de exclusiones de
+    forma inmediata, sin que el asesor tenga que recargar la página.
+    """
     excl = _cargar_exclusiones()
     if ruta in excl:
         excl.remove(ruta)
     else:
         excl.add(ruta)
     _guardar_exclusiones(excl)
-    st.cache_data.clear()  # invalida el catálogo cacheado
 
 
 def _guardar_documento_subido(uploaded_file, empresa: str) -> Path:
@@ -794,10 +810,10 @@ with tab_documentos:
             if st.button("💾 Guardar en data/raw/", type="primary"):
                 destino = _guardar_documento_subido(uploaded, proveedor_sel)
                 st.success(
-                    f"Guardado en `{destino.relative_to(ROOT)}`. Para incorporarlo "
-                    "al catálogo, ejecuta el pipeline: `python -m src.pipeline`"
+                    f"Guardado en `{destino.relative_to(ROOT)}`. Para "
+                    "incorporarlo al catálogo, ejecuta la re-extracción: "
+                    "`python -m src.application.construir_catalogo --reextraer`"
                 )
-                st.cache_data.clear()
 
     st.divider()
 
