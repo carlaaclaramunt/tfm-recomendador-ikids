@@ -298,11 +298,18 @@ def _guardar_exclusiones(excluidos: set[str]) -> None:
 def _toggle_exclusion(ruta: str) -> None:
     """Alterna el estado de exclusión de un documento.
 
-    Streamlit lanza automáticamente un rerun al terminar la callback,
-    de modo que el catálogo (que se re-lee en cada rerun, sin caché) y
-    todas las vistas que dependen de él (métrica superior, pestañas
-    Catálogo y Recomendar) reflejan la nueva lista de exclusiones de
-    forma inmediata, sin que el asesor tenga que recargar la página.
+    La callback persiste el cambio en \texttt{data/exclusions.json} y
+    fuerza un rerun completo del script con \texttt{st.rerun()}. El
+    rerun implícito que dispara Streamlit al terminar una callback
+    deja en algunos escenarios un ciclo intermedio en el que los
+    widgets con \texttt{key} fija ---el botón de exclusión y el icono
+    de la fila---  conservan su etiqueta anterior durante un
+    fotograma, dando la impresión al asesor de que el cambio no se ha
+    aplicado hasta recargar manualmente. Un \texttt{st.rerun()}
+    explícito reconstruye todo el árbol de widgets desde cero y
+    garantiza que la etiqueta del botón, el icono del panel y las
+    métricas superiores reflejen el nuevo estado en el mismo
+    fotograma.
     """
     excl = _cargar_exclusiones()
     if ruta in excl:
@@ -310,6 +317,7 @@ def _toggle_exclusion(ruta: str) -> None:
     else:
         excl.add(ruta)
     _guardar_exclusiones(excl)
+    st.rerun()
 
 
 def _guardar_documento_subido(uploaded_file, empresa: str) -> Path:
