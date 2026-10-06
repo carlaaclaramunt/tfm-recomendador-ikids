@@ -1,3 +1,37 @@
+[project]
+name = "tfm-recomendador-ikids"
+version = "1.0.0"
+description = "Sistema de recomendación de programas de inmersión lingüística para I-KIDS: extracción estructurada con LLM, recomendación multi-criterio y trazabilidad verificable."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Carla Claramunt Guix", email = "info@i-kids.es" },
+]
+license = { text = "MIT" }
+keywords = [
+    "recommender-system",
+    "mcdm",
+    "llm",
+    "structured-extraction",
+    "explainable-ai",
+    "verifiable-traceability",
+    "streamlit",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Repository = "https://github.com/carlaaclaramunt/tfm-recomendador-ikids"
+Demo = "https://tfm-ikids-recomendador.streamlit.app"
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
