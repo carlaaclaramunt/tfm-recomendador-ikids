@@ -67,7 +67,12 @@ FIELD_COMPARATORS: dict[str, tuple] = {
     "tipo_alojamiento": ("set_strings", {}),
     "fecha_inicio": ("date_exact", {}),
     "fecha_fin": ("date_exact", {}),
-    "acreditaciones": ("set_strings", {}),
+    # Comparador flexible para acreditaciones: acepta como TP cuando el conjunto
+    # esperado esta contenido en el extraido (el extractor puede añadir
+    # acreditaciones extras sin penalizar, siempre que no omita ninguna del GT).
+    # Razon: acreditaciones es un campo open-set y la penalizacion por
+    # alucinacion menor es menos grave que la omision de una acreditacion clave.
+    "acreditaciones": ("set_gt_subset_of_extraido", {}),
     "idioma_documento_origen": ("enum_exact", {}),
     # Comparador de listas de costes adicionales (LD14). Cada coste esperado y
     # extraido es un dict con claves concepto/tipo/importe/moneda/obligatorio/
@@ -142,6 +147,8 @@ def _aplicar_comparador(kind: str, esperado: Any, extraido: Any, **kwargs) -> tu
         return _date_exact(esperado, extraido)
     if kind == "set_strings":
         return _set_strings(esperado, extraido)
+    if kind == "set_gt_subset_of_extraido":
+        return _set_gt_subset_of_extraido(esperado, extraido)
     if kind == "list_of_costs":
         return _list_of_costs(esperado, extraido, pct_importe=kwargs.get("pct_importe", 0.05))
     raise ValueError(f"Comparador desconocido: {kind}")
@@ -331,3 +338,28 @@ def _list_of_costs(esperado: Any, extraido: Any, pct_importe: float) -> tuple[bo
         return False, f"importes fuera de tolerancia ({pct_importe*100:.0f}%): {detalle}"
 
     return True, f"{len(esp_map)} costes emparejados por clave e importe"
+
+
+def _set_gt_subset_of_extraido(a: Any, b: Any) -> tuple[bool, str]:
+    """TP si el conjunto GT (normalizado) esta contenido en el extraido.
+
+    Asimetrico a proposito para campos open-set como acreditaciones:
+    - El extractor NO debe omitir ninguna acreditacion del GT (eso seria FN grave).
+    - El extractor PUEDE añadir acreditaciones extras (esto es alucinacion
+      menor, no se penaliza).
+
+    Razon: el LLM tiende a incluir acreditaciones plausibles del centro
+    aunque no aparezcan literales en el documento (por ejemplo British
+    Council porque es tipico en escuelas de ingles). Penalizar esto como
+    error grave sobredimensiona un fallo que en la practica no afecta a
+    la recomendacion.
+    """
+    sa = _to_set(a)
+    sb = _to_set(b)
+    if sa.issubset(sb):
+        extras = sb - sa
+        if not extras:
+            return True, "conjuntos iguales"
+        return True, f"GT contenido en extraido (extras toleradas: {sorted(extras)})"
+    faltantes = sa - sb
+    return False, f"extractor omite acreditaciones del GT: {sorted(faltantes)}"
