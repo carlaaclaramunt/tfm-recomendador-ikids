@@ -667,6 +667,21 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
     """
     if key not in st.session_state:
         st.session_state[key] = list(opciones)
+    # Set de opciones ya vistas por este filtro a lo largo de la sesión.
+    # Permite distinguir entre "opción deseleccionada por el usuario"
+    # (debe permanecer fuera del maestro) y "opción nueva que acaba de
+    # aparecer en el catálogo" (debe entrar en el maestro por defecto).
+    # Caso típico: el estado documental ``excluido`` aparece por primera
+    # vez en el filtro cuando el asesor excluye el primer documento; sin
+    # esta distinción, el documento recién excluido quedaría filtrado
+    # fuera hasta que el usuario marcara manualmente la nueva opción.
+    known_key = f"{key}__known"
+    if known_key not in st.session_state:
+        st.session_state[known_key] = set(opciones)
+    nuevas = set(opciones) - st.session_state[known_key]
+    if nuevas:
+        st.session_state[key] = list(st.session_state[key]) + sorted(nuevas)
+        st.session_state[known_key] = st.session_state[known_key] | nuevas
     ver_key = f"{key}__ver"
     ver: int = st.session_state.get(ver_key, 0)
     seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
