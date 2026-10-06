@@ -628,9 +628,18 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
     El botón de disparo resume el estado activo (``todos (N)``, el nombre
     único cuando queda uno, o ``N de M`` en caso intermedio), de modo que
     el asesor ve de un vistazo qué filtros están activos sin
-    desplegarlos. Los botones de atajo escriben directamente el estado
-    de cada checkbox individual en ``st.session_state`` antes del
-    ``rerun`` para que la UI se mantenga sincronizada con la selección.
+    desplegarlos.
+
+    Nota de implementación: los botones ``Todos`` y ``Ninguno`` no
+    reescriben el estado interno de cada checkbox; en su lugar, lo
+    \textbf{borran} con ``pop()`` y actualizan sólo el estado maestro
+    (``st.session_state[key]``). Al reconstruirse en el siguiente run,
+    cada checkbox se instancia con el ``value=`` derivado del estado
+    maestro, de modo que la UI queda garantizadamente sincronizada
+    tanto en el popover activo como en los demás que puedan compartir
+    página. Mantener la escritura directa del estado por checkbox
+    producía una desincronización observable cuando se abría otro
+    popover tras una secuencia ``Ninguno → Todos``.
     """
     if key not in st.session_state:
         st.session_state[key] = list(opciones)
@@ -646,20 +655,22 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
         if c_all.button("Todos", key=f"{key}_all", use_container_width=True):
             st.session_state[key] = list(opciones)
             for opcion in opciones:
-                st.session_state[f"{key}_{opcion}"] = True
+                st.session_state.pop(f"{key}_{opcion}", None)
             st.rerun()
         if c_none.button("Ninguno", key=f"{key}_none", use_container_width=True):
             st.session_state[key] = []
             for opcion in opciones:
-                st.session_state[f"{key}_{opcion}"] = False
+                st.session_state.pop(f"{key}_{opcion}", None)
             st.rerun()
         st.divider()
         nueva: list[str] = []
         for opcion in opciones:
             ck_key = f"{key}_{opcion}"
-            if ck_key not in st.session_state:
-                st.session_state[ck_key] = opcion in seleccion_actual
-            marcada = st.checkbox(str(opcion), key=ck_key)
+            marcada = st.checkbox(
+                str(opcion),
+                value=opcion in seleccion_actual,
+                key=ck_key,
+            )
             if marcada:
                 nueva.append(opcion)
         st.session_state[key] = nueva
