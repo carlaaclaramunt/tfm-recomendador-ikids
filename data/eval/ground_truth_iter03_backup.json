@@ -1,0 +1,140 @@
+{
+  "version": "iter03_minima_semanal",
+  "fecha_anotacion": "2026-05-14",
+  "fuente": "notas/ground_truth_iteracion_03.md",
+  "tolerancia_precio_pct": 5.0,
+  "nota_semantica_precios": "Todos los precios están normalizados a €/semana. Los precios que aparecen como total del programa se dividen por la duración en semanas. La tolerancia del 5% cubre variaciones de conversión GBP→EUR y redondeo de la división por semanas.",
+  "campos_evaluados": [
+    "nombre",
+    "empresa_proveedora",
+    "pais",
+    "ciudad",
+    "idioma",
+    "edad_min",
+    "edad_max",
+    "duracion_min_dias",
+    "duracion_max_dias",
+    "precio_semanal_min_eur",
+    "precio_semanal_max_eur",
+    "tipo_alojamiento",
+    "fecha_inicio",
+    "fecha_fin",
+    "acreditaciones",
+    "idioma_documento_origen"
+  ],
+  "programas": [
+    {
+      "id": "berlitz_general_english",
+      "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
+      "match_nombre": "General English",
+      "campos": {
+        "nombre": {"esperado": "General English"},
+        "empresa_proveedora": {"esperado": "Berlitz"},
+        "pais": {"esperado": "Malta"},
+        "ciudad": {"esperado": "St. Julians"},
+        "idioma": {"esperado": "inglés"},
+        "edad_min": {"esperado": 0, "nota": "all ages → 0-99 (regla LD4)"},
+        "edad_max": {"esperado": 99},
+        "duracion_min_dias": {"esperado": 7},
+        "duracion_max_dias": {"esperado": null, "ausente_doc": true, "nota": "curso abierto, sin tope"},
+        "precio_semanal_min_eur": {"esperado": 280, "nota": "PRICE LIST 2026, pág. 31, precio por semana ya literal"},
+        "precio_semanal_max_eur": {"esperado": 825, "nota": "PRICE LIST 2026, pág. 31, precio por semana ya literal"},
+        "tipo_alojamiento": {"esperado": ["familia", "otro"], "nota": "familia + apartamento (apartamento → otro en enum actual)"},
+        "fecha_inicio": {"esperado": null, "ausente_doc": true, "nota": "Every Monday → sin fecha fija"},
+        "fecha_fin": {"esperado": null, "ausente_doc": true},
+        "idioma_documento_origen": {"esperado": "en"}
+      }
+    },
+    {
+      "id": "berlitz_net_prices_closed_groups",
+      "pdf": "data/raw/Berlitz/NET Prices for Closed Groups 2026 - Sample of a group 15 students + 1 leader.pdf",
+      "match_nombre": "Closed Groups Mini Stay",
+      "campos": {
+        "nombre": {"esperado": "Closed Groups Mini Stay", "nota": "doc B2B, no folleto cliente final"},
+        "empresa_proveedora": {"esperado": "Berlitz"},
+        "pais": {"esperado": "Malta"},
+        "ciudad": {"esperado": null, "ausente_doc": true, "nota": "Sliema implícito, no literal"},
+        "idioma": {"esperado": "inglés"},
+        "edad_min": {"esperado": 15, "nota": "low season; high season 16+"},
+        "edad_max": {"esperado": null, "ausente_doc": true},
+        "duracion_min_dias": {"esperado": 7, "nota": "tarifas modulares por semana"},
+        "duracion_max_dias": {"esperado": null, "ausente_doc": true, "nota": "sin máximo, modular"},
+        "precio_semanal_min_eur": {"esperado": 232, "nota": "232€/sem solo tuition; ya expresado por semana en el doc"},
+        "precio_semanal_max_eur": {"esperado": 580, "nota": "580€/sem high season completo per student; ya por semana"},
+        "tipo_alojamiento": {"esperado": ["familia", "hotel"]},
+        "fecha_inicio": {"esperado": null, "ausente_doc": true, "nota": "vigencia comercial, no fecha de programa"},
+        "fecha_fin": {"esperado": null, "ausente_doc": true},
+        "idioma_documento_origen": {"esperado": "en"}
+      }
+    },
+    {
+      "id": "dbs_dublin_elite_soccer",
+      "pdf": "data/raw/DBS/IKIDS DBS Dublin Elite Soccer and English-canva-040326.pdf",
+      "match_nombre": "High performance football & English learning - Summer Camp Experience in Ireland",
+      "campos": {
+        "nombre": {"esperado": "High performance football & English learning - Summer Camp Experience in Ireland"},
+        "empresa_proveedora": {"esperado": "DBS", "nota": "alianza DBS + Future Learning + i-kids; partners aparte"},
+        "pais": {"esperado": "Irlanda"},
+        "ciudad": {"esperado": "Dublín"},
+        "idioma": {"esperado": "inglés"},
+        "edad_min": {"esperado": 12},
+        "edad_max": {"esperado": 17},
+        "duracion_min_dias": {"esperado": 7},
+        "duracion_max_dias": {"esperado": 35},
+        "precio_semanal_min_eur": {"esperado": 1850.5, "nota": "3701€/2sem = 1850.5€/sem (opción 2 semanas, menor €/sem)"},
+        "precio_semanal_max_eur": {"esperado": 1992, "nota": "1992€/1sem = 1992€/sem (opción más cara por semana)"},
+        "tipo_alojamiento": {"esperado": ["residencia"]},
+        "fecha_inicio": {"esperado": "2026-06-29"},
+        "fecha_fin": {"esperado": "2026-07-31"},
+        "acreditaciones": {"esperado": ["UEFA A", "UEFA Pro", "FIFA", "FAI"]},
+        "idioma_documento_origen": {"esperado": "ca"}
+      }
+    },
+    {
+      "id": "nsx_woodbridge_gross_prices",
+      "pdf": "data/raw/NSX/NSX 2026 - Gross Prices.pdf",
+      "match_nombre": "NSX at Woodbridge School",
+      "campos": {
+        "nombre": {"esperado": "NSX at Woodbridge School"},
+        "empresa_proveedora": {"esperado": "NSX"},
+        "pais": {"esperado": "Reino Unido"},
+        "ciudad": {"esperado": "Woodbridge"},
+        "idioma": {"esperado": "inglés"},
+        "edad_min": {"esperado": null, "ausente_doc": true, "nota": "hoja de precios, sin edades"},
+        "edad_max": {"esperado": null, "ausente_doc": true},
+        "duracion_min_dias": {"esperado": 14, "nota": "two weeks programme"},
+        "duracion_max_dias": {"esperado": 14},
+        "precio_semanal_min_eur": {"esperado": 1720.5, "nota": "£2940/2sem × 1.17 = 1720.5€/sem (English+ base)"},
+        "precio_semanal_max_eur": {"esperado": 2071, "nota": "£3540/2sem × 1.17 = 2070.9€/sem (English+ Tennis)"},
+        "tipo_alojamiento": {"esperado": ["residencia"]},
+        "fecha_inicio": {"esperado": "2026-07-05"},
+        "fecha_fin": {"esperado": "2026-08-01", "nota": "doc tiene 2 turnos; el LLM los junta"},
+        "acreditaciones": {"esperado": ["TEFL"], "nota": "TEFL certified teachers"},
+        "idioma_documento_origen": {"esperado": "en"}
+      }
+    },
+    {
+      "id": "nsx_millfield_summer_guide",
+      "pdf": "data/raw/NSX/NSX 2026 Summer School Guide - Millfield School.pdf",
+      "match_nombre": "Millfield School",
+      "campos": {
+        "nombre": {"esperado": "Millfield School", "nota": "nombre de sede, no de programa"},
+        "empresa_proveedora": {"esperado": "NSX"},
+        "pais": {"esperado": "Reino Unido"},
+        "ciudad": {"esperado": "Street, Somerset"},
+        "idioma": {"esperado": "inglés"},
+        "edad_min": {"esperado": 14},
+        "edad_max": {"esperado": 17},
+        "duracion_min_dias": {"esperado": 14},
+        "duracion_max_dias": {"esperado": 14},
+        "precio_semanal_min_eur": {"esperado": null, "ausente_doc": true, "nota": "no hay precios en este doc (están en NSX Gross Prices)"},
+        "precio_semanal_max_eur": {"esperado": null, "ausente_doc": true},
+        "tipo_alojamiento": {"esperado": ["residencia"]},
+        "fecha_inicio": {"esperado": "2026-07-05"},
+        "fecha_fin": {"esperado": "2026-08-01", "nota": "combina dos turnos"},
+        "acreditaciones": {"esperado": ["TEFL"]},
+        "idioma_documento_origen": {"esperado": "en"}
+      }
+    }
+  ]
+}

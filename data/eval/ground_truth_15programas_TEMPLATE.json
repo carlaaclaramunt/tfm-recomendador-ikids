@@ -37,7 +37,7 @@
       "id": "berlitz_general_english_20_16",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "General English 20",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -128,10 +128,14 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -236,7 +240,7 @@
       "id": "berlitz_general_intensive_english_30_01",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "General Intensive English 30",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -331,8 +335,9 @@
         },
         "acreditaciones": {
           "esperado": [
-            "Berlitz Certificate",
-            "ELA Certificate"
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
           ],
           "ausente_doc": false,
           "extraido_actual": [
@@ -341,7 +346,7 @@
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -461,7 +466,7 @@
       "id": "berlitz_business_english_20_17",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Business English 20",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -552,10 +557,14 @@
           "nota": "a elegir"
         },
         "acreditaciones": {
-          "esperado": null,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
           "ausente_doc": false,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -660,7 +669,7 @@
       "id": "berlitz_intensive_business_english_30_02",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Intensive Business English 30",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs). En la PRICE LIST 2026 hay: Registration Fee €30, Digital Course Material €35 first level + €20 per level, Insurance €14/sem (opcional), Transfer one way €25, Transfer Return €48, Visa Admin €50, Minor Fee Homestay €10/día, ECO Tax €0.50/noche (máx €5). Pendiente: iteración C — extender extractor + comparador. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -755,6 +764,8 @@
         },
         "acreditaciones": {
           "esperado": [
+            "FELTOM",
+            "EAQUALS",
             "Berlitz Certificate"
           ],
           "ausente_doc": false,
@@ -764,7 +775,7 @@
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -884,7 +895,7 @@
       "id": "berlitz_private_lessons_1_to_1_20_03",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Private Lessons 1-to-1 20",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "costes adicionales NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs). En la PRICE LIST 2026 hay: Registration Fee €30, Digital Course Material €35 first level + €20 per level, Insurance €14/sem (opcional), Transfer one way €25, Transfer Return €48, Visa Admin €50, Minor Fee Homestay €10/día, ECO Tax €0.50/noche (máx €5). Pendiente: iteración C — extender extractor + comparador. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -979,6 +990,8 @@
         },
         "acreditaciones": {
           "esperado": [
+            "FELTOM",
+            "EAQUALS",
             "Berlitz Certificate"
           ],
           "ausente_doc": false,
@@ -988,7 +1001,7 @@
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -1108,7 +1121,7 @@
       "id": "berlitz_conversation_10_group_18",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Conversation 10 (Group)",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -1199,10 +1212,14 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
           "ausente_doc": false,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -1307,7 +1324,7 @@
       "id": "berlitz_private_electives_10_19",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Private Electives 10",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "FALSO NEGATIVO — programa presente en la PRICE LIST 2026 pero NO extraído por el sistema en iter 12. Se espera que todos los campos con esperado no-null generen FN. | OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -1398,10 +1415,14 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -1506,7 +1527,7 @@
       "id": "berlitz_exam_preparation_04",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Exam Preparation",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -1601,14 +1622,13 @@
         },
         "acreditaciones": {
           "esperado": [
-            "British Council",
             "FELTOM",
             "EAQUALS",
+            "Berlitz Certificate",
             "IELTS",
             "Cambridge",
             "TOEFL iBT",
-            "TOEIC",
-            "Berlitz Certificate"
+            "TOEIC"
           ],
           "ausente_doc": false,
           "extraido_actual": [
@@ -1621,7 +1641,7 @@
             "TOEIC",
             "Berlitz Certificate"
           ],
-          "nota": "acreditaciones del centro (FELTOM asociacion Malta, EAQUALS acreditacion europea); Berlitz Certificate es metodologia propia"
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -1741,7 +1761,7 @@
       "id": "berlitz_total_immersion_executive_programme_06",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Total Immersion - Executive Programme",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -1835,15 +1855,19 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": [
             "British Council",
             "FELTOM",
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -1963,14 +1987,14 @@
       "id": "berlitz_teacher_training_clil_05",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Teacher Training: CLIL",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
-          "esperado": null,
+          "esperado": "Teacher Training: CLIL",
           "ausente_doc": false,
           "extraido_actual": "Teacher Training: CLIL",
-          "nota": ""
+          "nota": "titulo canonico del programa segun catalogo"
         },
         "empresa_proveedora": {
           "esperado": "Berlitz",
@@ -2057,15 +2081,19 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": [
             "British Council",
             "FELTOM",
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -2276,10 +2304,14 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": null,
-          "nota": "acreditaciones del centro Berlitz ELA Malta (FELTOM+EAQUALS) y metodologia propia"
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -2384,7 +2416,7 @@
       "id": "berlitz_50_programme_07",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "50+ Programme",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -2478,15 +2510,19 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": [
             "British Council",
             "FELTOM",
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -2657,7 +2693,7 @@
       "id": "berlitz_family_packages_08",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Family Packages",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -2751,15 +2787,19 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": [
             "British Council",
             "FELTOM",
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -2879,7 +2919,7 @@
       "id": "berlitz_youth_camps_easter_09",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Youth Camps - Easter",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -2931,10 +2971,10 @@
           "nota": ""
         },
         "duracion_max_dias": {
-          "esperado": 7,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "1 turno son 14 dias (2 semanas). El encadenamiento de turnos hasta durar mas queda documentado en 'turnos' (LD19)"
         },
         "precio_semanal_min_eur": {
           "esperado": 825,
@@ -2973,15 +3013,19 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": [
             "British Council",
             "FELTOM",
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -3159,10 +3203,10 @@
           "nota": "un turno individual dura 13-14 dias. El estudiante puede elegir 1, 2 o 3 turnos consecutivos"
         },
         "duracion_max_dias": {
-          "esperado": 41,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": null,
-          "nota": "3 turnos consecutivos encadenados: 5 jul (inicio turno 1) al 14 ago (fin turno 3) = 41 dias"
+          "nota": "1 turno son 14 dias. Los 3 turnos encadenables (hasta 41 dias) quedan documentados en 'turnos' (LD19). El max literal por turno es 14"
         },
         "precio_semanal_min_eur": {
           "esperado": 1570,
@@ -3198,10 +3242,14 @@
           "nota": "fin del ultimo turno. Ventana global del programa"
         },
         "acreditaciones": {
-          "esperado": null,
-          "ausente_doc": true,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "ausente_doc": false,
           "extraido_actual": null,
-          "nota": "acreditaciones del centro Berlitz ELA Malta"
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -3240,7 +3288,7 @@
       "id": "berlitz_closed_groups_tailor_made_10",
       "pdf": "data/raw/Berlitz/Berlitz ELA 2026.pdf",
       "match_nombre": "Closed Groups - Tailor Made",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "OPCIÓN A (iter 12 GT): costes adicionales de Berlitz NO capturados por el extractor y NO evaluados en este GT (falta comparador list_of_costs).\n\nTarifas fijas del centro (PRICE LIST 2026, sección Fees):\n  - Registration: 30 EUR, obligatorio\n  - Course Material first level: 35 EUR, obligatorio\n  - Course Material additional levels: 20 EUR, obligatorio (si aplica)\n  - Visa Administration: 50 EUR, obligatorio (solo si el estudiante necesita visado)\n  - Insurance per week: 14 EUR/sem, opcional\n  - Transfer one way: 25 EUR, opcional\n  - Transfer Return: 48 EUR, opcional\n\nTarifas contextuales adicionales (secciones ACCOMMODATION y TERMS):\n  - Minor Fee Homestay: 10 EUR/dia (menores alojados en familia)\n  - ECO Tax Malta: 0.50 EUR/noche, maximo 5 EUR/estancia (adultos 18+)\n\nPendiente: iteracion C — extender extractor + comparador list_of_costs.",
       "campos": {
         "nombre": {
@@ -3334,7 +3382,11 @@
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "British Council",
@@ -3342,7 +3394,7 @@
             "EAQUALS",
             "Berlitz Certificate"
           ],
-          "nota": ""
+          "nota": "acreditaciones del centro Berlitz ELA Malta: FELTOM (asociacion nacional Malta), EAQUALS (europea) y Berlitz Certificate (metodologia propia). Aplicables a todos los programas del centro. En Exam Preparation se añaden certificaciones especificas de examen (IELTS, Cambridge, TOEFL, TOEIC)."
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -3462,14 +3514,14 @@
       "id": "berlitz_english_language_closed_groups_mini_stay_11",
       "pdf": "data/raw/Berlitz/NET Prices for Closed Groups 2026 - Sample of a group 15 students + 1 leader.pdf",
       "match_nombre": "English Language Closed Groups Mini Stay",
-      "revisado": false,
-      "notas_globales": "",
+      "revisado": true,
+      "notas_globales": "Documento B2B de tarifas netas para grupos cerrados (min 15 estudiantes + 1 lider). NO es folleto para cliente final. El precio final al cliente NO es el que aparece aqui: es el precio neto de proveedor sobre el que I-KIDS aplica su margen comercial. El programa es un configurable con multiples opciones (curso, alojamiento, actividades, temporada) — el rango de precio min-max del GT captura la horquilla realista pero el desglose completo queda para LD8 pendiente. El propio doc marca como sample el paquete 'Jan homestay + Pack 1' con 517.05 EUR/sem por estudiante, valor intermedio dentro del rango anotado (418-1452 EUR/sem).",
       "campos": {
         "nombre": {
-          "esperado": null,
+          "esperado": "Closed Groups Mini Stay",
           "ausente_doc": false,
           "extraido_actual": "English Language Closed Groups Mini Stay",
-          "nota": "AQUIII"
+          "nota": "titulo canonico del programa; doc B2B distinto del catalogo comercial Berlitz ELA 2026"
         },
         "empresa_proveedora": {
           "esperado": "Berlitz",
@@ -3484,10 +3536,10 @@
           "nota": ""
         },
         "ciudad": {
-          "esperado": "St. Julians",
-          "ausente_doc": false,
+          "esperado": null,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": "sede en St. Julians, Malta"
+          "nota": "Sliema/St. Julians implicito por ser Berlitz Malta, pero no literal en este doc"
         },
         "idioma": {
           "esperado": "inglés",
@@ -3496,67 +3548,70 @@
           "nota": ""
         },
         "edad_min": {
-          "esperado": null,
+          "esperado": 15,
           "ausente_doc": false,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "15+ low season (Jan-May); high season sube a 16+ (Jul)"
         },
         "edad_max": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "no se especifica tope maximo en el doc"
         },
         "duracion_min_dias": {
-          "esperado": null,
+          "esperado": 7,
           "ausente_doc": false,
           "extraido_actual": 7,
-          "nota": ""
+          "nota": "tarifas modulares por semana; sample del doc es 1 week (7 nights)"
         },
         "duracion_max_dias": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": 7,
-          "nota": ""
+          "nota": "modular sin tope explicito, semanas encadenables"
         },
         "precio_semanal_min_eur": {
-          "esperado": null,
+          "esperado": 418,
           "ausente_doc": false,
           "extraido_actual": 232.0,
-          "nota": ""
+          "nota": "opcion mas barata realista: General English 20 lessons (155) + compulsory fees Registration+Material+Transfer (77) + Homestay shared room half board low season (186). Excluye la opcion artificial de 232 EUR (solo tuition sin alojamiento). LD8 pendiente para desglose completo por componentes."
         },
         "precio_semanal_max_eur": {
-          "esperado": null,
+          "esperado": 1452,
           "ausente_doc": false,
           "extraido_actual": 276.0,
-          "nota": ""
+          "nota": "opcion completa top: Business English 30 lessons (276) + compulsory fees (77) + Hotel Plaza Sliema single BB April 2026 (728) + Pack 4 actividades (165) + extras opcionales Insurance + Packed Lunches + Dinners (206). Doc B2B configurable con muchas combinaciones (LD8 pendiente)."
         },
         "tipo_alojamiento": {
-          "esperado": null,
+          "esperado": [
+            "familia",
+            "hotel"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "familia",
             "hotel"
           ],
-          "nota": ""
+          "nota": "Homestay (familia) + Hotel Canifor + Hotel Plaza Sliema. En este doc B2B no aparecen apartamentos self-catering (a diferencia del catalogo Berlitz ELA 2026)."
         },
         "fecha_inicio": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "vigencia comercial (January to May 2026, y separadamente Jul 2026), no fecha concreta de programa"
         },
         "fecha_fin": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
           "nota": ""
         },
         "acreditaciones": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": [],
-          "nota": ""
+          "nota": "doc B2B de tarifas, no menciona acreditaciones del centro"
         },
         "idioma_documento_origen": {
           "esperado": "en",
@@ -3566,9 +3621,9 @@
         },
         "fechas_inicio_recurrentes": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "grupos cerrados a demanda, sin patron recurrente publico"
         }
       },
       "_referencia_extractor": {
@@ -3593,77 +3648,79 @@
       "id": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
       "pdf": "data/raw/DBS/IKIDS DBS Dublin Elite Soccer and English-canva-040326.pdf",
       "match_nombre": "High performance football & English learning Summer Camp Experience in Ireland",
-      "revisado": false,
+      "revisado": true,
       "notas_globales": "",
       "campos": {
         "nombre": {
-          "esperado": null,
+          "esperado": "High performance football & English learning Summer Camp Experience in Ireland",
           "ausente_doc": false,
           "extraido_actual": "High performance football & English learning Summer Camp Experience in Ireland",
           "nota": ""
         },
         "empresa_proveedora": {
-          "esperado": null,
+          "esperado": "DBS",
           "ausente_doc": false,
           "extraido_actual": "DBS",
           "nota": ""
         },
         "pais": {
-          "esperado": null,
+          "esperado": "Irlanda",
           "ausente_doc": false,
           "extraido_actual": "Irlanda",
           "nota": ""
         },
         "ciudad": {
-          "esperado": null,
+          "esperado": "Dublín",
           "ausente_doc": false,
           "extraido_actual": "Dublín",
           "nota": ""
         },
         "idioma": {
-          "esperado": null,
+          "esperado": "inglés",
           "ausente_doc": false,
           "extraido_actual": "inglés",
           "nota": ""
         },
         "edad_min": {
-          "esperado": null,
+          "esperado": 12,
           "ausente_doc": false,
           "extraido_actual": 12,
           "nota": ""
         },
         "edad_max": {
-          "esperado": null,
+          "esperado": 17,
           "ausente_doc": false,
           "extraido_actual": 17,
           "nota": ""
         },
         "duracion_min_dias": {
-          "esperado": null,
+          "esperado": 7,
           "ausente_doc": false,
           "extraido_actual": 7,
           "nota": ""
         },
         "duracion_max_dias": {
-          "esperado": null,
+          "esperado": 35,
           "ausente_doc": false,
           "extraido_actual": 35,
           "nota": ""
         },
         "precio_semanal_min_eur": {
-          "esperado": null,
+          "esperado": 1850,
           "ausente_doc": false,
           "extraido_actual": 1850.5,
           "nota": ""
         },
         "precio_semanal_max_eur": {
-          "esperado": null,
+          "esperado": 1992,
           "ausente_doc": false,
           "extraido_actual": 1992.0,
           "nota": ""
         },
         "tipo_alojamiento": {
-          "esperado": null,
+          "esperado": [
+            "residencia"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "residencia"
@@ -3672,18 +3729,23 @@
         },
         "fecha_inicio": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": "2026-06-29",
           "nota": ""
         },
         "fecha_fin": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": "2026-07-31",
           "nota": ""
         },
         "acreditaciones": {
-          "esperado": null,
+          "esperado": [
+            "UEFA A",
+            "UEFA Pro",
+            "FIFA",
+            "FAI"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "UEFA A",
@@ -3694,14 +3756,14 @@
           "nota": ""
         },
         "idioma_documento_origen": {
-          "esperado": null,
+          "esperado": "ca",
           "ausente_doc": false,
           "extraido_actual": "ca",
           "nota": ""
         },
         "fechas_inicio_recurrentes": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
           "nota": ""
         }
@@ -3741,114 +3803,116 @@
       "id": "nsx_nsx_at_woodbridge_school_13",
       "pdf": "data/raw/NSX/NSX 2026 - Gross Prices.pdf",
       "match_nombre": "NSX at Woodbridge School",
-      "revisado": false,
-      "notas_globales": "",
+      "revisado": true,
+      "notas_globales": "Programa NSX at Woodbridge School (Suffolk, UK) extraido de la hoja de tarifas B2B 'NSX 2026 - Gross Prices.pdf'. A diferencia de Millfield, Woodbridge NO tiene documento complementario descriptivo en el corpus, por lo que edades, acreditaciones y descripcion detallada del programa quedan como ausente_doc. Precios en NETO (25% comision de agente no incluida). 2 turnos de 2 semanas encadenables (5 jul - 18 jul, 19 jul - 1 ago). Variantes con sobreprecio: English+ Horse Riding (+£565) y English+ Tennis (+£600). El extractor ya captura estas variantes en cursos_especialistas (LD18).",
       "campos": {
         "nombre": {
-          "esperado": null,
+          "esperado": "NSX at Woodbridge School",
           "ausente_doc": false,
           "extraido_actual": "NSX at Woodbridge School",
-          "nota": ""
+          "nota": "titulo canonico del programa segun el pricing sheet"
         },
         "empresa_proveedora": {
-          "esperado": null,
+          "esperado": "NSX",
           "ausente_doc": false,
           "extraido_actual": "NSX",
-          "nota": ""
+          "nota": "NSX Group"
         },
         "pais": {
-          "esperado": null,
+          "esperado": "Reino Unido",
           "ausente_doc": false,
           "extraido_actual": "Reino Unido",
           "nota": ""
         },
         "ciudad": {
-          "esperado": null,
+          "esperado": "Woodbridge",
           "ausente_doc": false,
           "extraido_actual": "Woodbridge",
-          "nota": ""
+          "nota": "Woodbridge, Suffolk (UK). El PDF Gross Prices no especifica el condado pero la sede es Woodbridge School"
         },
         "idioma": {
-          "esperado": null,
+          "esperado": "inglés",
           "ausente_doc": false,
           "extraido_actual": "inglés",
           "nota": ""
         },
         "edad_min": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "doc de tarifas B2B, no menciona edades. No hay PDF complementario descriptivo de Woodbridge en el corpus (a diferencia de Millfield)"
         },
         "edad_max": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
           "nota": ""
         },
         "duracion_min_dias": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "un turno de 2 semanas (5-18 jul o 19 jul-1 ago). El estudiante puede elegir 1 o 2 turnos consecutivos"
         },
         "duracion_max_dias": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "'two weeks programme' literal en el PDF. El encadenamiento de 2 turnos consecutivos (28 dias) queda documentado en 'turnos' (LD19)"
         },
         "precio_semanal_min_eur": {
-          "esperado": null,
+          "esperado": 1720,
           "ausente_doc": false,
           "extraido_actual": 1721.25,
-          "nota": ""
+          "nota": "PRECIO NETO de proveedor. Base English+ £2940/2sem × 1.17 (GBP->EUR) = 1720 EUR/sem. NO incluye comision 25% de agente. Precio final al cliente sera aprox +25% (~2150 EUR/sem). Doc tipo_documento=tarifa_b2b, el explainer avisa automaticamente"
         },
         "precio_semanal_max_eur": {
-          "esperado": null,
+          "esperado": 2071,
           "ausente_doc": false,
           "extraido_actual": 2071.75,
-          "nota": ""
+          "nota": "PRECIO NETO. Base + English+ Tennis (variante mas cara): (£2940+£600)/2sem × 1.17 = 2071 EUR/sem. La variante Horse Riding (+£565) queda intermedia (~2051). Ver LD18 (variantes con precio adicional)"
         },
         "tipo_alojamiento": {
-          "esperado": null,
+          "esperado": [
+            "residencia"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "residencia"
           ],
-          "nota": ""
+          "nota": "NSX Accommodation Blocks / residencia estudiantil. El Gross Prices no lo detalla pero es el formato estandar de summer camps NSX (residencial supervisado)"
         },
         "fecha_inicio": {
-          "esperado": null,
+          "esperado": "2026-07-05",
           "ausente_doc": false,
           "extraido_actual": "2026-07-05",
-          "nota": ""
+          "nota": "inicio del turno 1 de los 2 posibles"
         },
         "fecha_fin": {
-          "esperado": null,
+          "esperado": "2026-08-01",
           "ausente_doc": false,
           "extraido_actual": "2026-08-01",
-          "nota": ""
+          "nota": "fin del turno 2. Ventana global del programa (encadenable). Detalle de los 2 turnos en 'turnos' (LD19)"
         },
         "acreditaciones": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": [
             "TEFL"
           ],
-          "nota": ""
+          "nota": "doc de tarifas B2B, no menciona acreditaciones. Woodbridge no tiene guia descriptiva complementaria en el corpus"
         },
         "idioma_documento_origen": {
-          "esperado": null,
+          "esperado": "en",
           "ausente_doc": false,
           "extraido_actual": "en",
           "nota": ""
         },
         "fechas_inicio_recurrentes": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "2 turnos discretos, no patron recurrente. Ver 'turnos' en _referencia_extractor (LD19)"
         }
       },
       "_referencia_extractor": {
@@ -3903,114 +3967,116 @@
       "id": "nsx_nsx_at_millfield_school_14",
       "pdf": "data/raw/NSX/NSX 2026 - Gross Prices.pdf",
       "match_nombre": "NSX at Millfield School",
-      "revisado": false,
-      "notas_globales": "",
+      "revisado": true,
+      "notas_globales": "MISMO PROGRAMA FISICO que #15 Millfield School Summer Programme, visto desde el PDF de tarifas B2B 'NSX 2026 - Gross Prices.pdf'. Este doc aporta PRECIOS y FECHAS de los turnos. La descripcion pedagogica (edades 14-17, actividades, cursos especialistas Tennis+Football con partnership Jamie Murray, acreditacion TEFL) esta en el PDF complementario 'NSX 2026 Summer School Guide - Millfield School.pdf' (entrada #15). El modulo de fusion (src/curation/merge.py) NO las unifico porque los nombres son textualmente distintos y no alcanzan el umbral de similitud 0.65 — LD16 parcialmente resuelta. Precios en NETO (25% comision no incluida).",
       "campos": {
         "nombre": {
-          "esperado": null,
+          "esperado": "NSX at Millfield School",
           "ausente_doc": false,
           "extraido_actual": "NSX at Millfield School",
-          "nota": ""
+          "nota": "titulo canonico del programa segun el pricing sheet"
         },
         "empresa_proveedora": {
-          "esperado": null,
+          "esperado": "NSX",
           "ausente_doc": false,
           "extraido_actual": "NSX",
-          "nota": ""
+          "nota": "NSX Group"
         },
         "pais": {
-          "esperado": null,
+          "esperado": "Reino Unido",
           "ausente_doc": false,
           "extraido_actual": "Reino Unido",
           "nota": ""
         },
         "ciudad": {
-          "esperado": null,
+          "esperado": "Street, Somerset",
           "ausente_doc": false,
           "extraido_actual": "Millfield",
-          "nota": ""
+          "nota": "pueblo de Street en Somerset (UK), codigo postal BA16 0YD. El pricing sheet solo dice 'Millfield School' pero la sede real esta en Street. Info tomada de la guia complementaria (mismo programa fisico, ver notas_globales)"
         },
         "idioma": {
-          "esperado": null,
+          "esperado": "inglés",
           "ausente_doc": false,
           "extraido_actual": "inglés",
           "nota": ""
         },
         "edad_min": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "doc de tarifas B2B, no menciona edades. Las edades reales (14-17) estan en el PDF complementario 'NSX 2026 Summer School Guide - Millfield School.pdf' (entrada #15). LD16 parcialmente resuelta (fusion no consolidada)"
         },
         "edad_max": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
           "nota": ""
         },
         "duracion_min_dias": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "un turno de 2 semanas. El estudiante puede elegir 1 o 2 turnos consecutivos"
         },
         "duracion_max_dias": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "'two weeks programme' literal en el PDF. El encadenamiento de 2 turnos (28 dias) queda documentado en 'turnos' (LD19)"
         },
         "precio_semanal_min_eur": {
-          "esperado": null,
+          "esperado": 1974,
           "ausente_doc": false,
           "extraido_actual": 1978.13,
-          "nota": ""
+          "nota": "PRECIO NETO de proveedor. Base English+ £3375/2sem × 1.17 (GBP->EUR) = 1974 EUR/sem. NO incluye comision 25%. Precio final al cliente ~2470 EUR/sem con margen"
         },
         "precio_semanal_max_eur": {
-          "esperado": null,
+          "esperado": 2325,
           "ausente_doc": false,
           "extraido_actual": 2329.13,
-          "nota": ""
+          "nota": "PRECIO NETO. Base + English+ Tennis (variante mas cara): (£3375+£600)/2sem × 1.17 = 2325 EUR/sem. Variante Football (+£460) queda intermedia (~2243). Ver LD18"
         },
         "tipo_alojamiento": {
-          "esperado": null,
+          "esperado": [
+            "residencia"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "residencia"
           ],
-          "nota": ""
+          "nota": "NSX Accommodation Blocks. Info tomada de la guia complementaria (Gross Prices no lo detalla)"
         },
         "fecha_inicio": {
-          "esperado": null,
+          "esperado": "2026-07-05",
           "ausente_doc": false,
           "extraido_actual": "2026-07-05",
-          "nota": ""
+          "nota": "inicio del turno 1 de los 2 posibles"
         },
         "fecha_fin": {
-          "esperado": null,
+          "esperado": "2026-08-01",
           "ausente_doc": false,
           "extraido_actual": "2026-08-01",
-          "nota": ""
+          "nota": "fin del turno 2. Detalle en 'turnos' (LD19)"
         },
         "acreditaciones": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": [
             "TEFL"
           ],
-          "nota": ""
+          "nota": "doc de tarifas B2B, no menciona acreditaciones. TEFL aparece en el PDF complementario (entrada #15)"
         },
         "idioma_documento_origen": {
-          "esperado": null,
+          "esperado": "en",
           "ausente_doc": false,
           "extraido_actual": "en",
           "nota": ""
         },
         "fechas_inicio_recurrentes": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "2 turnos discretos, no patron recurrente. Ver 'turnos' en _referencia_extractor (LD19)"
         }
       },
       "_referencia_extractor": {
@@ -4065,114 +4131,118 @@
       "id": "nsx_millfield_school_summer_programme_15",
       "pdf": "data/raw/NSX/NSX 2026 Summer School Guide - Millfield School.pdf",
       "match_nombre": "Millfield School Summer Programme",
-      "revisado": false,
-      "notas_globales": "",
+      "revisado": true,
+      "notas_globales": "MISMO PROGRAMA FISICO que #14 NSX at Millfield School (ver esa entrada). Este doc es la guia descriptiva 'NSX 2026 Summer School Guide - Millfield School.pdf' y aporta EDADES (14-17), ACTIVIDADES y CURSOS ESPECIALISTAS (Specialist Course Tennis con partnership Active Away | Jamie Murray, Specialist Course Football), ALOJAMIENTO detallado y ACREDITACION TEFL. Los PRECIOS estan en el PDF complementario 'NSX 2026 - Gross Prices.pdf' (entrada #14). El sistema mantiene ambas entradas separadas por LD16 parcialmente resuelta — el modulo de fusion no las unifico porque los nombres son textualmente distintos y no alcanzan el umbral de similitud 0.65.",
       "campos": {
         "nombre": {
-          "esperado": null,
+          "esperado": "Millfield School Summer Programme",
           "ausente_doc": false,
           "extraido_actual": "Millfield School Summer Programme",
-          "nota": ""
+          "nota": "titulo canonico segun la guia descriptiva del programa"
         },
         "empresa_proveedora": {
-          "esperado": null,
+          "esperado": "NSX",
           "ausente_doc": false,
           "extraido_actual": "NSX",
-          "nota": ""
+          "nota": "NSX Group"
         },
         "pais": {
-          "esperado": null,
+          "esperado": "Reino Unido",
           "ausente_doc": false,
           "extraido_actual": "Reino Unido",
           "nota": ""
         },
         "ciudad": {
-          "esperado": null,
+          "esperado": "Street, Somerset",
           "ausente_doc": false,
           "extraido_actual": "Street, Somerset",
-          "nota": ""
+          "nota": "pueblo de Street en Somerset (UK), codigo postal BA16 0YD. Se anade 'Somerset' al valor para desambiguar (Street es tambien 'calle' en ingles)"
         },
         "idioma": {
-          "esperado": null,
+          "esperado": "inglés",
           "ausente_doc": false,
           "extraido_actual": "inglés",
           "nota": ""
         },
         "edad_min": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "Age Guide: 14 to 17 (explicito en la guia)"
         },
         "edad_max": {
-          "esperado": null,
+          "esperado": 17,
           "ausente_doc": false,
           "extraido_actual": 17,
           "nota": ""
         },
         "duracion_min_dias": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "un turno de 2 semanas (encadenable). Fechas concretas en la guia"
         },
         "duracion_max_dias": {
-          "esperado": null,
+          "esperado": 14,
           "ausente_doc": false,
           "extraido_actual": 14,
-          "nota": ""
+          "nota": "'two weeks programme' literal en la guia. Encadenamiento en 'turnos' (LD19)"
         },
         "precio_semanal_min_eur": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "esta guia NO contiene precios. Los precios estan en el PDF complementario 'NSX 2026 - Gross Prices.pdf' (entrada #14)"
         },
         "precio_semanal_max_eur": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "idem — precios en la entrada #14"
         },
         "tipo_alojamiento": {
-          "esperado": null,
+          "esperado": [
+            "residencia"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "residencia"
           ],
-          "nota": ""
+          "nota": "'1 to 4 bedded rooms with shared bathrooms' en NSX Accommodation Blocks (residencia)"
         },
         "fecha_inicio": {
-          "esperado": null,
+          "esperado": "2026-07-05",
           "ausente_doc": false,
           "extraido_actual": "2026-07-05",
-          "nota": ""
+          "nota": "inicio del turno 1 de los 2 posibles"
         },
         "fecha_fin": {
-          "esperado": null,
+          "esperado": "2026-08-01",
           "ausente_doc": false,
           "extraido_actual": "2026-08-01",
-          "nota": ""
+          "nota": "fin del turno 2. Detalle en 'turnos' (LD19)"
         },
         "acreditaciones": {
-          "esperado": null,
+          "esperado": [
+            "TEFL"
+          ],
           "ausente_doc": false,
           "extraido_actual": [
             "TEFL"
           ],
-          "nota": ""
+          "nota": "'English lessons with TEFL certified teachers' explicito en la seccion Programme Includes"
         },
         "idioma_documento_origen": {
-          "esperado": null,
+          "esperado": "en",
           "ausente_doc": false,
           "extraido_actual": "en",
           "nota": ""
         },
         "fechas_inicio_recurrentes": {
           "esperado": null,
-          "ausente_doc": false,
+          "ausente_doc": true,
           "extraido_actual": null,
-          "nota": ""
+          "nota": "2 turnos discretos encadenables. Ver 'turnos' en _referencia_extractor (LD19)"
         }
       },
       "_referencia_extractor": {

@@ -1,0 +1,2950 @@
+{
+  "fecha": "2026-09-25T12:58:05",
+  "version_gt": "iter12_15+4_TEMPLATE_ordenado_pricelist",
+  "n_programas_gt": 21,
+  "n_programas_emparejados": 20,
+  "macro_f1": 0.8427,
+  "programas_sin_match": [
+    "berlitz_conversation_10_group_18"
+  ],
+  "por_campo": {
+    "nombre": {
+      "tp": 17,
+      "fp": 3,
+      "fn": 1,
+      "tn": 0,
+      "precision": 0.85,
+      "recall": 0.9444,
+      "f1": 0.8947,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "similitud 0.74 ≥ 0.7",
+          "esperado": "General English 20",
+          "extraido": "General Intensive English 30"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "General Intensive English 30",
+          "extraido": "General Intensive English 30"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "similitud 0.75 ≥ 0.7",
+          "esperado": "Business English 20",
+          "extraido": "Intensive Business English 30"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Intensive Business English 30",
+          "extraido": "Intensive Business English 30"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Private Lessons 1-to-1 20",
+          "extraido": "Private Lessons 1-to-1 20"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "Conversation 10 (Group)",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "divergencia (similitud 0.62 < 0.7, GT no contenido): GT='Private Electives 10', extraído='Private Lessons 1-to-1 20'",
+          "esperado": "Private Electives 10",
+          "extraido": "Private Lessons 1-to-1 20"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Exam Preparation",
+          "extraido": "Exam Preparation"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "FP",
+          "razon": "divergencia (similitud 0.35 < 0.7, GT no contenido): GT='EXECUTIVE PROGRAMME: Total Immersion - Intensive Individual Instruction', extraído='Total Immersion - Executive Programme'",
+          "esperado": "EXECUTIVE PROGRAMME: Total Immersion - Intensive Individual Instruction",
+          "extraido": "Total Immersion - Executive Programme"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Teacher Training: CLIL",
+          "extraido": "Teacher Training: CLIL"
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "FP",
+          "razon": "divergencia (similitud 0.57 < 0.7, GT no contenido): GT='Specialised Programmes', extraído='50+ Programme'",
+          "esperado": "Specialised Programmes",
+          "extraido": "50+ Programme"
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "50+ Programme",
+          "extraido": "50+ Programme"
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Family Packages",
+          "extraido": "Family Packages"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Youth Camps - Easter",
+          "extraido": "Youth Camps - Easter"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "similitud 0.85 ≥ 0.7",
+          "esperado": "Youth Camps - Summer",
+          "extraido": "Youth Camps - Easter"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Closed Groups",
+          "extraido": "Closed Groups - Tailor Made"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Closed Groups Mini Stay",
+          "extraido": "English Language Closed Groups Mini Stay"
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "High performance football & English learning Summer Camp Experience in Ireland",
+          "extraido": "High performance football & English learning Summer Camp Experience in Ireland"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "NSX at Woodbridge School",
+          "extraido": "NSX at Woodbridge School"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "NSX at Millfield School",
+          "extraido": "NSX at Millfield School"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraído (asimétrico)",
+          "esperado": "Millfield School Summer Programme",
+          "extraido": "Millfield School Summer Programme"
+        }
+      ]
+    },
+    "empresa_proveedora": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 1,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 0.9524,
+      "f1": 0.9756,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "Berlitz",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "Berlitz",
+          "extraido": "Berlitz"
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "DBS",
+          "extraido": "DBS"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "NSX",
+          "extraido": "NSX"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "NSX",
+          "extraido": "NSX"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.6",
+          "esperado": "NSX",
+          "extraido": "NSX"
+        }
+      ]
+    },
+    "pais": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 1,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 0.9524,
+      "f1": 0.9756,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "Malta",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Malta",
+          "extraido": "Malta"
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Irlanda",
+          "extraido": "Irlanda"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Reino Unido",
+          "extraido": "Reino Unido"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Reino Unido",
+          "extraido": "Reino Unido"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Reino Unido",
+          "extraido": "Reino Unido"
+        }
+      ]
+    },
+    "ciudad": {
+      "tp": 18,
+      "fp": 1,
+      "fn": 1,
+      "tn": 1,
+      "precision": 0.9474,
+      "recall": 0.9474,
+      "f1": 0.9474,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "St. Julians",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "St. Julians",
+          "extraido": "St. Julians"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "Dublín",
+          "extraido": "Dublín"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "Woodbridge",
+          "extraido": "Woodbridge"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "FP",
+          "razon": "divergencia (similitud 0.08 < 0.75): GT='Street, Somerset', extraído='Millfield'",
+          "esperado": "Street, Somerset",
+          "extraido": "Millfield"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "similitud 1.00 ≥ 0.75",
+          "esperado": "Street, Somerset",
+          "extraido": "Street, Somerset"
+        }
+      ]
+    },
+    "idioma": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 1,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 0.9524,
+      "f1": 0.9756,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "inglés",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "inglés",
+          "extraido": "inglés"
+        }
+      ]
+    },
+    "edad_min": {
+      "tp": 14,
+      "fp": 3,
+      "fn": 2,
+      "tn": 2,
+      "precision": 0.8235,
+      "recall": 0.875,
+      "f1": 0.8485,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 0,
+          "extraido": 0
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 0,
+          "extraido": 0
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 16,
+          "extraido": 16
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 16,
+          "extraido": 16
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 0,
+          "extraido": 0
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": 16,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "divergencia (numérico exacto): GT=16, extraído=0",
+          "esperado": 16,
+          "extraido": 0
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 16,
+          "extraido": 16
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 18,
+          "extraido": 18
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=18",
+          "esperado": null,
+          "extraido": 18
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=50",
+          "esperado": null,
+          "extraido": 50
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 50,
+          "extraido": 50
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 0,
+          "extraido": 0
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 13,
+          "extraido": 13
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 13,
+          "extraido": 13
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 13,
+          "extraido": 13
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "FN",
+          "razon": "omisión: GT=15, extraído vacío",
+          "esperado": 15,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 12,
+          "extraido": 12
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        }
+      ]
+    },
+    "edad_max": {
+      "tp": 9,
+      "fp": 1,
+      "fn": 0,
+      "tn": 10,
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1": 0.9474,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 99,
+          "extraido": 99
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 99,
+          "extraido": 99
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 99,
+          "extraido": 99
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=99",
+          "esperado": null,
+          "extraido": 99
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 99,
+          "extraido": 99
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 17,
+          "extraido": 17
+        }
+      ]
+    },
+    "duracion_min_dias": {
+      "tp": 15,
+      "fp": 5,
+      "fn": 1,
+      "tn": 0,
+      "precision": 0.75,
+      "recall": 0.9375,
+      "f1": 0.8333,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "FP",
+          "razon": "divergencia (numérico exacto): GT=5, extraído=7",
+          "esperado": 5,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": 7,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=7",
+          "esperado": null,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 28,
+          "extraido": 28
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=7",
+          "esperado": null,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=7",
+          "esperado": null,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "FP",
+          "razon": "divergencia (numérico exacto): GT=13, extraído=7",
+          "esperado": 13,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 7,
+          "extraido": 7
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 14,
+          "extraido": 14
+        }
+      ]
+    },
+    "duracion_max_dias": {
+      "tp": 1,
+      "fp": 6,
+      "fn": 0,
+      "tn": 13,
+      "precision": 0.1429,
+      "recall": 1.0,
+      "f1": 0.25,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=14",
+          "esperado": null,
+          "extraido": 14
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=14",
+          "esperado": null,
+          "extraido": 14
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=7",
+          "esperado": null,
+          "extraido": 7
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "numérico exacto",
+          "esperado": 35,
+          "extraido": 35
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=14",
+          "esperado": null,
+          "extraido": 14
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=14",
+          "esperado": null,
+          "extraido": 14
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=14",
+          "esperado": null,
+          "extraido": 14
+        }
+      ]
+    },
+    "precio_semanal_min_eur": {
+      "tp": 11,
+      "fp": 5,
+      "fn": 1,
+      "tn": 4,
+      "precision": 0.6875,
+      "recall": 0.9167,
+      "f1": 0.7857,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 210,
+          "extraido": 210.0
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 27.6% > 5%): GT=290, extraído=210.0",
+          "esperado": 290,
+          "extraido": 210.0
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 250,
+          "extraido": 250.0
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 37.5% > 5%): GT=400, extraído=250.0",
+          "esperado": 400,
+          "extraido": 250.0
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 750,
+          "extraido": 750.0
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": 120,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 40.0% > 5%): GT=450, extraído=750.0",
+          "esperado": 450,
+          "extraido": 750.0
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 300,
+          "extraido": 300.0
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 2650,
+          "extraido": 2650.0
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 330,
+          "extraido": 330.0
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "diferencia 4.8% ≤ 5%",
+          "esperado": 825,
+          "extraido": 785.0
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 50.0% > 5%): GT=1570, extraído=785.0",
+          "esperado": 1570,
+          "extraido": 785.0
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 256,
+          "extraido": 256.0
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 44.5% > 5%): GT=418, extraído=232.0",
+          "esperado": 418,
+          "extraido": 232.0
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 1850,
+          "extraido": 1850.5
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "diferencia 0.1% ≤ 5%",
+          "esperado": 1720,
+          "extraido": 1721.25
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "diferencia 0.2% ≤ 5%",
+          "esperado": 1974,
+          "extraido": 1978.13
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        }
+      ]
+    },
+    "precio_semanal_max_eur": {
+      "tp": 6,
+      "fp": 10,
+      "fn": 1,
+      "tn": 4,
+      "precision": 0.375,
+      "recall": 0.8571,
+      "f1": 0.5217,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 11.1% > 5%): GT=280, extraído=315.0",
+          "esperado": 280,
+          "extraido": 315.0
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 13.7% > 5%): GT=365, extraído=315.0",
+          "esperado": 365,
+          "extraido": 315.0
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 23.5% > 5%): GT=325, extraído=425.0",
+          "esperado": 325,
+          "extraido": 425.0
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 10.5% > 5%): GT=475, extraído=425.0",
+          "esperado": 475,
+          "extraido": 425.0
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 5.7% > 5%): GT=875, extraído=825.0",
+          "esperado": 875,
+          "extraido": 825.0
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": 170,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 39.4% > 5%): GT=500, extraído=825.0",
+          "esperado": 500,
+          "extraido": 825.0
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 330,
+          "extraido": 330.0
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 2650,
+          "extraido": 2650.0
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 330,
+          "extraido": 330.0
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 9.8% > 5%): GT=1100, extraído=992.5",
+          "esperado": 1100,
+          "extraido": 992.5
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 50.0% > 5%): GT=1985, extraído=992.5",
+          "esperado": 1985,
+          "extraido": 992.5
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=256.0",
+          "esperado": null,
+          "extraido": 256.0
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "FP",
+          "razon": "divergencia (diferencia 81.0% > 5%): GT=1452, extraído=276.0",
+          "esperado": 1452,
+          "extraido": 276.0
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 1992,
+          "extraido": 1992.0
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "diferencia 0.0% ≤ 5%",
+          "esperado": 2071,
+          "extraido": 2071.75
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "diferencia 0.2% ≤ 5%",
+          "esperado": 2325,
+          "extraido": 2329.13
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        }
+      ]
+    },
+    "tipo_alojamiento": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 1,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 0.9524,
+      "f1": 0.9756,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "residencia"
+          ],
+          "extraido": [
+            "familia",
+            "residencia"
+          ]
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "familia",
+            "hotel"
+          ],
+          "extraido": [
+            "familia",
+            "hotel"
+          ]
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "residencia"
+          ],
+          "extraido": [
+            "residencia"
+          ]
+        }
+      ]
+    },
+    "fecha_inicio": {
+      "tp": 4,
+      "fp": 2,
+      "fn": 0,
+      "tn": 14,
+      "precision": 0.6667,
+      "recall": 1.0,
+      "f1": 0.8,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "FP",
+          "razon": "divergencia (fecha distinta): GT='2026-04-05', extraído='2026-07-05'",
+          "esperado": "2026-04-05",
+          "extraido": "2026-07-05"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-05",
+          "extraido": "2026-07-05"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído='2026-06-29'",
+          "esperado": null,
+          "extraido": "2026-06-29"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-05",
+          "extraido": "2026-07-05"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-05",
+          "extraido": "2026-07-05"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-07-05",
+          "extraido": "2026-07-05"
+        }
+      ]
+    },
+    "fecha_fin": {
+      "tp": 4,
+      "fp": 2,
+      "fn": 0,
+      "tn": 14,
+      "precision": 0.6667,
+      "recall": 1.0,
+      "f1": 0.8,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "FP",
+          "razon": "divergencia (fecha distinta): GT='2026-04-14', extraído='2026-08-14'",
+          "esperado": "2026-04-14",
+          "extraido": "2026-08-14"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-08-14",
+          "extraido": "2026-08-14"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído='2026-07-31'",
+          "esperado": null,
+          "extraido": "2026-07-31"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-08-01",
+          "extraido": "2026-08-01"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-08-01",
+          "extraido": "2026-08-01"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "fecha exacta",
+          "esperado": "2026-08-01",
+          "extraido": "2026-08-01"
+        }
+      ]
+    },
+    "acreditaciones": {
+      "tp": 17,
+      "fp": 2,
+      "fn": 1,
+      "tn": 1,
+      "precision": 0.8947,
+      "recall": 0.9444,
+      "f1": 0.9189,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate",
+            "IELTS",
+            "Cambridge",
+            "TOEFL iBT",
+            "TOEIC"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "IELTS",
+            "Cambridge",
+            "TOEFL iBT",
+            "TOEIC",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "GT contenido en extraido (extras toleradas: ['british council'])",
+          "esperado": [
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ],
+          "extraido": [
+            "British Council",
+            "FELTOM",
+            "EAQUALS",
+            "Berlitz Certificate"
+          ]
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": []
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "UEFA A",
+            "UEFA Pro",
+            "FIFA",
+            "FAI"
+          ],
+          "extraido": [
+            "UEFA A",
+            "UEFA Pro",
+            "FIFA",
+            "FAI"
+          ]
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=['TEFL']",
+          "esperado": null,
+          "extraido": [
+            "TEFL"
+          ]
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "FP",
+          "razon": "alucinación: GT vacío, extraído=['TEFL']",
+          "esperado": null,
+          "extraido": [
+            "TEFL"
+          ]
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "conjuntos iguales",
+          "esperado": [
+            "TEFL"
+          ],
+          "extraido": [
+            "TEFL"
+          ]
+        }
+      ]
+    },
+    "idioma_documento_origen": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 1,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 0.9524,
+      "f1": 0.9756,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "en",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "ca",
+          "extraido": "ca"
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "en",
+          "extraido": "en"
+        }
+      ]
+    },
+    "fechas_inicio_recurrentes": {
+      "tp": 9,
+      "fp": 1,
+      "fn": 1,
+      "tn": 10,
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1": 0.9,
+      "detalles": [
+        {
+          "programa": "berlitz_general_english_20_16",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Every Monday",
+          "extraido": "Every Monday"
+        },
+        {
+          "programa": "berlitz_general_intensive_english_30_01",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Every Monday",
+          "extraido": "Every Monday"
+        },
+        {
+          "programa": "berlitz_business_english_20_17",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Every Monday",
+          "extraido": "Every Monday"
+        },
+        {
+          "programa": "berlitz_intensive_business_english_30_02",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Every Monday",
+          "extraido": "Every Monday"
+        },
+        {
+          "programa": "berlitz_private_lessons_1_to_1_20_03",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Monday to Friday",
+          "extraido": "Monday to Friday"
+        },
+        {
+          "programa": "berlitz_conversation_10_group_18",
+          "veredicto": "FN",
+          "razon": "sin emparejamiento con el catálogo",
+          "esperado": "Every Monday",
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_private_electives_10_19",
+          "veredicto": "FP",
+          "razon": "divergencia (string exact): GT='Every Monday', extraído='Monday to Friday'",
+          "esperado": "Every Monday",
+          "extraido": "Monday to Friday"
+        },
+        {
+          "programa": "berlitz_exam_preparation_04",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Every first Monday of the month",
+          "extraido": "Every first Monday of the month"
+        },
+        {
+          "programa": "berlitz_total_immersion_executive_programme_06",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Monday to Friday",
+          "extraido": "Monday to Friday"
+        },
+        {
+          "programa": "berlitz_teacher_training_clil_05",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_specialised_programmes_20",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_50_programme_07",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_family_packages_08",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Every Monday",
+          "extraido": "Every Monday"
+        },
+        {
+          "programa": "berlitz_youth_camps_easter_09",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_youth_camps_summer_21",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "berlitz_closed_groups_tailor_made_10",
+          "veredicto": "TP",
+          "razon": "string exact",
+          "esperado": "Monday to Friday",
+          "extraido": "Monday to Friday"
+        },
+        {
+          "programa": "berlitz_english_language_closed_groups_mini_stay_11",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "dbs_high_performance_football_english_learning_summer_camp_exper_12",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_nsx_at_woodbridge_school_13",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_nsx_at_millfield_school_14",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        },
+        {
+          "programa": "nsx_millfield_school_summer_programme_15",
+          "veredicto": "TN",
+          "razon": "ambos vacíos (campo ausente en doc)",
+          "esperado": null,
+          "extraido": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "descripcion": "Rutas relativas a documentos excluidos del pipeline por decision del asesor (obsoletos, duplicados, superados por version mas nueva). El pipeline debera consultar esta lista al construir el catalogo para omitirlos.",
+  "excluidos": []
+}
