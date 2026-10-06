@@ -667,21 +667,21 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
     """
     if key not in st.session_state:
         st.session_state[key] = list(opciones)
-    # Set de opciones ya vistas por este filtro a lo largo de la sesión.
-    # Permite distinguir entre "opción deseleccionada por el usuario"
-    # (debe permanecer fuera del maestro) y "opción nueva que acaba de
-    # aparecer en el catálogo" (debe entrar en el maestro por defecto).
-    # Caso típico: el estado documental ``excluido`` aparece por primera
-    # vez en el filtro cuando el asesor excluye el primer documento; sin
-    # esta distinción, el documento recién excluido quedaría filtrado
-    # fuera hasta que el usuario marcara manualmente la nueva opción.
-    known_key = f"{key}__known"
-    if known_key not in st.session_state:
-        st.session_state[known_key] = set(opciones)
-    nuevas = set(opciones) - st.session_state[known_key]
+    # Cualquier opción que aparezca en el catálogo pero no esté en el
+    # estado maestro se incorpora automáticamente. Esto cubre dos
+    # escenarios: opciones nunca vistas (primer render) y opciones
+    # reaparecidas tras haber desaparecido temporalmente ---caso típico
+    # del estado documental ``excluido``, que desaparece del filtro
+    # cuando no hay ningún documento excluido y reaparece al excluir
+    # uno nuevo---. El intent del asesor al excluir un documento es
+    # verlo marcado como tal en la tabla; si prefiere ocultar los
+    # excluidos, puede desmarcar la opción explícitamente \emph{después}
+    # de que aparezca, y esa decisión se mantendrá mientras la opción
+    # siga presente en el catálogo.
+    current_master = set(st.session_state[key])
+    nuevas = [o for o in opciones if o not in current_master]
     if nuevas:
-        st.session_state[key] = list(st.session_state[key]) + sorted(nuevas)
-        st.session_state[known_key] = st.session_state[known_key] | nuevas
+        st.session_state[key] = list(st.session_state[key]) + nuevas
     ver_key = f"{key}__ver"
     ver: int = st.session_state.get(ver_key, 0)
     seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
