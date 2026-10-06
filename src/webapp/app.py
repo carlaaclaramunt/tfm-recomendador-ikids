@@ -667,21 +667,29 @@ def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]
     """
     if key not in st.session_state:
         st.session_state[key] = list(opciones)
-    # Cualquier opción que aparezca en el catálogo pero no esté en el
-    # estado maestro se incorpora automáticamente. Esto cubre dos
-    # escenarios: opciones nunca vistas (primer render) y opciones
-    # reaparecidas tras haber desaparecido temporalmente ---caso típico
-    # del estado documental ``excluido``, que desaparece del filtro
-    # cuando no hay ningún documento excluido y reaparece al excluir
-    # uno nuevo---. El intent del asesor al excluir un documento es
-    # verlo marcado como tal en la tabla; si prefiere ocultar los
-    # excluidos, puede desmarcar la opción explícitamente \emph{después}
-    # de que aparezca, y esa decisión se mantendrá mientras la opción
-    # siga presente en el catálogo.
-    current_master = set(st.session_state[key])
-    nuevas = [o for o in opciones if o not in current_master]
+    # Auto-añadir solo las opciones GENUINAMENTE NUEVAS (no vistas en
+    # ejecuciones anteriores) para no re-añadir las que el usuario
+    # acaba de deseleccionar. Para ello guardamos el conjunto de
+    # opciones de la ejecución anterior y comparamos. Caso típico:
+    # el estado documental ``excluido`` aparece por primera vez cuando
+    # el asesor excluye el primer documento. También cubre su
+    # reaparición tras haber desaparecido: si todos los documentos
+    # excluidos se reincluyen, ``excluido`` desaparece del filtro;
+    # cuando se vuelve a excluir uno, reaparece como nueva opción y
+    # se auto-selecciona. Si el usuario deselecciona ``vigente``
+    # (por ejemplo), ``vigente`` sigue en opciones pero no en master,
+    # y al coincidir con last_opciones no entra en nuevas: la decisión
+    # explícita del usuario se respeta.
+    last_opciones_key = f"{key}__last_opciones"
+    last_opciones: set[str] = st.session_state.get(last_opciones_key, set(opciones))
+    nuevas = [o for o in opciones if o not in last_opciones]
     if nuevas:
-        st.session_state[key] = list(st.session_state[key]) + nuevas
+        current_master = list(st.session_state[key])
+        for n in nuevas:
+            if n not in current_master:
+                current_master.append(n)
+        st.session_state[key] = current_master
+    st.session_state[last_opciones_key] = set(opciones)
     ver_key = f"{key}__ver"
     ver: int = st.session_state.get(ver_key, 0)
     seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
