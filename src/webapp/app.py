@@ -615,57 +615,68 @@ with tab_recomendar:
 
 
 # ---------------------------------------------------------------------------
+# Helper compartido: filtro tipo Excel usado por las pestañas de Catálogo
+# y Documentos. Se define a nivel de módulo (y no dentro del bloque
+# `with tab_catalogo:`) para que las dos pestañas puedan invocarlo con
+# la misma UX, en lugar de duplicar la lógica.
+# ---------------------------------------------------------------------------
+
+
+def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]:
+    """Popover con casillas y atajos \"Todos / Ninguno\".
+
+    El botón de disparo resume el estado activo (``todos (N)``, el nombre
+    único cuando queda uno, o ``N de M`` en caso intermedio), de modo que
+    el asesor ve de un vistazo qué filtros están activos sin
+    desplegarlos. Los botones de atajo escriben directamente el estado
+    de cada checkbox individual en ``st.session_state`` antes del
+    ``rerun`` para que la UI se mantenga sincronizada con la selección.
+    """
+    if key not in st.session_state:
+        st.session_state[key] = list(opciones)
+    seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
+    if len(seleccion_actual) == len(opciones):
+        boton = f"{label}: todos ({len(opciones)})"
+    elif len(seleccion_actual) == 1:
+        boton = f"{label}: {seleccion_actual[0]}"
+    else:
+        boton = f"{label}: {len(seleccion_actual)} de {len(opciones)}"
+    with col.popover(boton, use_container_width=True):
+        c_all, c_none = st.columns(2)
+        if c_all.button("Todos", key=f"{key}_all", use_container_width=True):
+            st.session_state[key] = list(opciones)
+            for opcion in opciones:
+                st.session_state[f"{key}_{opcion}"] = True
+            st.rerun()
+        if c_none.button("Ninguno", key=f"{key}_none", use_container_width=True):
+            st.session_state[key] = []
+            for opcion in opciones:
+                st.session_state[f"{key}_{opcion}"] = False
+            st.rerun()
+        st.divider()
+        nueva: list[str] = []
+        for opcion in opciones:
+            ck_key = f"{key}_{opcion}"
+            if ck_key not in st.session_state:
+                st.session_state[ck_key] = opcion in seleccion_actual
+            marcada = st.checkbox(str(opcion), key=ck_key)
+            if marcada:
+                nueva.append(opcion)
+        st.session_state[key] = nueva
+    return st.session_state[key]
+
+
+# ---------------------------------------------------------------------------
 # TAB 2 — Catálogo
 # ---------------------------------------------------------------------------
 
 with tab_catalogo:
-    st.subheader("Catálogo completo de programas extraídos")
-
-    # Filtros tipo Excel: cada popover contiene checkboxes + atajos
-    # "Seleccionar todo" y "Limpiar". El label del botón resume el
-    # estado (todos / N de M), de modo que el asesor ve de un vistazo
-    # qué filtros están activos sin desplegarlos.
-    def _filtro_popover(col, label: str, opciones: list[str], key: str) -> list[str]:
-        # Estado inicial: todos seleccionados
-        if key not in st.session_state:
-            st.session_state[key] = list(opciones)
-        seleccion_actual: list[str] = [o for o in st.session_state[key] if o in opciones]
-        if len(seleccion_actual) == len(opciones):
-            boton = f"{label}: todos ({len(opciones)})"
-        elif len(seleccion_actual) == 1:
-            boton = f"{label}: {seleccion_actual[0]}"
-        else:
-            boton = f"{label}: {len(seleccion_actual)} de {len(opciones)}"
-        with col.popover(boton, use_container_width=True):
-            c_all, c_none = st.columns(2)
-            # Los botones "Todos" / "Ninguno" tienen que actualizar también
-            # el estado de cada checkbox individual, porque Streamlit guarda
-            # el valor del widget por su `key` y lo prioriza sobre el
-            # argumento `value` en re-ejecuciones posteriores.
-            if c_all.button("Todos", key=f"{key}_all", use_container_width=True):
-                st.session_state[key] = list(opciones)
-                for opcion in opciones:
-                    st.session_state[f"{key}_{opcion}"] = True
-                st.rerun()
-            if c_none.button("Ninguno", key=f"{key}_none", use_container_width=True):
-                st.session_state[key] = []
-                for opcion in opciones:
-                    st.session_state[f"{key}_{opcion}"] = False
-                st.rerun()
-            st.divider()
-            nueva: list[str] = []
-            for opcion in opciones:
-                ck_key = f"{key}_{opcion}"
-                # Inicializar el checkbox desde el estado maestro solo si
-                # aún no tiene estado propio; en lo sucesivo Streamlit
-                # ignora `value` y mantiene el click del usuario.
-                if ck_key not in st.session_state:
-                    st.session_state[ck_key] = opcion in seleccion_actual
-                marcada = st.checkbox(str(opcion), key=ck_key)
-                if marcada:
-                    nueva.append(opcion)
-            st.session_state[key] = nueva
-        return st.session_state[key]
+    st.subheader("📚 Catálogo completo de programas extraídos")
+    st.caption(
+        "Vista de **consulta y filtrado**: una fila por programa recomendable. "
+        "Los filtros tipo Excel permiten acotar por proveedor, tipo de documento, "
+        "estado documental del programa y país."
+    )
 
     col_f1, col_f2, col_f3, col_f4 = st.columns(4)
     proveedores = sorted({p.empresa_proveedora for p in catalogo})
@@ -707,7 +718,7 @@ with tab_catalogo:
                 "Precio (€/sem)": precio,
                 "Alojamiento": ", ".join(p.tipo_alojamiento) if p.tipo_alojamiento else "—",
                 "Tipo doc": p.tipo_documento,
-                "Estado": p.estado_documento,
+                "Estado del programa": p.estado_documento,
             }
         )
     st.dataframe(pd.DataFrame(resumen), width='stretch', hide_index=True)
@@ -724,12 +735,12 @@ with tab_catalogo:
 # ---------------------------------------------------------------------------
 
 with tab_documentos:
-    st.subheader("Gestión de documentos del corpus")
+    st.subheader("📁 Inventario de documentos del corpus")
     st.caption(
-        "Vista de los PDFs bajo `data/raw/` que alimentan el sistema. Permite "
-        "consultar cada documento, marcarlo como excluido (por caducidad, "
-        "duplicado o versión superada), subir nuevos y auditar qué programas "
-        "extraídos proceden de cada fichero."
+        "Vista de **gestión documental**: una fila por fichero (PDF o imagen) "
+        "bajo `data/raw/`. Permite auditar cuántos programas aporta cada "
+        "documento, consultar la fuente original, excluir ficheros caducados o "
+        "duplicados mediante 🚫 y añadir nuevos documentos al corpus."
     )
 
     # Pasamos el catálogo COMPLETO (no el filtrado por exclusiones) a
@@ -779,18 +790,19 @@ with tab_documentos:
 
     st.divider()
 
-    # ---- Filtros de la tabla
-    # Los documentos excluidos SIEMPRE aparecen en la tabla con la marca "🚫"
-    # para que el asesor pueda reactivarlos sin tener que buscar un toggle
-    # oculto. Antes había un `Mostrar excluidos` que, al desactivarse,
-    # hacía desaparecer la fila y el documento solo podía recuperarse
-    # editando `data/exclusions.json` a mano, lo que era confuso.
+    # ---- Filtros de la tabla (reutilizan el popover tipo Excel de Catálogo)
+    # Los documentos excluidos SIEMPRE aparecen en la tabla con la marca
+    # "🚫" para que el asesor pueda reactivarlos sin tener que buscar un
+    # toggle oculto. Antes había un `Mostrar excluidos` que, al
+    # desactivarse, hacía desaparecer la fila y el documento solo podía
+    # recuperarse editando `data/exclusions.json` a mano, lo que era
+    # confuso.
     col_f1, col_f2 = st.columns(2)
     empresas_disp = sorted({d["empresa"] for d in documentos})
     estados_disp = sorted({d["estado"] for d in documentos})
 
-    filtro_emp = col_f1.multiselect("Proveedor", empresas_disp, default=empresas_disp, key="docs_prov")
-    filtro_est = col_f2.multiselect("Estado", estados_disp, default=estados_disp, key="docs_estado")
+    filtro_emp = _filtro_popover(col_f1, "Proveedor", empresas_disp, "docs_prov")
+    filtro_est = _filtro_popover(col_f2, "Estado documental", estados_disp, "docs_estado")
 
     docs_filtrados = [
         d for d in documentos
@@ -806,7 +818,7 @@ with tab_documentos:
                 "Documento": d["nombre"],
                 "Proveedor": d["empresa"],
                 "Programas": d["n_programas"],
-                "Estado": d["estado"],
+                "Estado documental": d["estado"],
                 "Año": d["anyo_detectado"] or "—",
                 "Tamaño (KB)": d["tamano_kb"],
                 "Modificado": d["modificado"],
