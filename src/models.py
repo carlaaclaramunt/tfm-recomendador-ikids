@@ -515,3 +515,19 @@ class SeleccionComercial(BaseModel):
                     f"fecha_fin ({v}) no puede ser anterior a fecha_inicio ({inicio})"
                 )
         return v
+
+
+# ---------------------------------------------------------------------------
+# Resolución explícita de forward references
+# ---------------------------------------------------------------------------
+# Con `from __future__ import annotations`, Pydantic v2 debería resolver las
+# forward references automáticamente, pero bajo ciertas condiciones (ej. caché
+# del módulo en despliegues de Streamlit Cloud o versiones concretas de
+# Pydantic 2.x) la resolución diferida puede fallar en el momento del primer
+# import de los modelos. Forzamos la resolución aquí para que cualquier
+# importación desde fuera del paquete reciba los modelos ya reconstruidos.
+
+Programa.model_rebuild()
+PerfilCliente.model_rebuild()
+Recomendacion.model_rebuild()
+SeleccionComercial.model_rebuild()
