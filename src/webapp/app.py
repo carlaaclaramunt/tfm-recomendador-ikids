@@ -35,8 +35,15 @@ from typing import Any
 import pandas as pd
 import streamlit as st
 
+from src.application.gestionar_seleccion import (
+    cargar_seleccion,
+    crear_campania,
+    guardar_seleccion,
+    limpiar_seleccion,
+    toggle_programa,
+)
 from src.application.recomendar import recomendar
-from src.models import PerfilCliente, Programa
+from src.models import PerfilCliente, Programa, SeleccionComercial
 from src.recommendation import filtrar_candidatos
 
 
@@ -169,23 +176,38 @@ if not catalogo_completo:
     )
     st.stop()
 
+# Métricas del header: catálogo + (si aplica) exclusiones + (si aplica) campaña
+_seleccion_header = cargar_seleccion()
+_metricas_header: list[tuple[str, str | int, str | None]] = []
+
 if excluidos_actuales_render:
     omitidos = len(catalogo_completo) - len(catalogo)
-    col_a, col_b = st.columns(2)
-    col_a.metric("Programas activos", len(catalogo))
-    col_b.metric(
+    _metricas_header.append(("Programas activos", len(catalogo), None))
+    _metricas_header.append((
         "Omitidos por exclusión documental",
         omitidos,
-        help=(
-            "Programas filtrados en vivo porque su PDF fue marcado como "
-            "excluido en la pestaña Documentos. No participan en las "
-            "recomendaciones ni aparecen en el catálogo visible."
-        ),
-    )
+        "Programas filtrados en vivo porque su PDF fue marcado como "
+        "excluido en la pestaña Documentos. No participan en las "
+        "recomendaciones ni aparecen en el catálogo visible.",
+    ))
 else:
-    st.metric("Programas en el catálogo", len(catalogo))
+    _metricas_header.append(("Programas en el catálogo", len(catalogo), None))
 
-tab_recomendar, tab_catalogo, tab_documentos = st.tabs(["🎯 Recomendar", "📚 Catálogo", "📁 Documentos"])
+if _seleccion_header is not None:
+    _metricas_header.append((
+        f"⭐ En campaña «{_seleccion_header.nombre}»",
+        len(_seleccion_header.programas_seleccionados),
+        "Programas incluidos en la campaña comercial activa. "
+        "Edítala desde la pestaña ⭐ Selección.",
+    ))
+
+_cols_header = st.columns(len(_metricas_header))
+for _col, (_label, _value, _help) in zip(_cols_header, _metricas_header):
+    _col.metric(_label, _value, help=_help)
+
+tab_recomendar, tab_catalogo, tab_seleccion, tab_documentos = st.tabs(
+    ["🎯 Recomendar", "📚 Catálogo", "⭐ Selección", "📁 Documentos"]
+)
 
 
 # ---------------------------------------------------------------------------
@@ -475,6 +497,23 @@ with tab_recomendar:
 
         top_k = st.slider("Nº recomendaciones", 1, 10, 5, step=1)
 
+        # Toggle de campaña activa: si hay campaña y el asesor lo activa, la
+        # recomendación se restringe a los programas de la campaña actual.
+        # Por defecto desactivado para no sorprender al asesor.
+        _seleccion_sidebar = cargar_seleccion()
+        if _seleccion_sidebar is not None and _seleccion_sidebar.programas_seleccionados:
+            solo_campania = st.toggle(
+                f"⭐ Solo programas de «{_seleccion_sidebar.nombre}»",
+                value=False,
+                help=(
+                    f"Si está activado, la recomendación se hace únicamente "
+                    f"entre los {len(_seleccion_sidebar.programas_seleccionados)} "
+                    f"programas de la campaña activa."
+                ),
+            )
+        else:
+            solo_campania = False
+
     # Construir perfil
     intereses = [i.strip() for i in intereses_str.split(",") if i.strip()]
     perfil = PerfilCliente(
@@ -496,15 +535,39 @@ with tab_recomendar:
         },
     )
 
+    # Si el asesor ha activado el toggle de campaña, se restringe el
+    # universo de recomendación a los programas de la selección activa.
+    # Fail-open por diseño: si la selección está vacía o no tiene coincidencia
+    # con el catálogo filtrado, se avisa pero no se bloquea.
+    from src.application.gestionar_seleccion import filtrar_catalogo as _filtrar_por_campania
+
+    if solo_campania:
+        catalogo_rec = _filtrar_por_campania(catalogo, _seleccion_sidebar)
+        if not catalogo_rec:
+            st.warning(
+                "La campaña activa no tiene programas que coincidan con el "
+                "catálogo visible. Desactiva el toggle o revisa la pestaña ⭐ Selección."
+            )
+    else:
+        catalogo_rec = catalogo
+
     # La lista final se produce con el mismo caso de uso que consume el CLI
     # (`src.application.recomendar`), garantizando que la webapp y la
     # evaluación miden exactamente el mismo código. `filtrar_candidatos` se
     # invoca aparte solo para el contador de candidatos mostrado en la UI.
-    candidatos = filtrar_candidatos(perfil, catalogo)
-    recomendaciones = recomendar(perfil, catalogo, top_k=top_k)
+    candidatos = filtrar_candidatos(perfil, catalogo_rec)
+    recomendaciones = recomendar(perfil, catalogo_rec, top_k=top_k)
 
     col_a, col_b, col_c = st.columns(3)
-    col_a.metric("Programas en catálogo", len(catalogo))
+    col_a.metric(
+        "Programas en el universo" if solo_campania else "Programas en catálogo",
+        len(catalogo_rec),
+        help=(
+            f"Restringido a la campaña «{_seleccion_sidebar.nombre}»."
+            if solo_campania
+            else None
+        ),
+    )
     col_b.metric("Candidatos tras filtro duro", len(candidatos))
     col_c.metric("Recomendaciones devueltas", len(recomendaciones))
 
@@ -757,6 +820,16 @@ with tab_catalogo:
 
     st.metric("Programas filtrados", f"{len(filtrados)} / {len(catalogo)}")
 
+    # Cargar la campaña activa (si existe) para marcar visualmente qué
+    # programas forman ya parte de ella y permitir incluir/quitar desde
+    # el detalle de cada programa.
+    _seleccion_catalogo = cargar_seleccion()
+    _en_campania_keys: set[str] = (
+        set(_seleccion_catalogo.programas_seleccionados)
+        if _seleccion_catalogo is not None
+        else set()
+    )
+
     # Tabla resumen
     resumen = []
     for p in filtrados:
@@ -765,8 +838,12 @@ with tab_catalogo:
             if p.precio_semanal_min_eur and p.precio_semanal_max_eur
             else "—"
         )
+        en_campania = (
+            p.programa_key in _en_campania_keys if p.programa_key else False
+        )
         resumen.append(
             {
+                "⭐": "✓" if en_campania else "",
                 "Programa": p.nombre,
                 "Proveedor": p.empresa_proveedora,
                 "País": p.pais,
@@ -781,15 +858,279 @@ with tab_catalogo:
         )
     st.dataframe(pd.DataFrame(resumen), width='stretch', hide_index=True)
 
+    if _seleccion_catalogo is not None:
+        st.caption(
+            f"⭐ marca los programas incluidos en la campaña activa "
+            f"«{_seleccion_catalogo.nombre}». "
+            f"Añade o quita desde el detalle de cada programa, debajo."
+        )
+    else:
+        st.caption(
+            "No hay campaña activa. Puedes crear una en la pestaña "
+            "**⭐ Selección** para empezar a marcar programas."
+        )
+
     # Detalle expandible
     st.subheader("Detalle por programa")
+
+    def _on_toggle_catalogo(programa_key: str, state_key: str) -> None:
+        """Callback que sincroniza el checkbox con la campaña activa."""
+        try:
+            toggle_programa(programa_key, incluir=st.session_state[state_key])
+        except RuntimeError:
+            # No hay campaña activa: ignoramos el toggle y avisamos vía mensaje
+            # (gestionado abajo cuando se renderiza el checkbox).
+            pass
+
     for p in filtrados:
         with st.expander(f"{p.nombre} · {p.empresa_proveedora}"):
             _mostrar_ficha_completa(p)
 
+            if _seleccion_catalogo is not None and p.programa_key:
+                state_key = f"camp_cat_{p.programa_key}"
+                st.checkbox(
+                    "⭐ Incluir en la campaña activa",
+                    value=p.programa_key in _en_campania_keys,
+                    key=state_key,
+                    on_change=_on_toggle_catalogo,
+                    args=(p.programa_key, state_key),
+                    help=(
+                        f"Si lo marcas, este programa aparecerá en "
+                        f"«{_seleccion_catalogo.nombre}»."
+                    ),
+                )
+            elif not p.programa_key:
+                st.caption(
+                    "⚠ Este programa no tiene `programa_key` y no se puede "
+                    "añadir a una campaña."
+                )
+            else:
+                st.caption(
+                    "ℹ️ Crea una campaña en la pestaña **⭐ Selección** "
+                    "para poder marcar este programa."
+                )
+
 
 # ---------------------------------------------------------------------------
-# TAB 3 — Documentos (gestión documental)
+# TAB 3 — Selección (campaña comercial activa)
+# ---------------------------------------------------------------------------
+
+with tab_seleccion:
+    st.subheader("⭐ Selección comercial activa")
+    st.caption(
+        "Vista para **curar comercialmente** el catálogo: elige qué programas "
+        "quiere empujar I-KIDS en un periodo concreto (una campaña). "
+        "Después, desde la pestaña Recomendar, puedes marcar un toggle para "
+        "recomendar solo entre los seleccionados."
+    )
+
+    seleccion_actual = cargar_seleccion()
+
+    # --- Caso A: no hay campaña activa -> ofrecer creación
+    if seleccion_actual is None:
+        st.info(
+            "No hay ninguna campaña activa en este momento. "
+            "Crea una para empezar a añadir programas."
+        )
+        with st.form("form_crear_campania"):
+            nombre_nueva = st.text_input(
+                "Nombre de la campaña",
+                placeholder="Ej. Campaña verano 2027",
+            )
+            col_f1, col_f2 = st.columns(2)
+            fecha_inicio_nueva = col_f1.date_input(
+                "Fecha de inicio",
+                value=None,
+                help="Si lo dejas vacío, se usa la fecha de hoy.",
+            )
+            fecha_fin_nueva = col_f2.date_input(
+                "Fecha de fin (opcional)",
+                value=None,
+                help="Deja vacío si la campaña no tiene fecha de cierre.",
+            )
+            notas_nuevas = st.text_area(
+                "Notas internas (opcional)",
+                placeholder="Motivo o alcance de la campaña",
+                height=80,
+            )
+            crear = st.form_submit_button(
+                "Crear campaña", type="primary", use_container_width=True
+            )
+
+        if crear:
+            if not nombre_nueva.strip():
+                st.error("El nombre de la campaña no puede estar vacío.")
+            else:
+                try:
+                    crear_campania(
+                        nombre=nombre_nueva.strip(),
+                        fecha_inicio=fecha_inicio_nueva or None,
+                        fecha_fin=fecha_fin_nueva or None,
+                        notas=notas_nuevas.strip() or None,
+                    )
+                    st.success(f"Campaña «{nombre_nueva.strip()}» creada.")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"No se ha podido crear la campaña: {e}")
+
+    # --- Caso B: hay campaña activa -> mostrar y permitir editar
+    else:
+        col_titulo, col_boton_cerrar = st.columns([3, 1], vertical_alignment="center")
+        col_titulo.markdown(f"### 📌 {seleccion_actual.nombre}")
+
+        def _cerrar_campania():
+            limpiar_seleccion()
+
+        col_boton_cerrar.button(
+            "🗑 Terminar campaña",
+            on_click=_cerrar_campania,
+            help=(
+                "Elimina la campaña activa. Los programas no se borran, solo "
+                "se desmarcan. Puedes crear una campaña nueva después."
+            ),
+            use_container_width=True,
+        )
+
+        # Metadatos editables
+        col_m1, col_m2, col_m3 = st.columns(3)
+        col_m1.metric(
+            "Programas en campaña",
+            len(seleccion_actual.programas_seleccionados),
+        )
+        col_m2.metric(
+            "Fecha de inicio",
+            seleccion_actual.fecha_inicio.isoformat(),
+        )
+        col_m3.metric(
+            "Fecha de fin",
+            seleccion_actual.fecha_fin.isoformat() if seleccion_actual.fecha_fin else "—",
+        )
+
+        with st.expander("✏️ Editar metadatos de la campaña"):
+            with st.form("form_editar_campania"):
+                nombre_edit = st.text_input(
+                    "Nombre",
+                    value=seleccion_actual.nombre,
+                )
+                col_e1, col_e2 = st.columns(2)
+                fecha_inicio_edit = col_e1.date_input(
+                    "Fecha de inicio",
+                    value=seleccion_actual.fecha_inicio,
+                )
+                fecha_fin_edit = col_e2.date_input(
+                    "Fecha de fin (opcional)",
+                    value=seleccion_actual.fecha_fin,
+                )
+                notas_edit = st.text_area(
+                    "Notas internas",
+                    value=seleccion_actual.notas or "",
+                    height=80,
+                )
+                guardar = st.form_submit_button(
+                    "Guardar cambios",
+                    type="primary",
+                )
+
+            if guardar:
+                if not nombre_edit.strip():
+                    st.error("El nombre no puede estar vacío.")
+                else:
+                    try:
+                        actualizada = SeleccionComercial(
+                            nombre=nombre_edit.strip(),
+                            fecha_inicio=fecha_inicio_edit,
+                            fecha_fin=fecha_fin_edit or None,
+                            programas_seleccionados=seleccion_actual.programas_seleccionados,
+                            notas=notas_edit.strip() or None,
+                        )
+                        guardar_seleccion(actualizada)
+                        st.success("Metadatos actualizados.")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"No se ha podido guardar: {e}")
+
+        st.divider()
+
+        # Lista de programas seleccionados
+        st.markdown("#### Programas incluidos en la campaña")
+
+        if not seleccion_actual.programas_seleccionados:
+            st.info(
+                "La campaña está vacía. Ve a la pestaña **Catálogo** y marca "
+                "los programas que quieras incluir con el checkbox «En campaña»."
+            )
+        else:
+            # Mapear programa_key a objeto Programa para enriquecer la tabla
+            por_key = {
+                p.programa_key: p for p in catalogo if p.programa_key
+            }
+            resumen_sel = []
+            huerfanos = []
+            for key in seleccion_actual.programas_seleccionados:
+                p = por_key.get(key)
+                if p is None:
+                    huerfanos.append(key)
+                    continue
+                resumen_sel.append(
+                    {
+                        "Programa": p.nombre,
+                        "Proveedor": p.empresa_proveedora,
+                        "País": p.pais,
+                        "Edades": f"{p.edad_min or '—'}–{p.edad_max or '—'}",
+                        "Precio (€/sem)": (
+                            f"{p.precio_semanal_min_eur:.0f}–{p.precio_semanal_max_eur:.0f}"
+                            if p.precio_semanal_min_eur and p.precio_semanal_max_eur
+                            else "—"
+                        ),
+                        "key": key,
+                    }
+                )
+
+            if resumen_sel:
+                df_sel = pd.DataFrame(resumen_sel).drop(columns=["key"])
+                st.dataframe(df_sel, width='stretch', hide_index=True)
+
+            # Botón de quitar por programa
+            st.markdown("##### Quitar programas de la campaña")
+            for item in resumen_sel:
+                col_lbl, col_btn = st.columns([5, 1])
+                col_lbl.write(f"**{item['Programa']}** · {item['Proveedor']}")
+                col_btn.button(
+                    "❌ Quitar",
+                    key=f"quitar_{item['key']}",
+                    on_click=toggle_programa,
+                    args=(item["key"], False),
+                    use_container_width=True,
+                )
+
+            if huerfanos:
+                with st.expander(
+                    f"⚠️ {len(huerfanos)} programa(s) seleccionado(s) que ya no están en el catálogo"
+                ):
+                    st.caption(
+                        "Estos `programa_key` figuran en la campaña pero no "
+                        "aparecen en el catálogo actual (posiblemente eliminados "
+                        "o renombrados tras una re-extracción). Puedes quitarlos."
+                    )
+                    for key in huerfanos:
+                        col_h1, col_h2 = st.columns([5, 1])
+                        col_h1.code(key)
+                        col_h2.button(
+                            "❌ Quitar",
+                            key=f"quitar_huerfano_{key}",
+                            on_click=toggle_programa,
+                            args=(key, False),
+                            use_container_width=True,
+                        )
+
+        if seleccion_actual.notas:
+            st.divider()
+            st.markdown("#### Notas internas")
+            st.info(seleccion_actual.notas)
+
+
+# ---------------------------------------------------------------------------
+# TAB 4 — Documentos (gestión documental)
 # ---------------------------------------------------------------------------
 
 with tab_documentos:
