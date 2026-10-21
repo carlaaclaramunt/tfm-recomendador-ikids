@@ -460,3 +460,58 @@ class TurnoPrograma(BaseModel):
         None,
         description="Etiqueta opcional del turno si el documento la especifica (ej. 'Session A')"
     )
+
+
+# ---------------------------------------------------------------------------
+# Seleccion comercial (campaña activa)
+# ---------------------------------------------------------------------------
+
+
+class SeleccionComercial(BaseModel):
+    """Campaña comercial activa: subconjunto de programas que I-KIDS empuja en un periodo.
+
+    Permite al equipo asesor marcar un subconjunto del catálogo como "activo
+    para comercializar" durante una campaña concreta. La selección es
+    compartida entre todos los asesores y hay una única campaña activa a la
+    vez (si se quiere lanzar una nueva, se sobrescribe la anterior).
+
+    Se persiste en `data/seleccion_comercial.json`. Si el fichero no existe
+    o está vacío, se interpreta como "no hay campaña activa" y el sistema
+    opera sobre el catálogo completo.
+
+    Los asesores pueden opcionalmente restringir la recomendación a los
+    programas de la campaña desde el toggle de la pestaña Recomendar.
+    """
+
+    nombre: str = Field(
+        ...,
+        min_length=1,
+        description="Nombre descriptivo de la campaña (ej. 'Campaña verano 2027')"
+    )
+    fecha_inicio: date = Field(
+        default_factory=date.today,
+        description="Fecha en la que arranca la campaña"
+    )
+    fecha_fin: Optional[date] = Field(
+        None,
+        description="Fecha de fin de la campaña, si tiene fecha concreta"
+    )
+    programas_seleccionados: list[str] = Field(
+        default_factory=list,
+        description="Lista de programa_key de los programas incluidos en la campaña"
+    )
+    notas: Optional[str] = Field(
+        None,
+        description="Notas internas sobre el motivo o alcance de la campaña"
+    )
+
+    @field_validator("fecha_fin")
+    @classmethod
+    def _fecha_fin_posterior(cls, v, info):
+        if v is not None and "fecha_inicio" in info.data:
+            inicio = info.data["fecha_inicio"]
+            if inicio and v < inicio:
+                raise ValueError(
+                    f"fecha_fin ({v}) no puede ser anterior a fecha_inicio ({inicio})"
+                )
+        return v

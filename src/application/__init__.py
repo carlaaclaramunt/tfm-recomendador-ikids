@@ -11,9 +11,28 @@ Casos de uso disponibles:
       resultados y persiste el catálogo procesado.
     - recomendar: dado un perfil de cliente y el catálogo, produce
       las top-k recomendaciones con su explicación en lenguaje natural.
+    - gestionar_seleccion: crea, consulta y modifica la campaña
+      comercial activa (subconjunto de programas que I-KIDS empuja).
 """
 
 from src.application.construir_catalogo import construir_catalogo
+from src.application.gestionar_seleccion import (
+    cargar_seleccion,
+    crear_campania,
+    filtrar_catalogo,
+    guardar_seleccion,
+    limpiar_seleccion,
+    toggle_programa,
+)
 from src.application.recomendar import recomendar
 
-__all__ = ["construir_catalogo", "recomendar"]
+__all__ = [
+    "construir_catalogo",
+    "recomendar",
+    "cargar_seleccion",
+    "crear_campania",
+    "filtrar_catalogo",
+    "guardar_seleccion",
+    "limpiar_seleccion",
+    "toggle_programa",
+]
