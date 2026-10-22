@@ -1304,7 +1304,9 @@ with tab_documentos:
                 "Proveedor": d["empresa"],
                 "Programas": d["n_programas"],
                 "Estado documental": d["estado"],
-                "Año": d["anyo_detectado"] or "—",
+                # Siempre str: mezclar int con "—" rompe pyarrow en pandas 3.x
+                # (intenta inferir int64 y falla al llegar al guion em-dash).
+                "Año": str(d["anyo_detectado"]) if d["anyo_detectado"] else "—",
                 "Tamaño (KB)": d["tamano_kb"],
                 "Modificado": d["modificado"],
             }
