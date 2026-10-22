@@ -1151,11 +1151,17 @@ with tab_seleccion:
                 if p is None:
                     huerfanos.append(key)
                     continue
+                tipo_txt = (
+                    ", ".join(_CATEGORIA_LABEL.get(c, c) for c in p.categorias)
+                    if p.categorias
+                    else "—"
+                )
                 resumen_sel.append(
                     {
                         "Programa": p.nombre,
                         "Proveedor": p.empresa_proveedora,
                         "País": p.pais,
+                        "Tipo": tipo_txt,
                         "Edades": f"{p.edad_min or '—'}–{p.edad_max or '—'}",
                         "Precio (€/sem)": (
                             f"{p.precio_semanal_min_eur:.0f}–{p.precio_semanal_max_eur:.0f}"
