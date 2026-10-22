@@ -13,6 +13,7 @@ from __future__ import annotations
 
 def test_models_importables() -> None:
     from src.models import (
+        CategoriaPrograma,
         PerfilCliente,
         Programa,
         Recomendacion,
@@ -21,25 +22,34 @@ def test_models_importables() -> None:
     )
 
     assert all(cls is not None for cls in (
-        PerfilCliente, Programa, Recomendacion, SeleccionComercial, TurnoPrograma,
+        CategoriaPrograma, PerfilCliente, Programa, Recomendacion,
+        SeleccionComercial, TurnoPrograma,
     ))
 
 
 def test_capa_aplicacion_importable() -> None:
     from src.application import (
+        cargar_categorias,
         cargar_seleccion,
         construir_catalogo,
         crear_campania,
+        enriquecer_catalogo,
+        enriquecer_programa,
         filtrar_catalogo,
+        filtrar_por_categorias,
+        guardar_categorias,
         guardar_seleccion,
         limpiar_seleccion,
         recomendar,
+        set_categorias,
         toggle_programa,
     )
 
     assert all(fn is not None for fn in (
-        cargar_seleccion, construir_catalogo, crear_campania, filtrar_catalogo,
-        guardar_seleccion, limpiar_seleccion, recomendar, toggle_programa,
+        cargar_categorias, cargar_seleccion, construir_catalogo, crear_campania,
+        enriquecer_catalogo, enriquecer_programa, filtrar_catalogo,
+        filtrar_por_categorias, guardar_categorias, guardar_seleccion,
+        limpiar_seleccion, recomendar, set_categorias, toggle_programa,
     ))
 
 

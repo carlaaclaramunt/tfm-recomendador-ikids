@@ -60,6 +60,18 @@ TipoCoste = Literal[
     "otro",
 ]
 
+# Categorías comerciales con las que I-KIDS organiza su catálogo.
+# Un programa puede estar en más de una (ej. una escuela que ofrece
+# tanto semestre académico como año académico).
+CategoriaPrograma = Literal[
+    "campamento_verano",
+    "campamento_deportivo",
+    "semestre_academico",
+    "ano_academico",
+    "gap_year",
+    "inmersion_familiar",
+]
+
 class Programa(BaseModel):
     """Representación estructurada de un programa de inmersión lingüística.
 
@@ -78,6 +90,15 @@ class Programa(BaseModel):
     documentos_fuente: list[str] = Field(
         default_factory=list,
         description="Lista de documentos que aportan información a este programa"
+    )
+
+    categorias: list[CategoriaPrograma] = Field(
+        default_factory=list,
+        description=(
+            "Categorías comerciales con las que I-KIDS clasifica el programa. "
+            "Se asignan manualmente desde la webapp y se persisten aparte del "
+            "catálogo extraído para no perderlas al re-extraer."
+        ),
     )
 
     pais: str = Field(..., description="País de destino")

@@ -16,6 +16,14 @@ Casos de uso disponibles:
 """
 
 from src.application.construir_catalogo import construir_catalogo
+from src.application.gestionar_categorias import (
+    cargar_categorias,
+    enriquecer_catalogo,
+    enriquecer_programa,
+    filtrar_por_categorias,
+    guardar_categorias,
+    set_categorias,
+)
 from src.application.gestionar_seleccion import (
     cargar_seleccion,
     crear_campania,
@@ -35,4 +43,10 @@ __all__ = [
     "guardar_seleccion",
     "limpiar_seleccion",
     "toggle_programa",
+    "cargar_categorias",
+    "enriquecer_catalogo",
+    "enriquecer_programa",
+    "filtrar_por_categorias",
+    "guardar_categorias",
+    "set_categorias",
 ]

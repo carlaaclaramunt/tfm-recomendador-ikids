@@ -35,6 +35,11 @@ from typing import Any
 import pandas as pd
 import streamlit as st
 
+from src.application.gestionar_categorias import (
+    enriquecer_catalogo as _enriquecer_con_categorias,
+    filtrar_por_categorias,
+    set_categorias,
+)
 from src.application.gestionar_seleccion import (
     cargar_seleccion,
     crear_campania,
@@ -43,8 +48,24 @@ from src.application.gestionar_seleccion import (
     toggle_programa,
 )
 from src.application.recomendar import recomendar
-from src.models import PerfilCliente, Programa, SeleccionComercial
+from src.models import CategoriaPrograma, PerfilCliente, Programa, SeleccionComercial
 from src.recommendation import filtrar_candidatos
+from typing import get_args as _get_args
+
+# Opciones de categoría para los multiselect de la UI, con etiqueta amigable.
+_CATEGORIAS_UI: list[tuple[str, str]] = [
+    ("campamento_verano", "🏕️ Campamento verano"),
+    ("campamento_deportivo", "⚽ Campamento deportivo"),
+    ("semestre_academico", "📘 Semestre académico"),
+    ("ano_academico", "🎓 Año académico"),
+    ("gap_year", "🌍 Gap year"),
+    ("inmersion_familiar", "🏡 Inmersión familiar"),
+]
+_CATEGORIA_LABEL: dict[str, str] = dict(_CATEGORIAS_UI)
+_CATEGORIAS_VALORES: list[str] = [v for v, _ in _CATEGORIAS_UI]
+assert set(_CATEGORIAS_VALORES) == set(_get_args(CategoriaPrograma)), (
+    "El mapa _CATEGORIAS_UI está desincronizado con el enum CategoriaPrograma"
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -72,7 +93,10 @@ def cargar_catalogo() -> list[Programa]:
     if not CATALOGO_PATH.exists():
         return []
     raw = json.loads(CATALOGO_PATH.read_text(encoding="utf-8"))
-    return [Programa.model_validate(p) for p in raw]
+    programas = [Programa.model_validate(p) for p in raw]
+    # Aplicar categorías manuales (persistidas aparte del catálogo
+    # extraído para que una re-extracción no las pise).
+    return _enriquecer_con_categorias(programas)
 
 
 # ---------------------------------------------------------------------------
@@ -497,6 +521,21 @@ with tab_recomendar:
 
         top_k = st.slider("Nº recomendaciones", 1, 10, 5, step=1)
 
+        # Filtro por tipo de programa (categorías comerciales). Multiselect
+        # vacío = sin filtro (fail-open). Las categorías se asignan desde la
+        # pestaña 📚 Catálogo (multiselect por programa).
+        categorias_filtro = st.multiselect(
+            "🏷️ Tipo de programa",
+            options=_CATEGORIAS_VALORES,
+            default=[],
+            format_func=lambda v: _CATEGORIA_LABEL.get(v, v),
+            help=(
+                "Limita la recomendación a programas de las categorías "
+                "elegidas. Si no marcas ninguna, se usan todas. Las "
+                "categorías se asignan en la pestaña 📚 Catálogo."
+            ),
+        )
+
         # Toggle de campaña activa: si hay campaña y el asesor lo activa, la
         # recomendación se restringe a los programas de la campaña actual.
         # Por defecto desactivado para no sorprender al asesor.
@@ -550,6 +589,17 @@ with tab_recomendar:
             )
     else:
         catalogo_rec = catalogo
+
+    # Filtro por categorías comerciales (fail-open: lista vacía = todo).
+    if categorias_filtro:
+        catalogo_rec = filtrar_por_categorias(catalogo_rec, categorias_filtro)
+        if not catalogo_rec:
+            etiquetas = ", ".join(_CATEGORIA_LABEL.get(c, c) for c in categorias_filtro)
+            st.warning(
+                f"Ningún programa visible pertenece a las categorías "
+                f"seleccionadas ({etiquetas}). Revisa las asignaciones en "
+                f"la pestaña 📚 Catálogo."
+            )
 
     # La lista final se produce con el mismo caso de uso que consume el CLI
     # (`src.application.recomendar`), garantizando que la webapp y la
@@ -882,9 +932,39 @@ with tab_catalogo:
             # (gestionado abajo cuando se renderiza el checkbox).
             pass
 
+    def _on_categorias_change(programa_key: str, state_key: str) -> None:
+        """Persiste la nueva lista de categorías del programa."""
+        etiquetas = st.session_state.get(state_key, [])
+        # Las opciones en el multiselect son los VALORES del enum (no las
+        # etiquetas con emoji), así que esto ya es la lista buena.
+        try:
+            set_categorias(programa_key, etiquetas)
+        except ValueError:
+            # Alguna categoría quedó fuera del enum: ignoramos silenciosamente.
+            # No debería pasar porque las opciones vienen del enum.
+            pass
+
     for p in filtrados:
         with st.expander(f"{p.nombre} · {p.empresa_proveedora}"):
             _mostrar_ficha_completa(p)
+
+            # Multiselect de categorías comerciales (persistido aparte).
+            if p.programa_key:
+                cats_state_key = f"cats_cat_{p.programa_key}"
+                st.multiselect(
+                    "🏷️ Categorías comerciales",
+                    options=_CATEGORIAS_VALORES,
+                    default=list(p.categorias),
+                    key=cats_state_key,
+                    format_func=lambda v: _CATEGORIA_LABEL.get(v, v),
+                    on_change=_on_categorias_change,
+                    args=(p.programa_key, cats_state_key),
+                    help=(
+                        "Un programa puede estar en varias categorías. "
+                        "Lo que marques aquí se usa en el filtro «Tipo de "
+                        "programa» de la pestaña 🎯 Recomendar."
+                    ),
+                )
 
             if _seleccion_catalogo is not None and p.programa_key:
                 state_key = f"camp_cat_{p.programa_key}"
