@@ -50,9 +50,12 @@ from src.application.gestionar_seleccion import (
 from src.application.recomendar import recomendar
 from src.models import CategoriaPrograma, PerfilCliente, Programa, SeleccionComercial
 from src.recommendation import filtrar_candidatos
-from typing import get_args as _get_args
 
 # Opciones de categoría para los multiselect de la UI, con etiqueta amigable.
+# La coherencia con el enum CategoriaPrograma se verifica en
+# tests/test_imports.py (test_categorias_ui_sincronizadas_con_enum) y en CI,
+# así evitamos un assert runtime que podría tumbar la webapp si el deploy
+# cachea módulos a medias.
 _CATEGORIAS_UI: list[tuple[str, str]] = [
     ("mini_stay_verano", "☀️ Mini stay verano (I-KIDS)"),
     ("campamento_individual", "🏕️ Campamento (individual)"),
@@ -64,9 +67,6 @@ _CATEGORIAS_UI: list[tuple[str, str]] = [
 ]
 _CATEGORIA_LABEL: dict[str, str] = dict(_CATEGORIAS_UI)
 _CATEGORIAS_VALORES: list[str] = [v for v, _ in _CATEGORIAS_UI]
-assert set(_CATEGORIAS_VALORES) == set(_get_args(CategoriaPrograma)), (
-    "El mapa _CATEGORIAS_UI está desincronizado con el enum CategoriaPrograma"
-)
 
 
 ROOT = Path(__file__).resolve().parents[2]

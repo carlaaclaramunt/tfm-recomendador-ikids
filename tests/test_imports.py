@@ -62,6 +62,20 @@ def test_webapp_importable() -> None:
     import src.webapp.app  # noqa: F401
 
 
+def test_categorias_ui_sincronizadas_con_enum() -> None:
+    """El multiselect de la webapp debe cubrir las mismas categorías que el enum.
+
+    Si alguien añade un valor al Literal CategoriaPrograma pero olvida
+    añadirlo a _CATEGORIAS_UI (o viceversa), este test lo caza en CI.
+    """
+    from typing import get_args
+
+    from src.models import CategoriaPrograma
+    from src.webapp.app import _CATEGORIAS_VALORES
+
+    assert set(_CATEGORIAS_VALORES) == set(get_args(CategoriaPrograma))
+
+
 def test_subsistemas_importables() -> None:
     import src.curation  # noqa: F401
     import src.extraction  # noqa: F401
