@@ -64,7 +64,8 @@ TipoCoste = Literal[
 # Un programa puede estar en más de una (ej. una escuela que ofrece
 # tanto semestre académico como año académico).
 CategoriaPrograma = Literal[
-    "campamento_verano",
+    "mini_stay_verano",
+    "campamento_individual",
     "campamento_deportivo",
     "semestre_academico",
     "ano_academico",
