@@ -33,6 +33,13 @@ from src.models import CategoriaPrograma, Programa
 _DEFAULT_PATH = Path("data/categorias_manuales.json")
 _CATEGORIAS_VALIDAS = set(get_args(CategoriaPrograma))
 
+# Renombres aplicados al leer del disco: migración silenciosa de categorías
+# retiradas a su equivalente actual. Mantiene retrocompatibilidad con JSONs
+# escritos antes del rename.
+_CATEGORIAS_RENOMBRADAS: dict[str, str] = {
+    "campamento_verano": "mini_stay_verano",
+}
+
 
 def _ruta() -> Path:
     """Resuelve la ruta actual (lee la env var en cada llamada, útil para tests)."""
@@ -60,7 +67,10 @@ def cargar_categorias() -> dict[str, list[CategoriaPrograma]]:
         for key, cats in data.items():
             if not isinstance(key, str) or not isinstance(cats, list):
                 continue
-            validas = [c for c in cats if c in _CATEGORIAS_VALIDAS]
+            # Aplicar renombres antes de validar, para no perder entradas
+            # escritas con un nombre antiguo del enum.
+            migradas = [_CATEGORIAS_RENOMBRADAS.get(c, c) for c in cats]
+            validas = [c for c in migradas if c in _CATEGORIAS_VALIDAS]
             if validas:
                 limpio[key] = sorted(set(validas))
         return limpio

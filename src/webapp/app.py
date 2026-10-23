@@ -54,7 +54,8 @@ from typing import get_args as _get_args
 
 # Opciones de categoría para los multiselect de la UI, con etiqueta amigable.
 _CATEGORIAS_UI: list[tuple[str, str]] = [
-    ("campamento_verano", "🏕️ Campamento verano"),
+    ("mini_stay_verano", "☀️ Mini stay verano (I-KIDS)"),
+    ("campamento_individual", "🏕️ Campamento (individual)"),
     ("campamento_deportivo", "⚽ Campamento deportivo"),
     ("semestre_academico", "📘 Semestre académico"),
     ("ano_academico", "🎓 Año académico"),

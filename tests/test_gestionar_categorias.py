@@ -72,16 +72,22 @@ def test_cargar_con_fichero_corrupto_devuelve_dict_vacio(categorias_path: Path) 
 
 def test_cargar_con_tipo_erroneo_devuelve_dict_vacio(categorias_path: Path) -> None:
     """Si alguien escribe una lista en vez de un dict, no debe romper."""
-    categorias_path.write_text('["campamento_verano"]')
+    categorias_path.write_text('["mini_stay_verano"]')
     assert cargar_categorias() == {}
 
 
 def test_cargar_filtra_categorias_desconocidas(categorias_path: Path) -> None:
     """Una categoría que ya no existe en el enum se descarta silenciosamente."""
     categorias_path.write_text(
-        '{"prog_a": ["campamento_verano", "categoria_inventada"]}'
+        '{"prog_a": ["mini_stay_verano", "categoria_inventada"]}'
     )
-    assert cargar_categorias() == {"prog_a": ["campamento_verano"]}
+    assert cargar_categorias() == {"prog_a": ["mini_stay_verano"]}
+
+
+def test_cargar_migra_nombres_antiguos(categorias_path: Path) -> None:
+    """campamento_verano (nombre antiguo) se migra a mini_stay_verano al leer."""
+    categorias_path.write_text('{"prog_a": ["campamento_verano", "gap_year"]}')
+    assert cargar_categorias() == {"prog_a": ["gap_year", "mini_stay_verano"]}
 
 
 def test_cargar_descarta_entradas_sin_categorias_validas(categorias_path: Path) -> None:
@@ -95,17 +101,17 @@ def test_cargar_descarta_entradas_sin_categorias_validas(categorias_path: Path) 
 
 
 def test_guardar_round_trip(categorias_path: Path) -> None:
-    mapa = {"prog_a": ["campamento_verano", "inmersion_familiar"]}
+    mapa = {"prog_a": ["inmersion_familiar", "mini_stay_verano"]}
     guardar_categorias(mapa)
     assert cargar_categorias() == {
-        "prog_a": ["campamento_verano", "inmersion_familiar"]
+        "prog_a": ["inmersion_familiar", "mini_stay_verano"]
     }
 
 
 def test_guardar_compacta_entradas_vacias(categorias_path: Path) -> None:
     """No persistir keys con lista vacía (mantiene el fichero compacto)."""
-    guardar_categorias({"prog_a": ["campamento_verano"], "prog_b": []})
-    assert cargar_categorias() == {"prog_a": ["campamento_verano"]}
+    guardar_categorias({"prog_a": ["mini_stay_verano"], "prog_b": []})
+    assert cargar_categorias() == {"prog_a": ["mini_stay_verano"]}
 
 
 def test_guardar_es_atomica_no_deja_tmp(categorias_path: Path) -> None:
@@ -129,19 +135,19 @@ def test_guardar_crea_directorio_padre(
 
 
 def test_set_categorias_crea_entrada_nueva(categorias_path: Path) -> None:
-    mapa = set_categorias("prog_a", ["campamento_verano"])
-    assert mapa == {"prog_a": ["campamento_verano"]}
-    assert cargar_categorias() == {"prog_a": ["campamento_verano"]}
+    mapa = set_categorias("prog_a", ["mini_stay_verano"])
+    assert mapa == {"prog_a": ["mini_stay_verano"]}
+    assert cargar_categorias() == {"prog_a": ["mini_stay_verano"]}
 
 
 def test_set_categorias_reemplaza_la_lista(categorias_path: Path) -> None:
-    set_categorias("prog_a", ["campamento_verano"])
+    set_categorias("prog_a", ["mini_stay_verano"])
     mapa = set_categorias("prog_a", ["gap_year", "ano_academico"])
     assert mapa["prog_a"] == ["ano_academico", "gap_year"]
 
 
 def test_set_categorias_vacia_borra_la_entrada(categorias_path: Path) -> None:
-    set_categorias("prog_a", ["campamento_verano"])
+    set_categorias("prog_a", ["mini_stay_verano"])
     mapa = set_categorias("prog_a", [])
     assert "prog_a" not in mapa
     assert cargar_categorias() == {}
@@ -153,11 +159,11 @@ def test_set_categorias_rechaza_valor_invalido(categorias_path: Path) -> None:
 
 
 def test_set_categorias_no_afecta_a_otros_programas(categorias_path: Path) -> None:
-    set_categorias("prog_a", ["campamento_verano"])
+    set_categorias("prog_a", ["mini_stay_verano"])
     set_categorias("prog_b", ["gap_year"])
     mapa = cargar_categorias()
     assert mapa == {
-        "prog_a": ["campamento_verano"],
+        "prog_a": ["mini_stay_verano"],
         "prog_b": ["gap_year"],
     }
 
@@ -170,10 +176,10 @@ def test_set_categorias_no_afecta_a_otros_programas(categorias_path: Path) -> No
 def test_enriquecer_programa_aplica_categorias_persistidas(
     categorias_path: Path,
 ) -> None:
-    set_categorias("prog_a", ["campamento_verano", "inmersion_familiar"])
+    set_categorias("prog_a", ["inmersion_familiar", "mini_stay_verano"])
     programa = _programa("prog_a")
     enriquecido = enriquecer_programa(programa)
-    assert enriquecido.categorias == ["campamento_verano", "inmersion_familiar"]
+    assert enriquecido.categorias == ["inmersion_familiar", "mini_stay_verano"]
 
 
 def test_enriquecer_programa_sin_key_devuelve_original(categorias_path: Path) -> None:
@@ -196,12 +202,12 @@ def test_enriquecer_programa_sin_entrada_en_mapa_devuelve_original(
 
 
 def test_enriquecer_catalogo_aplica_a_todos(categorias_path: Path) -> None:
-    set_categorias("prog_a", ["campamento_verano"])
+    set_categorias("prog_a", ["mini_stay_verano"])
     set_categorias("prog_b", ["gap_year"])
     programas = [_programa("prog_a"), _programa("prog_b"), _programa("prog_c")]
     enriquecidos = enriquecer_catalogo(programas)
     assert [p.categorias for p in enriquecidos] == [
-        ["campamento_verano"],
+        ["mini_stay_verano"],
         ["gap_year"],
         [],
     ]
@@ -227,12 +233,12 @@ def test_filtrar_devuelve_los_que_matchean_al_menos_una(
     categorias_path: Path,
 ) -> None:
     programas = [
-        _programa("a", ["campamento_verano"]),
+        _programa("a", ["mini_stay_verano"]),
         _programa("b", ["gap_year"]),
         _programa("c", ["semestre_academico", "ano_academico"]),
         _programa("d", []),
     ]
-    resultado = filtrar_por_categorias(programas, ["campamento_verano", "gap_year"])
+    resultado = filtrar_por_categorias(programas, ["mini_stay_verano", "gap_year"])
     assert [p.programa_key for p in resultado] == ["a", "b"]
 
 
