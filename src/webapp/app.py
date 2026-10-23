@@ -952,10 +952,15 @@ with tab_catalogo:
             # Multiselect de categorías comerciales (persistido aparte).
             if p.programa_key:
                 cats_state_key = f"cats_cat_{p.programa_key}"
+                # Sanear default: descartar valores que ya no estén en el
+                # enum (ej. renombres antiguos) para no romper el multiselect.
+                _default_cats = [
+                    c for c in p.categorias if c in _CATEGORIAS_VALORES
+                ]
                 st.multiselect(
                     "🏷️ Categorías comerciales",
                     options=_CATEGORIAS_VALORES,
-                    default=list(p.categorias),
+                    default=_default_cats,
                     key=cats_state_key,
                     format_func=lambda v: _CATEGORIA_LABEL.get(v, v),
                     on_change=_on_categorias_change,
